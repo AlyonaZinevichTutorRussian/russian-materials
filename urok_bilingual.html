@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Урок 3 марта — Секретная лаборатория звуков</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f0c29; --bg2: #1a1640;
+    --teal: #00d4b4; --yellow: #ffd166; --pink: #ff6b9d;
+    --purple: #c77dff; --blue: #4cc9f0; --green: #06d6a0;
+    --orange: #fb8500;
+    --card: rgba(255,255,255,0.06);
+    --card-border: rgba(255,255,255,0.12);
+    --text: #e8e8f0; --text-dim: rgba(232,232,240,0.6);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Nunito', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; }
+  body::before {
+    content: ''; position: fixed; inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,0.6) 0%, transparent 100%),
+      radial-gradient(1px 1px at 80% 10%, rgba(255,255,255,0.5) 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 50% 60%, rgba(255,255,255,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 10% 80%, rgba(255,255,255,0.6) 0%, transparent 100%),
+      radial-gradient(1px 1px at 90% 70%, rgba(255,255,255,0.5) 0%, transparent 100%),
+      radial-gradient(1px 1px at 35% 45%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 70% 85%, rgba(255,255,255,0.5) 0%, transparent 100%),
+      radial-gradient(1px 1px at 55% 15%, rgba(255,255,255,0.6) 0%, transparent 100%);
+    pointer-events: none; z-index: 0;
+  }
+  .container { max-width: 860px; margin: 0 auto; padding: 24px 20px 60px; position: relative; z-index: 1; }
+
+  /* HEADER */
+  .hero { text-align: center; padding: 40px 20px 32px; }
+  .hero-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--teal), var(--blue));
+    color: #0f0c29; font-weight: 800; font-size: 12px;
+    letter-spacing: 2px; text-transform: uppercase;
+    padding: 6px 18px; border-radius: 20px; margin-bottom: 16px;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse { 0%,100%{box-shadow:0 0 0 0 rgba(0,212,180,0.4)} 50%{box-shadow:0 0 0 12px rgba(0,212,180,0)} }
+  .hero h1 {
+    font-family: 'Fredoka One', cursive;
+    font-size: clamp(2rem, 6vw, 3.4rem); line-height: 1.1;
+    background: linear-gradient(135deg, var(--teal) 0%, var(--purple) 50%, var(--pink) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    margin-bottom: 12px;
+  }
+  .hero-subtitle { font-size: 1rem; color: var(--text-dim); font-weight: 600; }
+  .hero-emoji-row { font-size: 2rem; margin: 16px 0 0; letter-spacing: 8px; animation: float 3s ease-in-out infinite; }
+  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
+
+  /* RITUAL */
+  .ritual-card {
+    background: linear-gradient(135deg, rgba(0,212,180,0.12), rgba(76,201,240,0.08));
+    border: 1.5px solid rgba(0,212,180,0.3); border-radius: 20px;
+    padding: 28px 32px; margin-bottom: 28px; position: relative; overflow: hidden;
+  }
+  .ritual-card::before { content: '🔬'; position: absolute; right: 24px; top: 20px; font-size: 3rem; opacity: 0.15; }
+  .section-label { font-size: 11px; font-weight: 800; letter-spacing: 2.5px; text-transform: uppercase; color: var(--teal); margin-bottom: 10px; }
+  .ritual-card h2 { font-family: 'Fredoka One', cursive; font-size: 1.5rem; color: var(--teal); margin-bottom: 14px; }
+  .oath-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .oath-item {
+    display: flex; align-items: center; gap: 12px;
+    background: rgba(255,255,255,0.05); border-radius: 12px; padding: 12px 18px;
+    font-weight: 700; font-size: 1rem; cursor: pointer; transition: all 0.3s;
+    border: 1.5px solid transparent; user-select: none;
+  }
+  .oath-item:hover { background: rgba(255,255,255,0.09); }
+  .oath-item.checked { border-color: var(--green); background: rgba(6,214,160,0.1); color: var(--green); }
+  .oath-check { width: 28px; height: 28px; border-radius: 50%; border: 2.5px solid currentColor; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; transition: all 0.3s; }
+  .oath-item.checked .oath-check { background: var(--green); border-color: var(--green); color: white; }
+
+  /* SECTION CARDS */
+  .section-card { background: var(--card); border: 1.5px solid var(--card-border); border-radius: 24px; padding: 28px 32px; margin-bottom: 24px; position: relative; overflow: hidden; }
+  .section-card h2 { font-family: 'Fredoka One', cursive; font-size: 1.5rem; margin-bottom: 6px; display: flex; align-items: center; gap: 10px; }
+  .timer-badge { font-family: 'Nunito', sans-serif; font-size: 11px; font-weight: 800; letter-spacing: 1px; background: rgba(255,255,255,0.1); padding: 4px 12px; border-radius: 20px; color: var(--yellow); }
+  .desc-text { color: var(--text-dim); font-size: 0.92rem; margin-bottom: 20px; line-height: 1.6; }
+
+  /* EXPLAIN BOX */
+  .explain-box { background: linear-gradient(135deg, rgba(255,209,102,0.1), rgba(251,133,0,0.08)); border-left: 4px solid var(--yellow); border-radius: 0 14px 14px 0; padding: 18px 22px; margin: 16px 0; font-size: 0.95rem; line-height: 1.7; }
+  .explain-box strong { color: var(--yellow); }
+  .rule-box { background: linear-gradient(135deg, rgba(199,125,255,0.15), rgba(76,201,240,0.1)); border: 2px solid rgba(199,125,255,0.35); border-radius: 16px; padding: 18px 22px; margin: 16px 0; text-align: center; font-weight: 700; font-size: 1rem; line-height: 1.6; }
+  .rule-box .rule-title { font-family: 'Fredoka One', cursive; font-size: 1.1rem; color: var(--purple); margin-bottom: 8px; }
+
+  /* WORD GRID */
+  .word-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; margin: 18px 0; }
+  .word-card { background: rgba(255,255,255,0.05); border: 2px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 16px 12px; text-align: center; cursor: pointer; transition: all 0.3s; }
+  .word-card:hover { border-color: var(--teal); background: rgba(0,212,180,0.1); transform: translateY(-2px); }
+  .word-card.active { border-color: var(--yellow); background: rgba(255,209,102,0.1); }
+  .word-card.done { border-color: var(--green); background: rgba(6,214,160,0.1); }
+  .word-card .w-word { font-family: 'Fredoka One', cursive; font-size: 1.3rem; margin-bottom: 8px; }
+  .word-stats { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
+  .stat-chip { font-size: 0.7rem; font-weight: 800; padding: 3px 8px; border-radius: 8px; letter-spacing: 0.5px; }
+  .chip-letters { background: rgba(76,201,240,0.2); color: var(--blue); }
+  .chip-sounds { background: rgba(255,107,157,0.2); color: var(--pink); }
+  .chip-soft { background: rgba(6,214,160,0.2); color: var(--green); }
+  .word-detail { display: none; margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 0.8rem; color: var(--text-dim); line-height: 1.5; }
+  .word-card.active .word-detail { display: block; }
+
+  /* ACTOR GRID */
+  .actor-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; margin: 18px 0; }
+  .actor-card { background: rgba(255,255,255,0.05); border: 2px solid rgba(199,125,255,0.2); border-radius: 20px; padding: 20px; text-align: center; transition: all 0.3s; }
+  .actor-card:hover { border-color: var(--purple); background: rgba(199,125,255,0.08); transform: translateY(-3px); }
+  .actor-word { font-family: 'Fredoka One', cursive; font-size: 1.8rem; margin-bottom: 12px; color: var(--purple); }
+  .sound-breakdown { display: flex; align-items: center; justify-content: center; gap: 6px; flex-wrap: wrap; margin: 10px 0; }
+  .sound-bubble { background: rgba(255,107,157,0.2); color: var(--pink); border: 1.5px solid rgba(255,107,157,0.4); border-radius: 8px; padding: 5px 10px; font-weight: 800; font-size: 0.85rem; font-family: 'Courier New', monospace; }
+  .sound-bubble.special { background: rgba(255,209,102,0.2); color: var(--yellow); border-color: rgba(255,209,102,0.4); animation: sparkle 2s infinite; }
+  @keyframes sparkle { 0%,100%{box-shadow:0 0 0 0 rgba(255,209,102,0.3)} 50%{box-shadow:0 0 8px 3px rgba(255,209,102,0.2)} }
+  .actor-explain { font-size: 0.8rem; color: var(--text-dim); line-height: 1.5; margin-top: 10px; }
+
+  /* ROBOT */
+  .robot-exercise { display: flex; flex-direction: column; gap: 14px; margin: 18px 0; }
+  .robot-row { display: flex; align-items: center; gap: 16px; background: rgba(255,255,255,0.04); border: 1.5px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 14px 20px; transition: all 0.3s; }
+  .robot-row.correct { border-color: var(--green); background: rgba(6,214,160,0.07); }
+  .robot-row.incorrect { border-color: var(--pink); background: rgba(255,107,157,0.07); animation: shake 0.4s; }
+  @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
+  .robot-word { font-family: 'Fredoka One', cursive; font-size: 1.2rem; min-width: 90px; }
+  .missing { color: var(--orange); font-weight: 900; font-size: 1.4rem; }
+  .letter-options { display: flex; gap: 8px; flex-wrap: wrap; }
+  .letter-btn { width: 40px; height: 40px; border-radius: 10px; border: 2px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.06); color: var(--text); font-family: 'Fredoka One', cursive; font-size: 1.1rem; cursor: pointer; transition: all 0.2s; }
+  .letter-btn:hover { border-color: var(--teal); background: rgba(0,212,180,0.15); transform: scale(1.1); }
+  .letter-btn.selected-correct { background: var(--green); border-color: var(--green); color: #0f0c29; }
+  .letter-btn.selected-wrong { background: var(--pink); border-color: var(--pink); color: white; }
+  .result-icon { font-size: 1.5rem; margin-left: auto; }
+
+  /* SPEECH */
+  .speech-questions { display: flex; flex-direction: column; gap: 14px; margin: 18px 0; }
+  .speech-q { background: rgba(255,255,255,0.04); border: 1.5px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 16px 20px; }
+  .speech-q .q-text { font-weight: 700; color: var(--blue); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+  .speech-q textarea { width: 100%; background: rgba(255,255,255,0.05); border: 1.5px solid rgba(255,255,255,0.1); border-radius: 10px; color: var(--text); font-family: 'Nunito', sans-serif; font-size: 0.95rem; padding: 10px 14px; resize: none; outline: none; transition: border-color 0.3s; min-height: 60px; }
+  .speech-q textarea:focus { border-color: var(--blue); }
+  .speech-q textarea::placeholder { color: var(--text-dim); }
+
+  /* DICTATION */
+  .dictation-words { display: flex; gap: 12px; flex-wrap: wrap; margin: 16px 0; }
+  .dict-word-card { background: rgba(255,255,255,0.04); border: 2px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 14px 20px; text-align: center; min-width: 110px; cursor: pointer; transition: all 0.3s; }
+  .dict-word-card:hover { border-color: var(--yellow); }
+  .dict-word-card .dict-word { font-family: 'Fredoka One', cursive; font-size: 1.3rem; filter: blur(5px); transition: filter 0.4s; user-select: none; }
+  .dict-word-card.revealed .dict-word { filter: blur(0); }
+  .dict-word-card .dict-hint { font-size: 0.7rem; color: var(--text-dim); margin-top: 5px; }
+  .dict-word-card.revealed { border-color: var(--green); }
+  .reveal-btn { background: linear-gradient(135deg, var(--teal), var(--blue)); color: #0f0c29; border: none; border-radius: 14px; padding: 13px 28px; font-family: 'Fredoka One', cursive; font-size: 1.1rem; cursor: pointer; transition: all 0.3s; display: block; margin: 16px auto 0; }
+  .reveal-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,212,180,0.3); }
+
+  /* TRUE/FALSE */
+  .tf-list { display: flex; flex-direction: column; gap: 12px; margin: 16px 0; }
+  .tf-row { display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.04); border: 1.5px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 14px 18px; }
+  .tf-statement { flex: 1; font-weight: 600; font-size: 0.95rem; }
+  .tf-buttons { display: flex; gap: 8px; }
+  .tf-btn { padding: 8px 16px; border-radius: 10px; border: 2px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); color: var(--text); font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 0.85rem; cursor: pointer; transition: all 0.2s; }
+  .tf-btn:hover { transform: scale(1.05); }
+  .tf-btn.true-btn:hover { border-color: var(--green); background: rgba(6,214,160,0.1); color: var(--green); }
+  .tf-btn.false-btn:hover { border-color: var(--pink); background: rgba(255,107,157,0.1); color: var(--pink); }
+  .tf-btn.correct { background: var(--green); border-color: var(--green); color: #0f0c29; }
+  .tf-btn.wrong { background: var(--pink); border-color: var(--pink); color: white; }
+  .tf-btn.disabled { opacity: 0.4; pointer-events: none; }
+  .tf-explanation { display: none; font-size: 0.82rem; color: var(--text-dim); margin-top: 8px; line-height: 1.5; padding: 8px 12px; background: rgba(255,255,255,0.04); border-radius: 8px; }
+  .tf-row.answered .tf-explanation { display: block; }
+
+  /* PROGRESS */
+  .lesson-progress { position: sticky; top: 12px; z-index: 100; background: rgba(15,12,41,0.85); backdrop-filter: blur(12px); border: 1.5px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 12px 20px; margin-bottom: 24px; display: flex; align-items: center; gap: 14px; }
+  .progress-label { font-size: 0.8rem; font-weight: 800; color: var(--text-dim); white-space: nowrap; }
+  .progress-bar-bg { flex: 1; height: 8px; background: rgba(255,255,255,0.08); border-radius: 10px; overflow: hidden; }
+  .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--teal), var(--purple), var(--pink)); border-radius: 10px; transition: width 1s ease; width: 0%; }
+  .progress-stars { font-size: 1.1rem; letter-spacing: 2px; }
+  .score-display { font-family: 'Fredoka One', cursive; font-size: 1rem; color: var(--yellow); white-space: nowrap; }
+
+  /* SUMMARY */
+  .summary-card { background: linear-gradient(135deg, rgba(0,212,180,0.1), rgba(199,125,255,0.1)); border: 2px solid rgba(0,212,180,0.25); border-radius: 24px; padding: 32px; text-align: center; margin-top: 8px; }
+  .summary-card h2 { font-family: 'Fredoka One', cursive; font-size: 2rem; background: linear-gradient(135deg, var(--teal), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 16px; }
+  .summary-checklist { list-style: none; text-align: left; display: inline-block; margin: 16px 0; line-height: 2; font-weight: 600; }
+  .summary-checklist li::before { content: '✨ '; }
+  .hw-box { background: rgba(255,209,102,0.1); border: 2px solid rgba(255,209,102,0.25); border-radius: 16px; padding: 20px 24px; margin-top: 20px; text-align: left; }
+  .hw-box h3 { font-family: 'Fredoka One', cursive; color: var(--yellow); font-size: 1.2rem; margin-bottom: 12px; }
+  .hw-box ol { padding-left: 20px; line-height: 2; font-size: 0.95rem; color: var(--text-dim); }
+  .hw-box ol li { font-weight: 600; }
+
+  .s-teal h2,.s-teal .section-label{color:var(--teal)}
+  .s-yellow h2,.s-yellow .section-label{color:var(--yellow)}
+  .s-pink h2,.s-pink .section-label{color:var(--pink)}
+  .s-blue h2,.s-blue .section-label{color:var(--blue)}
+  .s-green h2,.s-green .section-label{color:var(--green)}
+  .s-purple h2,.s-purple .section-label{color:var(--purple)}
+  .s-orange h2,.s-orange .section-label{color:var(--orange)}
+
+  .divider { text-align: center; color: var(--text-dim); font-size: 1.4rem; margin: 8px 0; letter-spacing: 8px; opacity: 0.3; }
+
+  @media(max-width:500px){ .section-card{padding:20px 18px} .actor-grid{grid-template-columns:1fr 1fr} .word-grid{grid-template-columns:1fr 1fr} }
+
+  .section-card,.ritual-card,.summary-card { opacity:0; transform:translateY(20px); animation:fadeUp 0.6s ease forwards; }
+  @keyframes fadeUp { to{opacity:1;transform:translateY(0)} }
+  .section-card:nth-child(1){animation-delay:0.1s}
+  .section-card:nth-child(2){animation-delay:0.2s}
+  .section-card:nth-child(3){animation-delay:0.3s}
+  .section-card:nth-child(4){animation-delay:0.4s}
+  .section-card:nth-child(5){animation-delay:0.5s}
+
+  /* ═══════════════════════════════════════════════════
+     BILINGUAL GLOSSARY TOOLTIPS
+     Только лингвистические термины — НЕ обычные слова!
+     Only linguistic/abstract terms get tooltips.
+     Tap (mobile) or hover (desktop) to reveal.
+  ═══════════════════════════════════════════════════ */
+  .gl {
+    position: relative;
+    display: inline;
+    cursor: help;
+    border-bottom: 2px dashed rgba(0,212,180,0.5);
+    padding-bottom: 1px;
+  }
+  .gl .gl-tip {
+    position: absolute;
+    bottom: calc(100% + 10px);
+    left: 50%; transform: translateX(-50%);
+    background: #1a163a;
+    border: 1.5px solid rgba(0,212,180,0.45);
+    color: var(--teal);
+    font-size: 0.72rem; font-weight: 800;
+    font-family: 'Nunito', sans-serif;
+    padding: 5px 13px; border-radius: 20px;
+    white-space: nowrap; pointer-events: none;
+    opacity: 0; transition: opacity 0.18s;
+    z-index: 200;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+  }
+  .gl .gl-tip::after {
+    content: '';
+    position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+    border: 5px solid transparent; border-top-color: rgba(0,212,180,0.45);
+  }
+  .gl:hover .gl-tip,
+  .gl.gl-open .gl-tip { opacity: 1; }
+
+  /* Small hint strip shown once per section */
+  .gl-hint {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 0.74rem; color: rgba(0,212,180,0.55);
+    font-weight: 700; margin-bottom: 14px; letter-spacing: 0.3px;
+  }
+  .gl-hint-dot { width: 9px; height: 9px; border-radius: 50%; border: 2px dashed rgba(0,212,180,0.55); flex-shrink: 0; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-badge">🗓 3 марта • Урок №1</div>
+    <h1>Секретная лаборатория<br>русского языка</h1>
+    <p class="hero-subtitle">Марьяна, сегодня ты станешь языковым детективом 🔍</p>
+    <div class="hero-emoji-row">🔬 🧪 🔭 📡 🧬</div>
+  </div>
+
+  <!-- PROGRESS BAR -->
+  <div class="lesson-progress">
+    <span class="progress-label">Прогресс урока</span>
+    <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressBar"></div></div>
+    <span class="progress-stars" id="progressStars">⭐</span>
+    <span class="score-display" id="scoreDisplay">0 очков</span>
+  </div>
+
+  <!-- RITUAL -->
+  <div class="ritual-card" style="animation: fadeUp 0.5s ease forwards;">
+    <div class="section-label">0–5 мин · Старт урока</div>
+    <h2>🧬 Клятва детектива</h2>
+    <p style="color:var(--text-dim);margin-bottom:16px;font-size:0.9rem;">Нажми на каждый пункт — поставь галочку!</p>
+    <ul class="oath-list">
+      <li class="oath-item" onclick="toggleOath(this)"><div class="oath-check">✓</div><span>Я внимательно слушаю</span></li>
+      <li class="oath-item" onclick="toggleOath(this)"><div class="oath-check">✓</div><span>Я всегда проверяю</span></li>
+      <li class="oath-item" onclick="toggleOath(this)"><div class="oath-check">✓</div><span>Я думаю, прежде чем ответить</span></li>
+    </ul>
+  </div>
+
+  <!-- EXPLAIN BLOCK -->
+  <div class="section-card s-teal">
+    <div class="section-label">Объяснение</div>
+    <h2>💡 В чём секрет?</h2>
+
+    <div class="gl-hint">
+      <span class="gl-hint-dot"></span>
+      Нажми на слово с пунктирным подчёркиванием — увидишь перевод!
+    </div>
+
+    <div class="explain-box">
+      <strong>
+        <span class="gl">Звук<span class="gl-tip">sound — что ты слышишь 👂</span></span>
+      </strong>
+      — это то, что мы <em>слышим</em> и <em>произносим</em>.<br>
+
+      <strong>
+        <span class="gl">Буква<span class="gl-tip">letter — что ты пишешь ✏️</span></span>
+      </strong>
+      — это то, что мы <em>видим</em> и <em>пишем</em>.<br><br>
+
+      Иногда мы слышим одно, а пишем <strong>другое!</strong>
+      Именно это и есть главная тайна русского языка 🕵️
+    </div>
+
+    <div class="rule-box">
+      <div class="rule-title">📌 Запомни правило</div>
+      В слове может быть разное
+      <span class="gl">количество<span class="gl-tip">number / amount</span></span>
+      <span class="gl">букв<span class="gl-tip">letters</span></span>
+      и
+      <span class="gl">звуков<span class="gl-tip">sounds</span></span>!<br>
+
+      <span style="color:var(--blue)">
+        <span class="gl">Мягкий знак<span class="gl-tip">soft sign — есть буква, нет звука!</span></span>
+        (Ь) — в слове есть, но звука нет.
+      </span><br>
+
+      <span style="color:var(--yellow)">
+        Буквы Е, Ё, Ю, Я — могут давать 2
+        <span class="gl">звука<span class="gl-tip">sounds</span></span>!
+      </span>
+    </div>
+  </div>
+
+  <div class="divider">· · · · ·</div>
+
+  <!-- GAME 1 -->
+  <div class="section-card s-yellow">
+    <div class="section-label">7–8 мин · Игра 1</div>
+    <h2>🔐 Открой сейф! <span class="timer-badge">⏱ 8 минут</span></h2>
+    <p class="desc-text">
+      Нажимай на каждое слово. Считай
+      <span class="gl">буквы<span class="gl-tip">letters</span></span>
+      и
+      <span class="gl">звуки<span class="gl-tip">sounds</span></span>
+      вместе с учителем!
+    </p>
+    <div class="word-grid" id="wordGrid"></div>
+  </div>
+
+  <div class="divider">· · · · ·</div>
+
+  <!-- GAME 2 -->
+  <div class="section-card s-purple">
+    <div class="section-label">10 мин · Объяснение + Игра 2</div>
+    <h2>🎭 Актёры и костюмы <span class="timer-badge">⏱ 10 минут</span></h2>
+
+    <div class="explain-box" style="border-color:var(--purple);background:linear-gradient(135deg,rgba(199,125,255,0.1),rgba(76,201,240,0.06))">
+      <strong style="color:var(--purple)">Представь:</strong>
+      <span class="gl">звуки<span class="gl-tip">sounds</span></span>
+      — это <strong>актёры</strong> <em style="color:rgba(255,255,255,0.4)">(actors)</em>.<br>
+      <span class="gl">Буквы<span class="gl-tip">letters</span></span>
+      — это <strong>костюмы</strong> <em style="color:rgba(255,255,255,0.4)">(costumes)</em>.<br><br>
+
+      Иногда один актёр надевает <strong>сразу два костюма!</strong>
+      <em style="color:rgba(255,255,255,0.4)">(wears two costumes at once!)</em><br>
+
+      Это происходит, когда буквы <strong style="color:var(--yellow)">Е, Ё, Ю, Я</strong> стоят:<br>
+      <span style="color:var(--green)">✦ в начале слова</span>
+      <em style="color:rgba(255,255,255,0.35)">(at the start)</em>
+      или
+      <span style="color:var(--green)">✦ после
+        <span class="gl">гласной<span class="gl-tip">vowel — А, О, У, Э, И, Ы</span></span>
+      </span>
+    </div>
+
+    <div class="rule-box">
+      <div class="rule-title">
+        Схема двух
+        <span class="gl">звуков<span class="gl-tip">sounds</span></span>
+      </div>
+      <span style="color:var(--yellow);font-size:1.1rem;">Ё</span> = <span style="font-family:'Courier New';color:var(--pink)">[й']</span> + <span style="font-family:'Courier New';color:var(--blue)">[о]</span> &nbsp;|&nbsp;
+      <span style="color:var(--yellow);font-size:1.1rem;">Я</span> = <span style="font-family:'Courier New';color:var(--pink)">[й']</span> + <span style="font-family:'Courier New';color:var(--blue)">[а]</span><br>
+      <span style="color:var(--yellow);font-size:1.1rem;">Ю</span> = <span style="font-family:'Courier New';color:var(--pink)">[й']</span> + <span style="font-family:'Courier New';color:var(--blue)">[у]</span> &nbsp;|&nbsp;
+      <span style="color:var(--yellow);font-size:1.1rem;">Е</span> = <span style="font-family:'Courier New';color:var(--pink)">[й']</span> + <span style="font-family:'Courier New';color:var(--blue)">[э]</span>
+    </div>
+
+    <div class="actor-grid" id="actorGrid"></div>
+  </div>
+
+  <div class="divider">· · · · ·</div>
+
+  <!-- GAME 3 -->
+  <div class="section-card s-orange">
+    <div class="section-label">8 мин · Игра 3</div>
+    <h2>🤖 Исправь письмо робота <span class="timer-badge">⏱ 8 минут</span></h2>
+    <p class="desc-text">
+      Робот допустил
+      <span class="gl">ошибки<span class="gl-tip">mistakes / errors</span></span>!
+      Выбери правильную
+      <span class="gl">букву<span class="gl-tip">letter</span></span>
+      для каждого слова. Потом объясни — почему именно эта буква?
+    </p>
+    <div class="robot-exercise" id="robotGame"></div>
+  </div>
+
+  <div class="divider">· · · · ·</div>
+
+  <!-- SPEECH -->
+  <div class="section-card s-blue">
+    <div class="section-label">10–12 мин · Развитие речи</div>
+    <h2>🗣 Говорим о семье <span class="timer-badge">⏱ 12 минут</span></h2>
+    <p class="desc-text">Отвечай на вопросы вслух — сначала устно, потом можно написать 2–3
+      <span class="gl">предложения<span class="gl-tip">sentences</span></span>.
+    </p>
+    <div class="speech-questions">
+      <div class="speech-q">
+        <div class="q-text">👨‍👩‍👧 Кто живёт в твоей семье?</div>
+        <textarea placeholder="Например: В моей семье живут мама, папа и я. Ещё есть бабушка..."></textarea>
+      </div>
+      <div class="speech-q">
+        <div class="q-text">💼 Кто что делает в семье?</div>
+        <textarea placeholder="Например: Мама готовит. Папа работает. Я учусь..."></textarea>
+      </div>
+      <div class="speech-q">
+        <div class="q-text">❤️ Что вы любите делать вместе?</div>
+        <textarea placeholder="Например: Мы любим гулять в парке. Мы вместе смотрим кино..."></textarea>
+      </div>
+    </div>
+    <div class="explain-box" style="border-color:var(--blue);background:rgba(76,201,240,0.07)">
+      <strong style="color:var(--blue)">Совет учителя:</strong> После каждого ответа проверь:<br>
+      ✦ Есть ли
+      <span class="gl">заглавная буква<span class="gl-tip">capital letter</span></span>
+      в начале?<br>
+      ✦ Есть ли
+      <span class="gl">точка<span class="gl-tip">full stop  .</span></span>
+      в конце?<br>
+      ✦ Все ли слова написаны без
+      <span class="gl">пропусков<span class="gl-tip">missing letters / gaps</span></span>?
+    </div>
+  </div>
+
+  <div class="divider">· · · · ·</div>
+
+  <!-- DICTATION -->
+  <div class="section-card s-pink">
+    <div class="section-label">5 мин · Мини-диктант</div>
+    <h2>✍️
+      <span class="gl">Мини-диктант<span class="gl-tip">dictation — teacher reads, you write!</span></span>
+      <span class="timer-badge">⏱ 5 минут</span>
+    </h2>
+    <p class="desc-text">
+      Учитель
+      <span class="gl">диктует<span class="gl-tip">reads aloud slowly for you to write down</span></span>
+      слова. Запиши их в
+      <span class="gl">тетрадь<span class="gl-tip">notebook / exercise book</span></span>!
+      Потом нажми кнопку — проверь себя.
+    </p>
+    <div class="dictation-words" id="dictWords"></div>
+    <button class="reveal-btn" onclick="revealAll()">🔍 Проверить все слова!</button>
+  </div>
+
+  <div class="divider">· · · · ·</div>
+
+  <!-- TRUE/FALSE -->
+  <div class="section-card s-green">
+    <div class="section-label">Бонус · Если есть время</div>
+    <h2>✅ Правда или неправда? <span class="timer-badge">⭐ Бонус</span></h2>
+    <p class="desc-text">Выбери: правда или неправда? И объясни почему!</p>
+    <div class="tf-list" id="tfList"></div>
+  </div>
+
+  <div class="divider">· · · · ·</div>
+
+  <!-- SUMMARY -->
+  <div class="summary-card">
+    <h2>🎉 Тайна раскрыта!</h2>
+    <p style="color:var(--text-dim);margin-bottom:16px;font-size:0.95rem;">Сегодня ты узнала:</p>
+    <ul class="summary-checklist">
+      <li><span class="gl">Звук<span class="gl-tip">sound 👂</span></span> — это то, что мы слышим</li>
+      <li><span class="gl">Буква<span class="gl-tip">letter ✏️</span></span> — это то, что мы пишем</li>
+      <li>Е, Ё, Ю, Я в начале слова = 2 <span class="gl">звука<span class="gl-tip">sounds</span></span></li>
+      <li><span class="gl">Мягкий знак<span class="gl-tip">soft sign — a letter with NO sound</span></span> — буква есть, звука нет</li>
+      <li>Умею считать <span class="gl">буквы<span class="gl-tip">letters</span></span> и <span class="gl">звуки<span class="gl-tip">sounds</span></span>!</li>
+    </ul>
+
+    <div class="hw-box">
+      <h3>📚 <span class="gl">Домашнее задание<span class="gl-tip">homework</span></span></h3>
+      <ol>
+        <li>Нарисуй 5 любых предметов и
+          <span class="gl">подпиши<span class="gl-tip">label / sign</span></span> их
+        </li>
+        <li>Посчитай <span class="gl">буквы<span class="gl-tip">letters</span></span> и <span class="gl">звуки<span class="gl-tip">sounds</span></span> в каждом слове</li>
+        <li>Отметь: есть ли <span class="gl">мягкий знак<span class="gl-tip">soft sign Ь</span></span>? Есть ли Е/Ё/Ю/Я в начале?</li>
+        <li>Запомни: семья, лес, ёлка, гриб, мяч — напиши по памяти</li>
+      </ol>
+    </div>
+
+    <div style="margin-top:24px;font-size:2.5rem;animation:float 2s ease-in-out infinite">🌟 🏆 🎊</div>
+    <p style="font-family:'Fredoka One',cursive;font-size:1.3rem;color:var(--teal);margin-top:12px;">Молодец, детектив Марьяна!</p>
+  </div>
+
+</div>
+
+<script>
+const words = [
+  { word: 'лес', letters: 3, sounds: 3, soft: true, detail: '3 буквы, 3 звука: [л\'][э][с] — Л мягкий (из-за Е)' },
+  { word: 'мяч', letters: 3, sounds: 3, soft: true, detail: '3 буквы, 3 звука: [м\'][а][ч\'] — М мягкий (из-за Я)' },
+  { word: 'гриб', letters: 4, sounds: 4, soft: false, detail: '4 буквы, 4 звука: [г][р\'][и][п] — Р мягкий перед И, Б на конце → [п]' },
+  { word: 'книга', letters: 5, sounds: 5, soft: false, detail: '5 букв, 5 звуков: [к][н][и][г][а] — буквы и звуки совпадают!' },
+  { word: 'семья', letters: 5, sounds: 5, soft: true, detail: '5 букв, 5 звуков: [с\'][э][м\'][й\'][а] — разделительный Ь!' },
+];
+const actorWords = [
+  { word: 'ёлка', rule: 'начало слова', sounds: ['й\'','о','л','к','а'], special: [0,1], explain: 'Ё стоит в начале слова → даёт 2 звука: [й\'] + [о]. В слове 4 буквы, но 5 звуков!' },
+  { word: 'яма', rule: 'начало слова', sounds: ['й\'','а','м','а'], special: [0,1], explain: 'Я стоит в начале слова → даёт 2 звука: [й\'] + [а]. 3 буквы, 4 звука!' },
+  { word: 'вьюга', rule: 'после разд. Ь', sounds: ['в\'','й\'','у','г','а'], special: [1,2], explain: 'Ю стоит после разделительного Ь → тоже 2 звука: [й\'] + [у]. 5 букв, 5 звуков!' },
+];
+const robotWords = [
+  { display: 'л_са', answer: 'и', options: ['е','и','ё','я'], explain: 'лиса → лИсы — в ударном слоге слышим И, значит пишем И. Пишем: ЛИСА' },
+  { display: 'гри_', answer: 'б', options: ['б','п','в','д'], explain: 'гриб → грИБы — после гласной слышим звонкий Б. Пишем: ГРИБ' },
+  { display: 'сем_я', answer: 'ь', options: ['ь','ъ','й','-'], explain: 'семья — разделительный Ь перед Я (не приставка!). Пишем: СЕМЬЯ' },
+  { display: 'м_ч', answer: 'я', options: ['а','я','е','ё'], explain: 'мяч — М мягкий, потому что за ним стоит Я. Пишем: МЯЧ' },
+];
+const dictationWords = ['семья','лес','ёлка','гриб','мяч'];
+const dictHints = ['5 звуков 🎭','3 звука 🌲','5 зв., Ё=2 звука 🌟','4 звука 🍄','3 звука ⚽'];
+const tfStatements = [
+  { text: 'В слове «мяч» 4 звука', answer: false, explain: '🔴 Неправда! В слове «мяч» 3 звука: [м\'][а][ч\']' },
+  { text: 'В слове «семья» 5 букв', answer: true, explain: '🟢 Правда! С-Е-М-Ь-Я = 5 букв. А звуков тоже 5: [с\'][э][м\'][й\'][а]' },
+  { text: 'В слове «ёлка» 4 буквы, но 5 звуков', answer: true, explain: '🟢 Правда! Ё даёт 2 звука [й\'][о], поэтому звуков на 1 больше' },
+  { text: 'Буква Ь всегда обозначает звук', answer: false, explain: '🔴 Неправда! Ь — буква есть, но звука у неё НЕТ. Она только смягчает' },
+];
+
+let score = 0, progress = 0;
+function addScore(pts) {
+  score += pts;
+  document.getElementById('scoreDisplay').textContent = score + ' очков';
+  progress = Math.min(100, progress + Math.round(pts * 1.5));
+  document.getElementById('progressBar').style.width = progress + '%';
+  document.getElementById('progressStars').textContent = progress >= 80 ? '⭐⭐⭐' : progress >= 50 ? '⭐⭐' : '⭐';
+}
+function toggleOath(el) {
+  el.classList.toggle('checked');
+  if (document.querySelectorAll('.oath-item.checked').length === 3) addScore(5);
+}
+
+// Game 1
+const wordGrid = document.getElementById('wordGrid');
+words.forEach((w,i) => {
+  const card = document.createElement('div');
+  card.className = 'word-card';
+  card.innerHTML = `<div class="w-word">${w.word}</div><div class="word-stats"><span class="stat-chip chip-letters">📝 ${w.letters} букв</span><span class="stat-chip chip-sounds">🔊 ${w.sounds} зв.</span>${w.soft?'<span class="stat-chip chip-soft">мягк. ✓</span>':''}</div><div class="word-detail">${w.detail}</div>`;
+  card.onclick = () => {
+    const was = card.classList.contains('active');
+    document.querySelectorAll('.word-card').forEach(c=>c.classList.remove('active'));
+    if (!was) { card.classList.add('active'); if (!card.classList.contains('done')) { card.classList.add('done'); addScore(3); } }
+  };
+  wordGrid.appendChild(card);
+});
+
+// Game 2
+const actorGrid = document.getElementById('actorGrid');
+actorWords.forEach(a => {
+  const card = document.createElement('div');
+  card.className = 'actor-card';
+  const bHTML = a.sounds.map((s,i) => `<span class="sound-bubble ${a.special.includes(i)?'special':''}">[${s}]</span>`).join('<span style="color:var(--text-dim);font-weight:800;font-size:0.8rem">+</span>');
+  card.innerHTML = `<div class="actor-word">${a.word}</div><div style="font-size:0.7rem;color:var(--text-dim);margin-bottom:8px">📌 ${a.rule}</div><div class="sound-breakdown">${bHTML}</div><div class="actor-explain">${a.explain}</div>`;
+  actorGrid.appendChild(card);
+});
+
+// Game 3
+const robotContainer = document.getElementById('robotGame');
+robotWords.forEach((item,idx) => {
+  const row = document.createElement('div');
+  row.className = 'robot-row'; row.id = 'robot-'+idx;
+  const parts = item.display.split('_');
+  const wHTML = parts[0]+`<span class="missing">_</span>`+(parts[1]||'');
+  const bHTML = item.options.map(opt=>`<button class="letter-btn" onclick="checkRobot(${idx},'${opt}',this)">${opt.toUpperCase()}</button>`).join('');
+  row.innerHTML = `<div class="robot-word">${wHTML}</div><div class="letter-options">${bHTML}</div><div class="result-icon" id="robot-icon-${idx}"></div><div style="display:none;font-size:0.8rem;color:var(--text-dim);margin-top:6px;width:100%" id="robot-exp-${idx}">${item.explain}</div>`;
+  robotContainer.appendChild(row);
+});
+function checkRobot(idx,choice,btn) {
+  const item = robotWords[idx]; const row = document.getElementById('robot-'+idx);
+  if (row.classList.contains('correct')||row.classList.contains('incorrect')) return;
+  const allBtns = row.querySelectorAll('.letter-btn');
+  allBtns.forEach(b=>b.classList.add('disabled'));
+  const icon = document.getElementById('robot-icon-'+idx);
+  document.getElementById('robot-exp-'+idx).style.display = 'block';
+  row.style.flexWrap = 'wrap';
+  if (choice===item.answer) { btn.classList.add('selected-correct'); row.classList.add('correct'); icon.textContent='✅'; addScore(5); }
+  else { btn.classList.add('selected-wrong'); row.classList.add('incorrect'); icon.textContent='❌'; allBtns.forEach(b=>{if(b.textContent.toLowerCase()===item.answer)b.classList.add('selected-correct');}); }
+}
+
+// Dictation
+const dictContainer = document.getElementById('dictWords');
+dictationWords.forEach((w,i) => {
+  const card = document.createElement('div'); card.className = 'dict-word-card';
+  card.innerHTML = `<div class="dict-word">${w}</div><div class="dict-hint">${dictHints[i]}</div>`;
+  card.onclick = () => { card.classList.toggle('revealed'); if (card.classList.contains('revealed')) addScore(2); };
+  dictContainer.appendChild(card);
+});
+function revealAll() { document.querySelectorAll('.dict-word-card').forEach(c=>c.classList.add('revealed')); addScore(5); }
+
+// True/False
+const tfContainer = document.getElementById('tfList');
+tfStatements.forEach((s,i) => {
+  const row = document.createElement('div'); row.className='tf-row'; row.id='tf-'+i;
+  row.innerHTML = `<div style="flex:1"><div class="tf-statement">«${s.text}»</div><div class="tf-explanation" id="tf-exp-${i}">${s.explain}</div></div><div class="tf-buttons"><button class="tf-btn true-btn" onclick="checkTF(${i},true,this)">✓ Правда</button><button class="tf-btn false-btn" onclick="checkTF(${i},false,this)">✗ Неправда</button></div>`;
+  tfContainer.appendChild(row);
+});
+function checkTF(idx,choice,btn) {
+  const row = document.getElementById('tf-'+idx);
+  if (row.classList.contains('answered')) return;
+  row.classList.add('answered');
+  const correct = tfStatements[idx].answer;
+  row.querySelectorAll('.tf-btn').forEach(b=>b.classList.add('disabled'));
+  if (choice===correct) { btn.classList.remove('disabled'); btn.classList.add('correct'); addScore(5); }
+  else { btn.classList.remove('disabled'); btn.classList.add('wrong'); row.querySelectorAll('.tf-btn').forEach(b=>{if((correct&&b.classList.contains('true-btn'))||(!correct&&b.classList.contains('false-btn'))){b.classList.remove('disabled');b.classList.add('correct');}}); }
+}
+
+// Tap support for mobile tooltips
+document.addEventListener('click', e => {
+  const gl = e.target.closest('.gl');
+  if (gl) {
+    document.querySelectorAll('.gl.gl-open').forEach(el=>{ if(el!==gl) el.classList.remove('gl-open'); });
+    gl.classList.toggle('gl-open');
+    e.stopPropagation();
+  } else {
+    document.querySelectorAll('.gl.gl-open').forEach(el=>el.classList.remove('gl-open'));
+  }
+});
+</script>
+</body>
+</html>
