@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Волшебная книга — Читаем! / Magic Book</title>
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;700;900&family=Russo+One&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --p1: #FF6B6B; --p1l: #fff0f0; --p1d: #c0392b;
+  --p2: #F7B731; --p2l: #fffbee; --p2d: #e6a100;
+  --p3: #26de81; --p3l: #f0fff7; --p3d: #0dab52;
+  --p4: #45aaf2; --p4l: #f0f8ff; --p4d: #1e7fbf;
+  --ink: #1a1a2e;
+  --radius: 20px;
+}
+
+body {
+  font-family: 'Golos Text', sans-serif;
+  background: #fefcf8;
+  color: var(--ink);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ─── COVER ─── */
+.cover {
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center;
+  padding: 40px 24px;
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 10%, #FFE8E8 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 85% 20%, #FFF3C4 0%, transparent 55%),
+    radial-gradient(ellipse 70% 60% at 10% 80%, #D4F5E9 0%, transparent 55%),
+    radial-gradient(ellipse 60% 50% at 80% 85%, #D6EEFF 0%, transparent 55%),
+    #fefcf8;
+  position: relative; overflow: hidden;
+}
+
+.shape {
+  position: absolute; border-radius: 50%; opacity: .18;
+  animation: drift var(--dur, 8s) ease-in-out infinite alternate;
+}
+.shape:nth-child(1){width:180px;height:180px;background:var(--p1);top:-40px;left:-40px;--dur:7s}
+.shape:nth-child(2){width:120px;height:120px;background:var(--p2);top:60px;right:40px;--dur:9s}
+.shape:nth-child(3){width:200px;height:200px;background:var(--p3);bottom:-60px;left:100px;--dur:11s}
+.shape:nth-child(4){width:150px;height:150px;background:var(--p4);bottom:40px;right:-30px;--dur:8s}
+@keyframes drift{from{transform:translateY(0) rotate(0deg)}to{transform:translateY(-24px) rotate(12deg)}}
+
+.cover-book {
+  font-size: 7rem; line-height: 1;
+  margin-bottom: 24px;
+  animation: bookFloat 4s ease-in-out infinite;
+  position: relative; z-index: 1;
+  filter: drop-shadow(0 16px 32px rgba(255,107,107,.3));
+}
+@keyframes bookFloat{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-18px) rotate(4deg)}}
+
+.cover-title {
+  font-family: 'Russo One', sans-serif;
+  font-size: clamp(2.8rem, 8vw, 5rem);
+  line-height: 1.0;
+  position: relative; z-index: 1;
+  margin-bottom: 6px;
+  background: linear-gradient(135deg, var(--p1) 0%, var(--p2) 40%, var(--p3) 70%, var(--p4) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.cover-en {
+  font-size: 1rem; color: #aaa; font-weight: 500;
+  margin-bottom: 10px; position: relative; z-index: 1;
+  font-style: italic;
+}
+
+.cover-sub {
+  font-size: 1.05rem; color: #6b7280; font-weight: 500;
+  margin-bottom: 8px; position: relative; z-index: 1;
+  max-width: 360px; line-height: 1.65;
+}
+.cover-sub-en {
+  font-size: .88rem; color: #aaa; font-style: italic;
+  margin-bottom: 40px; position: relative; z-index: 1;
+  max-width: 360px; line-height: 1.65;
+}
+
+.thumb-row {
+  display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;
+  margin-bottom: 44px; position: relative; z-index: 1;
+}
+.thumb {
+  width: 68px; height: 68px; border-radius: 16px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  font-size: 2rem; cursor: pointer;
+  transition: transform .2s, box-shadow .2s;
+  box-shadow: 0 4px 16px rgba(0,0,0,.08);
+  border: 3px solid transparent;
+}
+.thumb:nth-child(1){background:var(--p1l);border-color:var(--p1)}
+.thumb:nth-child(2){background:var(--p2l);border-color:var(--p2)}
+.thumb:nth-child(3){background:var(--p3l);border-color:var(--p3)}
+.thumb:nth-child(4){background:var(--p4l);border-color:var(--p4)}
+.thumb:hover{transform:scale(1.12) rotate(-3deg);box-shadow:0 8px 28px rgba(0,0,0,.13)}
+.thumb span{font-size:.55rem;font-weight:700;margin-top:2px;color:#666;letter-spacing:.04em}
+
+.cover-btn {
+  position: relative; z-index: 1;
+  padding: 18px 56px;
+  background: var(--ink); color: white;
+  border: none; border-radius: 50px;
+  font-family: 'Russo One', sans-serif;
+  font-size: 1.1rem; cursor: pointer;
+  box-shadow: 0 8px 28px rgba(26,26,46,.25);
+  transition: transform .2s, box-shadow .2s;
+  letter-spacing: .03em;
+}
+.cover-btn:hover{transform:translateY(-4px) scale(1.03);box-shadow:0 14px 40px rgba(26,26,46,.3)}
+
+/* ─── BOOK SHELL ─── */
+.book-shell { display: none; }
+.book-shell.on { display: block; }
+
+/* ─── PAGE ─── */
+.page {
+  display: none; min-height: 100vh;
+  position: relative; overflow: hidden;
+  padding-bottom: 100px;
+}
+.page.on { display: block; animation: pgIn .5s cubic-bezier(.4,0,.2,1) both; }
+@keyframes pgIn{from{opacity:0;transform:translateY(32px)}to{opacity:1;transform:translateY(0)}}
+
+.pg1 { background: linear-gradient(160deg, var(--p1l) 0%, #fff5f5 50%, #fefcf8 100%); }
+.pg2 { background: linear-gradient(160deg, var(--p2l) 0%, #fff9ed 50%, #fefcf8 100%); }
+.pg3 { background: linear-gradient(160deg, var(--p3l) 0%, #f5fff9 50%, #fefcf8 100%); }
+.pg4 { background: linear-gradient(160deg, var(--p4l) 0%, #f0f7ff 50%, #fefcf8 100%); }
+
+.corner {
+  position: absolute; width: 140px; height: 140px; top: -20px; right: -20px;
+  border-radius: 0 0 0 100%;
+  opacity: .12;
+}
+.pg1 .corner{background:var(--p1)}
+.pg2 .corner{background:var(--p2)}
+.pg3 .corner{background:var(--p3)}
+.pg4 .corner{background:var(--p4)}
+
+.page-inner {
+  max-width: 680px; margin: 0 auto;
+  padding: 36px 24px 20px;
+}
+
+.level-row {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 24px; flex-wrap: wrap;
+}
+.chip {
+  font-size: .72rem; font-weight: 700; letter-spacing: .06em;
+  text-transform: uppercase; padding: 5px 14px; border-radius: 50px;
+  display: inline-flex; align-items: center; gap: 5px;
+}
+.pg1 .chip{background:var(--p1);color:white}
+.pg2 .chip{background:var(--p2);color:#7a5300}
+.pg3 .chip{background:var(--p3);color:#07532a}
+.pg4 .chip{background:var(--p4);color:white}
+.chip-ghost{background:rgba(0,0,0,.06);color:#666}
+.pg-counter{margin-left:auto;font-size:.78rem;font-weight:700;color:#9ca3af}
+
+/* ─── HERO CARD ─── */
+.hero-card {
+  border-radius: 24px; padding: 28px;
+  margin-bottom: 24px;
+  display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
+  position: relative; overflow: hidden;
+}
+.pg1 .hero-card{background:white;border:2.5px solid var(--p1);box-shadow:0 8px 32px rgba(255,107,107,.15)}
+.pg2 .hero-card{background:white;border:2.5px solid var(--p2);box-shadow:0 8px 32px rgba(247,183,49,.15)}
+.pg3 .hero-card{background:white;border:2.5px solid var(--p3);box-shadow:0 8px 32px rgba(38,222,129,.15)}
+.pg4 .hero-card{background:white;border:2.5px solid var(--p4);box-shadow:0 8px 32px rgba(69,170,242,.15)}
+
+.hero-emoji {
+  font-size: 4.5rem; flex-shrink: 0;
+  animation: heroWiggle 3s ease-in-out infinite;
+}
+@keyframes heroWiggle{0%,100%{transform:rotate(-6deg)}50%{transform:rotate(6deg)}}
+
+.hero-info { flex: 1; min-width: 180px; }
+.story-title {
+  font-family: 'Russo One', sans-serif;
+  font-size: clamp(1.2rem, 3.5vw, 1.7rem);
+  line-height: 1.2; margin-bottom: 4px;
+}
+.pg1 .story-title{color:var(--p1d)}
+.pg2 .story-title{color:var(--p2d)}
+.pg3 .story-title{color:var(--p3d)}
+.pg4 .story-title{color:var(--p4d)}
+
+.story-title-en {
+  font-size: .85rem; color: #aaa; font-style: italic;
+  margin-bottom: 8px; font-weight: 500;
+}
+
+.story-author { font-size: .88rem; color: #9ca3af; font-weight: 500; margin-bottom: 10px; }
+
+.tags { display: flex; gap: 6px; flex-wrap: wrap; }
+.tag {
+  font-size: .7rem; font-weight: 700; padding: 4px 10px; border-radius: 20px;
+  background: rgba(0,0,0,.05); color: #555;
+}
+
+/* ─── TEXT BOX ─── */
+.text-box {
+  background: white; border-radius: 20px;
+  padding: 32px 36px; margin-bottom: 24px;
+  position: relative;
+  box-shadow: 0 4px 24px rgba(0,0,0,.06);
+  line-height: 2.1; font-size: 1.08rem;
+  font-weight: 500; color: #1a1a2e;
+}
+.pg1 .text-box::before{content:'';position:absolute;left:0;top:0;bottom:0;width:5px;border-radius:20px 0 0 20px;background:var(--p1)}
+.pg2 .text-box::before{content:'';position:absolute;left:0;top:0;bottom:0;width:5px;border-radius:20px 0 0 20px;background:var(--p2)}
+.pg3 .text-box::before{content:'';position:absolute;left:0;top:0;bottom:0;width:5px;border-radius:20px 0 0 20px;background:var(--p3)}
+.pg4 .text-box::before{content:'';position:absolute;left:0;top:0;bottom:0;width:5px;border-radius:20px 0 0 20px;background:var(--p4)}
+
+.pline { display: block; }
+.pline.indent { padding-left: 20px; }
+
+.dline { display: block; margin: 4px 0; }
+.who {
+  display: inline-block;
+  font-size: .68rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase;
+  padding: 2px 9px; border-radius: 20px; margin: 0 7px 0 2px;
+  vertical-align: middle; white-space: nowrap; font-family: 'Russo One', sans-serif;
+}
+.w-puppy   { background:#FFF3C4; color:#b77d00 }
+.w-mouse   { background:#FCE4EC; color:#c2185b }
+.w-rooster { background:#E8F5E9; color:#2e7d32 }
+.w-hare    { background:#FFF3C4; color:#b77d00 }
+.w-raven   { background:#EDE7F6; color:#512da8 }
+.w-bear    { background:#FBE9E7; color:#bf360c }
+.w-vovka   { background:#E3F2FD; color:#1565c0 }
+.w-vadik   { background:#FCE4EC; color:#880e4f }
+.w-think   { background:#F5F5F5; color:#555; font-style:italic }
+
+.dash-icon { color: #ddd; margin-right: 4px; }
+
+.hl { font-weight: 900; }
+.pg1 .hl { color: var(--p1d) }
+.pg2 .hl { color: var(--p2d) }
+.pg3 .hl { color: var(--p3d) }
+.pg4 .hl { color: var(--p4d) }
+
+/* ─── QUESTIONS ─── */
+.q-block {
+  background: white; border-radius: 20px;
+  padding: 28px 32px; margin-bottom: 24px;
+  box-shadow: 0 4px 24px rgba(0,0,0,.06);
+}
+.q-label {
+  font-family: 'Russo One', sans-serif;
+  font-size: .8rem; letter-spacing: .1em; text-transform: uppercase;
+  margin-bottom: 18px; display: flex; align-items: center; gap: 8px;
+}
+.q-label-en {
+  font-size: .75rem; color: #aaa; font-style: italic;
+  font-family: 'Golos Text', sans-serif; font-weight: 400;
+  letter-spacing: 0; text-transform: none; margin-left: 4px;
+}
+.pg1 .q-label{color:var(--p1d)}
+.pg2 .q-label{color:var(--p2d)}
+.pg3 .q-label{color:var(--p3d)}
+.pg4 .q-label{color:var(--p4d)}
+
+.q-item {
+  display: flex; gap: 14px; align-items: flex-start;
+  padding: 14px 0;
+  border-bottom: 1.5px solid #f3f4f6;
+}
+.q-item:last-child { border-bottom: none; padding-bottom: 0; }
+
+.q-num {
+  width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Russo One', sans-serif; font-size: .9rem; color: white;
+}
+.pg1 .q-num{background:var(--p1);box-shadow:0 3px 10px rgba(255,107,107,.35)}
+.pg2 .q-num{background:var(--p2);color:#7a5300;box-shadow:0 3px 10px rgba(247,183,49,.35)}
+.pg3 .q-num{background:var(--p3);color:#07532a;box-shadow:0 3px 10px rgba(38,222,129,.35)}
+.pg4 .q-num{background:var(--p4);box-shadow:0 3px 10px rgba(69,170,242,.35)}
+
+.q-text {
+  font-size: .98rem; line-height: 1.55; padding-top: 4px; font-weight: 500;
+}
+.q-en {
+  font-size: .82rem; color: #aaa; font-style: italic;
+  margin-top: 3px; display: block; font-weight: 400;
+}
+
+/* ─── NAV BAR ─── */
+.nav {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 50;
+  background: rgba(254,252,248,.92); backdrop-filter: blur(16px);
+  border-top: 1.5px solid rgba(0,0,0,.07);
+  padding: 14px 24px;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+}
+.nav-left, .nav-right { display: flex; align-items: center; gap: 10px; }
+
+.nbtn {
+  padding: 11px 24px; border-radius: 50px; border: 2px solid;
+  font-family: 'Russo One', sans-serif; font-size: .82rem;
+  cursor: pointer; transition: all .18s; letter-spacing: .04em;
+  white-space: nowrap;
+}
+.nbtn-back {
+  background: white; border-color: #e5e7eb; color: #6b7280;
+}
+.nbtn-back:hover:not(:disabled) { border-color: #d1d5db; color: var(--ink); transform: scale(1.03); }
+.nbtn-back:disabled { opacity: .3; cursor: default; }
+
+.nbtn-next {
+  color: white; border-color: transparent;
+}
+.pg1 .nbtn-next{background:var(--p1);box-shadow:0 4px 16px rgba(255,107,107,.35)}
+.pg2 .nbtn-next{background:var(--p2);color:#7a5300;box-shadow:0 4px 16px rgba(247,183,49,.35)}
+.pg3 .nbtn-next{background:var(--p3);color:#07532a;box-shadow:0 4px 16px rgba(38,222,129,.35)}
+.pg4 .nbtn-next{background:var(--p4);box-shadow:0 4px 16px rgba(69,170,242,.35)}
+.nbtn-next:hover { transform: scale(1.05); }
+
+.nav-dots { display: flex; gap: 7px; align-items: center; }
+.ndot {
+  width: 9px; height: 9px; border-radius: 50%;
+  background: #e5e7eb; transition: all .25s; cursor: pointer;
+}
+.ndot.cur { width: 26px; border-radius: 5px; }
+.ndot.done { background: #6ee7b7; }
+.pg1 .ndot.cur { background: var(--p1) }
+.pg2 .ndot.cur { background: var(--p2) }
+.pg3 .ndot.cur { background: var(--p3) }
+.pg4 .ndot.cur { background: var(--p4) }
+
+/* ─── FINISH ─── */
+.finish {
+  display: none; min-height: 100vh;
+  flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; padding: 40px 24px;
+  background:
+    radial-gradient(ellipse 80% 60% at 30% 20%, #FFE8E8 0%, transparent 55%),
+    radial-gradient(ellipse 70% 50% at 75% 80%, #D4F5E9 0%, transparent 55%),
+    radial-gradient(ellipse 60% 50% at 80% 15%, #FFF3C4 0%, transparent 55%),
+    #fefcf8;
+}
+.finish.on { display: flex; animation: pgIn .5s ease both; }
+
+.finish-icon { font-size: 6rem; margin-bottom: 16px; animation: bookFloat 4s ease-in-out infinite; }
+.finish-title {
+  font-family: 'Russo One', sans-serif;
+  font-size: clamp(2rem, 6vw, 3.5rem);
+  margin-bottom: 6px;
+  background: linear-gradient(135deg, var(--p1), var(--p2), var(--p3), var(--p4));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.finish-title-en {
+  font-size: 1.1rem; color: #aaa; font-style: italic; margin-bottom: 20px;
+}
+.finish-sub { font-size: 1.05rem; color: #6b7280; margin-bottom: 8px; max-width: 360px; line-height: 1.7; }
+.finish-sub-en { font-size: .9rem; color: #bbb; font-style: italic; margin-bottom: 36px; max-width: 360px; line-height: 1.6; }
+.finish-badges { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-bottom: 40px; }
+.badge {
+  padding: 10px 20px; border-radius: 50px;
+  font-weight: 700; font-size: .9rem;
+}
+.badge:nth-child(1){background:var(--p1l);color:var(--p1d);border:2px solid var(--p1)}
+.badge:nth-child(2){background:var(--p2l);color:var(--p2d);border:2px solid var(--p2)}
+.badge:nth-child(3){background:var(--p3l);color:var(--p3d);border:2px solid var(--p3)}
+.badge:nth-child(4){background:var(--p4l);color:var(--p4d);border:2px solid var(--p4)}
+
+.finish-btn {
+  padding: 16px 48px; border-radius: 50px;
+  background: var(--ink); color: white; border: none;
+  font-family: 'Russo One', sans-serif; font-size: 1rem;
+  cursor: pointer; box-shadow: 0 8px 24px rgba(26,26,46,.2);
+  transition: transform .2s, box-shadow .2s;
+}
+.finish-btn:hover { transform: translateY(-3px); box-shadow: 0 14px 36px rgba(26,26,46,.25); }
+
+.pop {
+  position: fixed; pointer-events: none; z-index: 200;
+  font-size: 1.6rem; animation: pop .7s ease forwards;
+}
+@keyframes pop{from{opacity:1;transform:translateY(0) scale(1)}to{opacity:0;transform:translateY(-60px) scale(1.5)}}
+
+/* ══════════════════════════════════════
+   BILINGUAL WORD TOOLTIPS
+══════════════════════════════════════ */
+.w {
+  position: relative;
+  display: inline;
+  cursor: pointer;
+  padding-bottom: 1px;
+}
+/* dotted underline that matches the page color */
+.pg1 .w { border-bottom: 2px dotted var(--p1d); }
+.pg2 .w { border-bottom: 2px dotted var(--p2d); }
+.pg3 .w { border-bottom: 2px dotted var(--p3d); }
+.pg4 .w { border-bottom: 2px dotted var(--p4d); }
+.text-box .w { border-bottom: 2px dotted #888; }
+
+.w .tip {
+  position: absolute;
+  bottom: calc(100% + 9px);
+  left: 50%; transform: translateX(-50%);
+  background: #1a1a2e;
+  color: #fff;
+  font-size: .72rem;
+  font-weight: 700;
+  font-family: 'Golos Text', sans-serif;
+  padding: 5px 12px;
+  border-radius: 20px;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .18s;
+  z-index: 100;
+  box-shadow: 0 4px 14px rgba(0,0,0,.25);
+  font-style: normal;
+}
+.w .tip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%; transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-top-color: #1a1a2e;
+}
+.w:hover .tip,
+.w.active-tip .tip { opacity: 1; }
+
+/* vocab hint bar */
+.vocab-bar {
+  background: rgba(255,255,255,.7);
+  backdrop-filter: blur(10px);
+  border: 1.5px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 10px 16px;
+  margin-bottom: 18px;
+  font-size: .8rem; color: #555;
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+}
+.vocab-bar-icon { font-size: 1rem; flex-shrink: 0; }
+.vocab-bar strong { color: var(--ink); }
+
+@media(max-width:500px){
+  .text-box{padding:22px 18px;font-size:.98rem}
+  .hero-card{padding:20px}
+  .q-block{padding:20px 18px}
+  .page-inner{padding:24px 16px 20px}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ COVER ═══ -->
+<div class="cover" id="cover">
+  <div class="shape"></div><div class="shape"></div>
+  <div class="shape"></div><div class="shape"></div>
+
+  <div class="cover-book">📚</div>
+  <h1 class="cover-title">Читаем!</h1>
+  <div class="cover-en">Let's read!</div>
+  <p class="cover-sub">Четыре истории — от простой к интересной.<br>Читай вслух и отвечай на вопросы!</p>
+  <p class="cover-sub-en">Four stories — from easy to fun.<br>Read aloud and answer the questions!</p>
+
+  <div class="thumb-row">
+    <div class="thumb" onclick="launch(0)">🧼<span>Остер</span></div>
+    <div class="thumb" onclick="launch(1)">🐶<span>Сутеев</span></div>
+    <div class="thumb" onclick="launch(2)">🍎<span>Сутеев</span></div>
+    <div class="thumb" onclick="launch(3)">🎩<span>Носов</span></div>
+  </div>
+
+  <button class="cover-btn" onclick="launch(0)">Начать читать ✨ &nbsp;·&nbsp; Start reading!</button>
+</div>
+
+<!-- ═══ BOOK SHELL ═══ -->
+<div class="book-shell" id="shell">
+
+  <!-- ═══ PAGE 1: Остер — Вредный совет ═══ -->
+  <div class="page pg1" id="p0">
+    <div class="corner"></div>
+    <div class="page-inner">
+
+      <div class="level-row">
+        <div class="chip">⭐ Лёгкий · Easy</div>
+        <div class="chip chip-ghost">📜 Стихотворение · Poem</div>
+        <div class="pg-counter" id="pc0">1 / 4</div>
+      </div>
+
+      <div class="hero-card">
+        <div class="hero-emoji">🧼</div>
+        <div class="hero-info">
+          <div class="story-title">«Вредный совет»</div>
+          <div class="story-title-en">"Bad Advice"</div>
+          <div class="story-author">Григорий Остер · Grigory Oster</div>
+          <div class="tags">
+            <div class="tag">😄 Смешное · Funny</div>
+            <div class="tag">🙈 Немного вредное · Naughty!</div>
+            <div class="tag">🎵 Читай с ритмом · Read with rhythm</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="vocab-bar">
+        <span class="vocab-bar-icon">💡</span>
+        <span>Нажми на <strong>подчёркнутое слово</strong> — увидишь перевод!</span>
+        <span style="color:#aaa">·</span>
+        <span style="font-style:italic;color:#888">Tap an <strong>underlined word</strong> to see the English!</span>
+      </div>
+
+      <div class="text-box">
+        <span class="pline">
+          <w class="w">Никогда<span class="tip">Never</span></w>
+          не
+          <w class="w">мойте<span class="tip">wash (don't wash!)</span></w>
+          <w class="w">руки<span class="tip">hands</span></w>,
+        </span>
+        <span class="pline">
+          <w class="w">Шею<span class="tip">neck</span></w>,
+          <w class="w">уши<span class="tip">ears</span></w>
+          и
+          <w class="w">лицо<span class="tip">face</span></w>.
+        </span>
+        <span class="pline">
+          Это <span class="hl"><w class="w">глупое<span class="tip">silly / stupid</span></w></span>
+          <w class="w">занятье<span class="tip">activity, thing to do</span></w>
+        </span>
+        <span class="pline">
+          Не <w class="w">приводит<span class="tip">leads to</span></w>
+          ни к чему.
+        </span>
+        <br>
+        <span class="pline">
+          <w class="w">Вновь<span class="tip">again</span></w>
+          <w class="w">испачкаются<span class="tip">will get dirty again</span></w>
+          руки,
+        </span>
+        <span class="pline">Шея, уши и лицо,</span>
+        <span class="pline">
+          Так
+          <w class="w">зачем же<span class="tip">so why then?</span></w>
+          <w class="w">тратить силы<span class="tip">waste your energy / effort</span></w>,
+        </span>
+        <span class="pline">
+          <span class="hl">
+            <w class="w">Время<span class="tip">time</span></w>
+            <w class="w">попусту<span class="tip">for nothing / pointlessly</span></w>
+            <w class="w">терять<span class="tip">to lose / waste</span></w>?
+          </span>
+        </span>
+      </div>
+
+      <div class="q-block">
+        <div class="q-label">💬 Поговорим о тексте <span class="q-label-en">/ Let's talk about the text</span></div>
+
+        <div class="q-item">
+          <div class="q-num">1</div>
+          <div class="q-text">
+            О чём этот стишок? Что советует автор?
+            <span class="q-en">What is this poem about? What does the author advise?</span>
+          </div>
+        </div>
+        <div class="q-item">
+          <div class="q-num">2</div>
+          <div class="q-text">
+            Ты согласна с этим советом? Почему?
+            <span class="q-en">Do you agree with this advice? Why?</span>
+          </div>
+        </div>
+        <div class="q-item">
+          <div class="q-num">3</div>
+          <div class="q-text">
+            Это серьёзный совет или шуточный? Как ты поняла? 😄
+            <span class="q-en">Is this serious advice or a joke? How do you know?</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav pg1">
+      <div class="nav-left">
+        <button class="nbtn nbtn-back" onclick="go(-1)" disabled>← Назад</button>
+      </div>
+      <div class="nav-dots" id="dots0"></div>
+      <div class="nav-right">
+        <button class="nbtn nbtn-next" onclick="go(1)">Дальше → / Next</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ PAGE 2: Сутеев — Кто сказал мяу ═══ -->
+  <div class="page pg2" id="p1">
+    <div class="corner"></div>
+    <div class="page-inner">
+
+      <div class="level-row">
+        <div class="chip">⭐⭐ Средний · Medium</div>
+        <div class="chip chip-ghost">📖 Сказка · Fairytale</div>
+        <div class="pg-counter" id="pc1">2 / 4</div>
+      </div>
+
+      <div class="hero-card">
+        <div class="hero-emoji">🐶</div>
+        <div class="hero-info">
+          <div class="story-title">«Кто сказал мяу?»</div>
+          <div class="story-title-en">"Who said meow?"</div>
+          <div class="story-author">Виктор Сутеев · Viktor Suteev</div>
+          <div class="tags">
+            <div class="tag">🔍 Загадка · A mystery</div>
+            <div class="tag">🗣️ Диалоги · Dialogues</div>
+            <div class="tag">😺 Кто же это? · Who is it?</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="vocab-bar">
+        <span class="vocab-bar-icon">💡</span>
+        <span>Нажми на <strong>подчёркнутое слово</strong> — увидишь перевод!</span>
+        <span style="color:#aaa">·</span>
+        <span style="font-style:italic;color:#888">Tap an <strong>underlined word</strong> to see the English!</span>
+      </div>
+
+      <div class="text-box">
+        <w class="w">Щенок<span class="tip">puppy</span></w>
+        <w class="w">спал<span class="tip">was sleeping</span></w>
+        на
+        <w class="w">коврике<span class="tip">small rug / mat</span></w>
+        около
+        <w class="w">дивана<span class="tip">sofa / couch</span></w>.<br><br>
+
+        <w class="w">Вдруг<span class="tip">suddenly</span></w>
+        <w class="w">сквозь сон<span class="tip">through his sleep / half-asleep</span></w>
+        он услышал, как кто-то сказал:<br>
+
+        <span class="dline" style="margin-top:8px">
+          <span class="dash-icon">—</span>
+          <span class="who w-think">??? голос · voice</span>
+          <strong style="font-size:1.15em">Мяу!</strong>
+          <em style="font-size:.85rem;color:#aaa">&nbsp;(meow!)</em>
+        </span>
+        <br>
+
+        Щенок <w class="w">поднял голову<span class="tip">raised his head</span></w>,
+        посмотрел — <span class="hl"><w class="w">никого не было<span class="tip">there was nobody there</span></w></span>.<br>
+
+        <em style="color:#9ca3af">«<w class="w">Кто<span class="tip">who</span></w> это сказал мяу?» —
+        <w class="w">подумал<span class="tip">thought (said to himself)</span></w> он.</em><br><br>
+
+        Щенок
+        <w class="w">заглянул<span class="tip">peeked / looked inside</span></w>
+        под диван. Там
+        <w class="w">сидел<span class="tip">was sitting</span></w>
+        маленький
+        <w class="w">мышонок<span class="tip">little mouse</span></w>.<br>
+
+        <span class="dline">
+          <span class="dash-icon">—</span><span class="who w-puppy">🐶 щенок · puppy</span>Ты сказал мяу?
+        </span>
+        <span class="dline" style="font-style:italic;font-size:.85rem;color:#aaa;margin-left:14px;margin-bottom:4px">
+          Did you say meow?
+        </span>
+        <span class="dline">
+          <span class="dash-icon">—</span><span class="who w-mouse">🐭 мышонок · mouse</span>Нет, не я! Я говорю «пи-пи-пи»!
+        </span>
+        <span class="dline" style="font-style:italic;font-size:.85rem;color:#aaa;margin-left:14px;margin-bottom:6px">
+          No, not me! I say "squeak-squeak-squeak"!
+        </span>
+        <br>
+
+        Щенок
+        <w class="w">побежал<span class="tip">ran</span></w>
+        в
+        <w class="w">сад<span class="tip">garden / yard</span></w>.
+        В саду он увидел
+        <w class="w">петуха<span class="tip">rooster / cockerel</span></w>.<br>
+
+        <span class="dline">
+          <span class="dash-icon">—</span><span class="who w-puppy">🐶 щенок</span>Ты сказал мяу?
+        </span>
+        <span class="dline">
+          <span class="dash-icon">—</span><span class="who w-rooster">🐓 петух · rooster</span>Нет, не я! Я говорю «ку-ка-ре-ку»!
+        </span>
+        <span class="dline" style="font-style:italic;font-size:.85rem;color:#aaa;margin-left:14px">
+          No, not me! I say "cock-a-doodle-doo"!
+        </span>
+      </div>
+
+      <div class="q-block">
+        <div class="q-label">💬 Поговорим о тексте <span class="q-label-en">/ Let's talk</span></div>
+        <div class="q-item">
+          <div class="q-num">1</div>
+          <div class="q-text">
+            Кого искал щенок? Почему?
+            <span class="q-en">Who was the puppy looking for? Why?</span>
+          </div>
+        </div>
+        <div class="q-item">
+          <div class="q-num">2</div>
+          <div class="q-text">
+            Что сказал мышонок? А петух?
+            <span class="q-en">What did the little mouse say? And the rooster?</span>
+          </div>
+        </div>
+        <div class="q-item">
+          <div class="q-num">3</div>
+          <div class="q-text">
+            Как ты думаешь — кто же всё-таки сказал «мяу»? 🤔
+            <span class="q-en">Who do you think said "meow"?</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav pg2">
+      <div class="nav-left">
+        <button class="nbtn nbtn-back" onclick="go(-1)">← Назад</button>
+      </div>
+      <div class="nav-dots" id="dots1"></div>
+      <div class="nav-right">
+        <button class="nbtn nbtn-next" onclick="go(1)">Дальше → / Next</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ PAGE 3: Сутеев — Яблоко ═══ -->
+  <div class="page pg3" id="p2">
+    <div class="corner"></div>
+    <div class="page-inner">
+
+      <div class="level-row">
+        <div class="chip">⭐⭐⭐ Средний+ · Medium+</div>
+        <div class="chip chip-ghost">🍎 Сказка · Fairytale</div>
+        <div class="pg-counter" id="pc2">3 / 4</div>
+      </div>
+
+      <div class="hero-card">
+        <div class="hero-emoji">🍎</div>
+        <div class="hero-info">
+          <div class="story-title">«Яблоко»</div>
+          <div class="story-title-en">"The Apple"</div>
+          <div class="story-author">Виктор Сутеев · Viktor Suteev</div>
+          <div class="tags">
+            <div class="tag">⚖️ Справедливость · Fairness</div>
+            <div class="tag">🐰 Заяц и Ворон · Hare &amp; Raven</div>
+            <div class="tag">🐻 Кто рассудит? · Who will decide?</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="vocab-bar">
+        <span class="vocab-bar-icon">💡</span>
+        <span>Нажми на <strong>подчёркнутое слово</strong> — увидишь перевод!</span>
+        <span style="color:#aaa">·</span>
+        <span style="font-style:italic;color:#888">Tap underlined words for English!</span>
+      </div>
+
+      <div class="text-box">
+        <w class="w">Стояла осень<span class="tip">It was autumn</span></w>.
+        На
+        <w class="w">лесной полянке<span class="tip">forest clearing / glade</span></w>
+        <w class="w">росла<span class="tip">grew (was growing)</span></w>
+        <w class="w">яблоня<span class="tip">apple tree</span></w>.
+        На ней
+        <w class="w">висело<span class="tip">was hanging</span></w>
+        <span class="hl"><w class="w">одно-единственное<span class="tip">one and only / just one single</span></w></span>
+        <w class="w">яблоко<span class="tip">apple</span></w>.<br><br>
+
+        Под яблоней
+        <w class="w">сидел<span class="tip">was sitting</span></w>
+        <w class="w">Заяц<span class="tip">Hare (like a rabbit)</span></w>
+        и смотрел на яблоко.<br>
+
+        <span class="dline">
+          <span class="dash-icon">—</span><span class="who w-hare">🐰 заяц · hare</span>
+          Какое красивое яблоко!
+          <w class="w">Я бы с удовольствием его съел<span class="tip">I would gladly eat it!</span></w>.
+        </span>
+        <br>
+
+        Тут
+        <w class="w">прилетел<span class="tip">flew in / arrived (flying)</span></w>
+        <w class="w">Ворон<span class="tip">Raven (big black bird)</span></w>
+        и
+        <w class="w">сел<span class="tip">landed / sat down</span></w>
+        на
+        <w class="w">ветку<span class="tip">branch</span></w>
+        рядом с яблоком.<br>
+
+        <span class="dline">
+          <span class="dash-icon">—</span><span class="who w-raven">🐦 ворон · raven</span>
+          Это <span class="hl">моё</span> яблоко!
+          <w class="w">Я его первый увидел<span class="tip">I saw it first!</span></w>!
+        </span>
+        <span class="dline">
+          <span class="dash-icon">—</span><span class="who w-hare">🐰 заяц</span>
+          Нет, <span class="hl">моё!</span>
+          <w class="w">Я под этой яблоней сижу уже целый час<span class="tip">I've been sitting under this tree for a whole hour!</span></w>!
+        </span>
+        <br>
+
+        Они
+        <w class="w">начали спорить<span class="tip">started arguing</span></w>.
+        На
+        <w class="w">шум<span class="tip">noise / commotion</span></w>
+        <w class="w">прибежал<span class="tip">came running</span></w>
+        <w class="w">Медведь<span class="tip">Bear</span></w>.<br>
+
+        <span class="dline">
+          <span class="dash-icon">—</span><span class="who w-bear">🐻 медведь · bear</span>
+          <w class="w">О чём вы спорите<span class="tip">What are you arguing about?</span></w>?
+        </span>
+        <span class="dline">
+          <span class="dash-icon">—</span><span class="who w-hare">🐰 заяц</span>
+          Вот яблоко — и мы не можем
+          <w class="w">решить<span class="tip">decide</span></w>,
+          <w class="w">чьё<span class="tip">whose</span></w>
+          оно.
+        </span>
+      </div>
+
+      <div class="q-block">
+        <div class="q-label">💬 Поговорим о тексте <span class="q-label-en">/ Let's talk</span></div>
+        <div class="q-item">
+          <div class="q-num">1</div>
+          <div class="q-text">
+            Что нашли звери? Кто на него претендовал?
+            <span class="q-en">What did the animals find? Who claimed it was theirs?</span>
+          </div>
+        </div>
+        <div class="q-item">
+          <div class="q-num">2</div>
+          <div class="q-text">
+            Почему они поспорили?
+            <span class="q-en">Why did they argue?</span>
+          </div>
+        </div>
+        <div class="q-item">
+          <div class="q-num">3</div>
+          <div class="q-text">
+            Как надо было поступить по-честному? ⚖️
+            <span class="q-en">What would have been the fair thing to do?</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav pg3">
+      <div class="nav-left">
+        <button class="nbtn nbtn-back" onclick="go(-1)">← Назад</button>
+      </div>
+      <div class="nav-dots" id="dots2"></div>
+      <div class="nav-right">
+        <button class="nbtn nbtn-next" onclick="go(1)">Дальше → / Next</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ PAGE 4: Носов — Живая шляпа ═══ -->
+  <div class="page pg4" id="p3">
+    <div class="corner"></div>
+    <div class="page-inner">
+
+      <div class="level-row">
+        <div class="chip">⭐⭐⭐⭐ Сложнее · Harder</div>
+        <div class="chip chip-ghost">🎩 Рассказ · Story</div>
+        <div class="pg-counter" id="pc3">4 / 4</div>
+      </div>
+
+      <div class="hero-card">
+        <div class="hero-emoji">🎩</div>
+        <div class="hero-info">
+          <div class="story-title">«Живая шляпа»</div>
+          <div class="story-title-en">"The Living Hat"</div>
+          <div class="story-author">Николай Носов · Nikolai Nosov</div>
+          <div class="tags">
+            <div class="tag">😱 Страшно-смешно · Scary-funny!</div>
+            <div class="tag">🐱 Котёнок Васька · Kitten Vaska</div>
+            <div class="tag">🏃 Мальчики убежали! · The boys ran away!</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="vocab-bar">
+        <span class="vocab-bar-icon">💡</span>
+        <span>Нажми на <strong>подчёркнутое слово</strong> — увидишь перевод!</span>
+        <span style="color:#aaa">·</span>
+        <span style="font-style:italic;color:#888">Tap underlined words for English!</span>
+      </div>
+
+      <div class="text-box">
+        <w class="w">Шляпа<span class="tip">hat (not a cap — like a top hat)</span></w>
+        <w class="w">лежала<span class="tip">was lying</span></w>
+        на
+        <w class="w">комоде<span class="tip">chest of drawers / dresser</span></w>,
+        <w class="w">котёнок<span class="tip">kitten</span></w>
+        Васька
+        <w class="w">сидел<span class="tip">was sitting</span></w>
+        на полу у комода,
+        а
+        <w class="w">Вовка<span class="tip">Vovka — a boy's name (short for Vladimir)</span></w>
+        и
+        <w class="w">Вадик<span class="tip">Vadik — another boy's name</span></w>
+        сидели за
+        <w class="w">столом<span class="tip">table</span></w>
+        и
+        <w class="w">раскрашивали картинки<span class="tip">were colouring pictures</span></w>.<br><br>
+
+        <w class="w">Вдруг<span class="tip">suddenly</span></w>
+        <w class="w">позади них<span class="tip">behind them</span></w>
+        что-то
+        <w class="w">упало<span class="tip">fell down</span></w>.
+        Они
+        <w class="w">обернулись<span class="tip">turned around</span></w>
+        и
+        <w class="w">увидели<span class="tip">saw</span></w>,
+        что
+        <span class="hl">
+          <w class="w">шляпа ползёт по полу<span class="tip">the hat is crawling across the floor!</span></w>.
+        </span><br><br>
+
+        <span class="dline">
+          <span class="dash-icon">—</span><span class="who w-vadik">😨 вадик</span>Вовка,
+          <w class="w">шляпа ползёт<span class="tip">the hat is crawling / moving!</span></w>!
+        </span>
+        <span class="dline">
+          <span class="dash-icon">—</span><span class="who w-vovka">😰 вовка</span>
+          <w class="w">Сам вижу<span class="tip">I can see that myself!</span></w>.
+        </span>
+        <br>
+
+        Они
+        <w class="w">уставились<span class="tip">stared / couldn't look away</span></w>
+        на шляпу.
+        Шляпа немного
+        <w class="w">проползла<span class="tip">crawled a little</span></w>,
+        потом
+        <w class="w">остановилась<span class="tip">stopped</span></w>,
+        потом
+        <w class="w">поползла снова<span class="tip">started crawling again</span></w>.<br><br>
+
+        <span class="dline">
+          <span class="dash-icon">—</span><span class="who w-vadik">😨 вадик</span>Вовка, она
+          <span class="hl"><w class="w">живая<span class="tip">alive! / living!</span></w></span>!
+        </span>
+        <span class="dline">
+          <span class="dash-icon">—</span><span class="who w-vovka">😱 вовка</span>Ай!!
+        </span>
+        <br>
+
+        Они
+        <w class="w">выбежали<span class="tip">ran out of</span></w>
+        из комнаты,
+        <w class="w">захлопнули<span class="tip">slammed (shut)</span></w>
+        <w class="w">дверь<span class="tip">door</span></w>
+        и
+        <w class="w">прижались к ней с другой стороны<span class="tip">pressed against it from the other side</span></w>.
+      </div>
+
+      <div class="q-block">
+        <div class="q-label">💬 Поговорим о тексте <span class="q-label-en">/ Let's talk</span></div>
+        <div class="q-item">
+          <div class="q-num">1</div>
+          <div class="q-text">
+            Что испугало мальчиков?
+            <span class="q-en">What scared the boys?</span>
+          </div>
+        </div>
+        <div class="q-item">
+          <div class="q-num">2</div>
+          <div class="q-text">
+            Шляпа правда живая? Что на самом деле случилось? 🤫
+            <span class="q-en">Is the hat really alive? What actually happened? (Hint: remember the kitten!)</span>
+          </div>
+        </div>
+        <div class="q-item">
+          <div class="q-num">3</div>
+          <div class="q-text">
+            Как бы ты поступила на месте мальчиков?
+            <span class="q-en">What would you have done if you were the boys?</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav pg4">
+      <div class="nav-left">
+        <button class="nbtn nbtn-back" onclick="go(-1)">← Назад</button>
+      </div>
+      <div class="nav-dots" id="dots3"></div>
+      <div class="nav-right">
+        <button class="nbtn nbtn-next" onclick="finish()" id="finishBtn">🎉 Финиш! / Finish!</button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /shell -->
+
+<!-- ═══ FINISH ═══ -->
+<div class="finish" id="fin">
+  <div class="finish-icon">🏆</div>
+  <div class="finish-title">Ты справилась!</div>
+  <div class="finish-title-en">You did it!</div>
+  <p class="finish-sub">Все четыре истории прочитаны!<br>Это было здорово — ты молодец!</p>
+  <p class="finish-sub-en">All four stories read!<br>That was amazing — well done!</p>
+  <div class="finish-badges">
+    <div class="badge">🧼 Остер</div>
+    <div class="badge">🐶 Сутеев</div>
+    <div class="badge">🍎 Яблоко</div>
+    <div class="badge">🎩 Носов</div>
+  </div>
+  <button class="finish-btn" onclick="restart()">Читать ещё раз 🔄 / Read again</button>
+</div>
+
+<script>
+let cur = 0;
+const N = 4;
+
+function buildDots(active) {
+  for (let pg = 0; pg < N; pg++) {
+    const container = document.getElementById('dots' + pg);
+    if (!container) continue;
+    container.innerHTML = '';
+    for (let i = 0; i < N; i++) {
+      const d = document.createElement('div');
+      d.className = 'ndot';
+      if (i === active) d.classList.add('cur');
+      else if (i < active) d.classList.add('done');
+      d.onclick = () => goTo(i);
+      container.appendChild(d);
+    }
+  }
+}
+
+function showPage(idx) {
+  for (let i = 0; i < N; i++) {
+    document.getElementById('p' + i).classList.toggle('on', i === idx);
+  }
+  buildDots(idx);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function launch(idx) {
+  cur = idx;
+  document.getElementById('cover').style.display = 'none';
+  document.getElementById('fin').classList.remove('on');
+  document.getElementById('shell').classList.add('on');
+  showPage(cur);
+}
+
+function go(dir) {
+  if (dir === -1 && cur === 0) {
+    document.getElementById('shell').classList.remove('on');
+    document.getElementById('cover').style.display = 'flex';
+    return;
+  }
+  cur = Math.max(0, Math.min(N - 1, cur + dir));
+  showPage(cur);
+  pop(dir > 0 ? '✨' : '👈');
+}
+
+function goTo(idx) {
+  cur = idx;
+  showPage(cur);
+}
+
+function finish() {
+  document.getElementById('shell').classList.remove('on');
+  document.getElementById('fin').classList.add('on');
+  confetti();
+  window.scrollTo({ top: 0 });
+}
+
+function restart() {
+  cur = 0;
+  document.getElementById('fin').classList.remove('on');
+  launch(0);
+}
+
+function pop(emoji) {
+  const el = document.createElement('div');
+  el.className = 'pop';
+  el.textContent = emoji;
+  el.style.left = (Math.random() * 60 + 20) + 'vw';
+  el.style.top = '50vh';
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 700);
+}
+
+function confetti() {
+  const emojis = ['🎉','⭐','🌟','✨','🏆','📚','🎊'];
+  for (let i = 0; i < 14; i++) {
+    setTimeout(() => {
+      const el = document.createElement('div');
+      el.className = 'pop';
+      el.textContent = emojis[i % emojis.length];
+      el.style.left = (Math.random() * 80 + 10) + 'vw';
+      el.style.top = (Math.random() * 60 + 20) + 'vh';
+      el.style.fontSize = (1.4 + Math.random()) + 'rem';
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 700);
+    }, i * 80);
+  }
+}
+
+// Touch support for tooltips
+document.addEventListener('click', e => {
+  const w = e.target.closest('.w');
+  if (w) {
+    // close all others
+    document.querySelectorAll('.w.active-tip').forEach(el => {
+      if (el !== w) el.classList.remove('active-tip');
+    });
+    w.classList.toggle('active-tip');
+    e.stopPropagation();
+  } else {
+    document.querySelectorAll('.w.active-tip').forEach(el => el.classList.remove('active-tip'));
+  }
+});
+
+buildDots(0);
+</script>
+</body>
+</html>
