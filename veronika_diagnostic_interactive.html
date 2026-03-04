@@ -1,0 +1,1682 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Русский язык · Вероника</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Unbounded:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fdf6ee;
+  --card: #ffffff;
+  --ink: #2d2235;
+  --muted: #8a7f8d;
+  --accent: #e85d75;
+  --accent2: #4a90d9;
+  --accent3: #f5a623;
+  --green: #3db87a;
+  --purple: #8b5cf6;
+  --border: #ede5db;
+  --shadow: 0 4px 24px rgba(45,34,53,0.08);
+  --shadow-lg: 0 12px 40px rgba(45,34,53,0.14);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  min-height: 100vh;
+}
+
+/* ── BACKGROUND DECORATION ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 600px 400px at 10% 20%, rgba(232,93,117,0.07) 0%, transparent 70%),
+    radial-gradient(ellipse 500px 400px at 90% 80%, rgba(74,144,217,0.07) 0%, transparent 70%),
+    radial-gradient(ellipse 400px 300px at 50% 50%, rgba(245,166,35,0.05) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── HEADER ── */
+header {
+  position: relative;
+  z-index: 10;
+  padding: 28px 40px 24px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.logo-blob {
+  width: 52px;
+  height: 52px;
+  background: linear-gradient(135deg, var(--accent), var(--purple));
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  flex-shrink: 0;
+  box-shadow: 0 4px 16px rgba(232,93,117,0.35);
+}
+
+.header-text h1 {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 18px;
+  font-weight: 900;
+  letter-spacing: -0.5px;
+  line-height: 1.1;
+}
+
+.header-text p {
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: 3px;
+}
+
+.progress-area {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.progress-bar-wrap {
+  width: 160px;
+}
+
+.progress-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  margin-bottom: 5px;
+}
+
+.progress-bar {
+  height: 8px;
+  background: var(--border);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--purple));
+  border-radius: 99px;
+  width: 0%;
+  transition: width 0.6s cubic-bezier(.4,0,.2,1);
+}
+
+.star-counter {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--accent3);
+}
+
+/* ── MAIN ── */
+main {
+  position: relative;
+  z-index: 1;
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 0 24px 80px;
+}
+
+/* ── INTRO ── */
+.intro-card {
+  background: linear-gradient(135deg, #2d2235 0%, #4a2060 100%);
+  color: white;
+  border-radius: 24px;
+  padding: 32px 36px;
+  margin-bottom: 32px;
+  position: relative;
+  overflow: hidden;
+}
+
+.intro-card::before {
+  content: '✦ ✦ ✦';
+  position: absolute;
+  right: 28px;
+  top: 20px;
+  font-size: 22px;
+  opacity: 0.2;
+  letter-spacing: 8px;
+}
+
+.intro-card h2 {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 20px;
+  font-weight: 900;
+  margin-bottom: 10px;
+}
+
+.intro-card p {
+  font-size: 15px;
+  opacity: 0.85;
+  line-height: 1.7;
+  max-width: 520px;
+}
+
+.intro-badges {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 18px;
+}
+
+.intro-badge {
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: white;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 5px 14px;
+  border-radius: 99px;
+  letter-spacing: 0.3px;
+}
+
+/* ── TASK CARD ── */
+.task-card {
+  background: var(--card);
+  border-radius: 24px;
+  box-shadow: var(--shadow);
+  margin-bottom: 24px;
+  overflow: hidden;
+  border: 1.5px solid var(--border);
+  transition: box-shadow 0.3s ease;
+  animation: cardIn 0.5s ease both;
+}
+
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.task-card:nth-child(2) { animation-delay: 0.05s; }
+.task-card:nth-child(3) { animation-delay: 0.10s; }
+.task-card:nth-child(4) { animation-delay: 0.15s; }
+.task-card:nth-child(5) { animation-delay: 0.20s; }
+.task-card:nth-child(6) { animation-delay: 0.25s; }
+.task-card:nth-child(7) { animation-delay: 0.30s; }
+.task-card:nth-child(8) { animation-delay: 0.35s; }
+
+.task-card:hover {
+  box-shadow: var(--shadow-lg);
+}
+
+/* Card top accent strip */
+.card-stripe {
+  height: 5px;
+  width: 100%;
+}
+
+.stripe-pink { background: linear-gradient(90deg, var(--accent), #ff9ab5); }
+.stripe-blue { background: linear-gradient(90deg, var(--accent2), #7ec8ff); }
+.stripe-gold { background: linear-gradient(90deg, var(--accent3), #ffd080); }
+.stripe-green { background: linear-gradient(90deg, var(--green), #7de8b5); }
+.stripe-purple { background: linear-gradient(90deg, var(--purple), #c4b5fd); }
+
+.card-inner {
+  padding: 24px 28px 28px;
+}
+
+/* Task header */
+.task-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.task-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  flex-shrink: 0;
+}
+
+.icon-pink { background: #fde8ed; }
+.icon-blue { background: #e0f0fb; }
+.icon-gold { background: #fef3dc; }
+.icon-green { background: #dff6ed; }
+.icon-purple { background: #ede9fe; }
+
+.task-meta {
+  flex: 1;
+}
+
+.task-num {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 3px;
+}
+
+.task-title {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 14.5px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--ink);
+}
+
+.task-tag {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 99px;
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+.tag-hard { background: #fde8ed; color: var(--accent); }
+.tag-med  { background: #e0f0fb; color: var(--accent2); }
+.tag-easy { background: #dff6ed; color: var(--green); }
+
+/* Task instruction */
+.task-instr {
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 16px;
+  line-height: 1.6;
+  font-style: italic;
+}
+
+/* Text quote block */
+.text-quote {
+  background: #faf7f2;
+  border-left: 4px solid var(--accent3);
+  border-radius: 0 12px 12px 0;
+  padding: 14px 18px;
+  font-size: 16px;
+  line-height: 1.9;
+  margin-bottom: 18px;
+  color: var(--ink);
+}
+
+.text-quote .gap {
+  display: inline-block;
+  min-width: 40px;
+  border-bottom: 2.5px solid var(--accent);
+  margin: 0 2px;
+  vertical-align: bottom;
+}
+
+/* Word chips */
+.word-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.word-chip {
+  background: #f5f0ff;
+  border: 1.5px solid #d8ccff;
+  color: var(--purple);
+  border-radius: 12px;
+  padding: 8px 18px;
+  font-size: 15px;
+  font-weight: 700;
+  font-style: italic;
+  cursor: default;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.word-chip:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(139,92,246,0.2);
+}
+
+/* Input area */
+.input-area {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.input-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.input-label {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--ink);
+  min-width: 160px;
+  flex-shrink: 0;
+}
+
+.input-field {
+  flex: 1;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  padding: 9px 14px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 14px;
+  color: var(--ink);
+  background: var(--bg);
+  transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none;
+}
+
+.input-field:focus {
+  border-color: var(--accent2);
+  box-shadow: 0 0 0 3px rgba(74,144,217,0.12);
+}
+
+.textarea-field {
+  width: 100%;
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 16px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 14px;
+  color: var(--ink);
+  background: var(--bg);
+  resize: vertical;
+  min-height: 90px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none;
+  line-height: 1.6;
+}
+
+.textarea-field:focus {
+  border-color: var(--accent2);
+  box-shadow: 0 0 0 3px rgba(74,144,217,0.12);
+}
+
+/* Sentence choices */
+.sentences {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.sentence-item {
+  background: var(--bg);
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 16px;
+  font-size: 14.5px;
+  line-height: 1.7;
+}
+
+/* ── REVEAL BUTTON ── */
+.btn-reveal {
+  width: 100%;
+  padding: 13px 20px;
+  background: linear-gradient(135deg, var(--ink), #4a2060);
+  color: white;
+  border: none;
+  border-radius: 14px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 14.5px;
+  font-weight: 800;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: transform 0.15s, box-shadow 0.2s, background 0.2s;
+  letter-spacing: 0.2px;
+}
+
+.btn-reveal:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(45,34,53,0.25);
+  background: linear-gradient(135deg, #3d2d4d, #5a2878);
+}
+
+.btn-reveal:active {
+  transform: translateY(0);
+}
+
+.btn-reveal .btn-icon {
+  font-size: 18px;
+  transition: transform 0.3s;
+}
+
+.btn-reveal.open .btn-icon {
+  transform: rotate(180deg);
+}
+
+/* ── EXPLANATION PANEL ── */
+.explanation {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.55s cubic-bezier(0,.85,.3,1), opacity 0.4s ease;
+  opacity: 0;
+}
+
+.explanation.open {
+  max-height: 1200px;
+  opacity: 1;
+}
+
+.explanation-inner {
+  margin-top: 16px;
+  background: linear-gradient(135deg, #f0f9ff, #f5f0ff);
+  border: 1.5px solid #c4d9f5;
+  border-radius: 16px;
+  padding: 22px 24px;
+}
+
+.expl-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.expl-emoji {
+  font-size: 24px;
+}
+
+.expl-title {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent2);
+  letter-spacing: 0.3px;
+}
+
+.expl-body {
+  font-size: 14.5px;
+  line-height: 1.8;
+  color: var(--ink);
+}
+
+.expl-body strong {
+  color: var(--accent);
+}
+
+.expl-body .rule-box {
+  background: white;
+  border-left: 4px solid var(--accent2);
+  border-radius: 0 10px 10px 0;
+  padding: 12px 16px;
+  margin: 12px 0;
+  font-size: 14px;
+  line-height: 1.75;
+}
+
+.expl-body .rule-box .rule-title {
+  font-weight: 800;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  color: var(--accent2);
+  margin-bottom: 6px;
+}
+
+.answer-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin: 12px 0;
+}
+
+@media (max-width: 500px) { .answer-grid { grid-template-columns: 1fr; } }
+
+.answer-item {
+  background: white;
+  border-radius: 10px;
+  padding: 9px 13px;
+  font-size: 13.5px;
+  border: 1.5px solid var(--border);
+}
+
+.answer-item .ans-word {
+  font-weight: 800;
+  color: var(--purple);
+  font-style: italic;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.answer-item .ans-val {
+  color: var(--ink);
+  font-size: 13px;
+}
+
+.answer-item .ans-correct {
+  color: var(--green);
+  font-weight: 700;
+}
+
+/* Stars reward */
+.stars-reward {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(135deg, #fef3dc, #fff0a0);
+  border: 1.5px solid #f5c842;
+  border-radius: 99px;
+  padding: 6px 16px;
+  font-size: 13.5px;
+  font-weight: 800;
+  color: #a06000;
+  margin-top: 12px;
+}
+
+/* Separator line */
+.expl-divider {
+  border: none;
+  border-top: 1.5px solid rgba(74,144,217,0.2);
+  margin: 14px 0;
+}
+
+/* ── FINAL CARD ── */
+.final-card {
+  background: linear-gradient(135deg, #2d2235 0%, #1a3a5c 100%);
+  color: white;
+  border-radius: 24px;
+  padding: 36px 36px;
+  text-align: center;
+  margin-top: 12px;
+  position: relative;
+  overflow: hidden;
+}
+
+.final-card::after {
+  content: '🌟';
+  position: absolute;
+  font-size: 120px;
+  right: -10px;
+  bottom: -20px;
+  opacity: 0.07;
+}
+
+.final-card h2 {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 22px;
+  font-weight: 900;
+  margin-bottom: 10px;
+}
+
+.final-card p {
+  font-size: 15px;
+  opacity: 0.8;
+  max-width: 440px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+/* ── BONUS DIVIDER ── */
+.bonus-divider {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 40px 0 28px;
+}
+.bonus-divider-line {
+  flex: 1;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #8b5cf6, transparent);
+  border-radius: 99px;
+}
+.bonus-divider-badge {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--purple);
+  background: #f3e8ff;
+  border: 2px solid #d8b4fe;
+  border-radius: 99px;
+  padding: 8px 20px;
+  white-space: nowrap;
+  letter-spacing: 0.2px;
+}
+.bonus-card { border-color: #e9d5ff; }
+.bonus-btn { background: linear-gradient(135deg, #4c1d95, #7c3aed) !important; }
+.bonus-btn:hover { background: linear-gradient(135deg, #5b21b6, #8b5cf6) !important; }
+
+/* Responsive */
+@media (max-width: 600px) {
+  header { padding: 20px 16px; flex-wrap: wrap; }
+  .progress-area { width: 100%; }
+  main { padding: 0 12px 60px; }
+  .card-inner { padding: 18px 16px 20px; }
+  .input-row { flex-direction: column; align-items: flex-start; }
+  .input-label { min-width: unset; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-blob">📖</div>
+  <div class="header-text">
+    <h1>Русский язык</h1>
+    <p>Диагностика · 4 класс · Вероника</p>
+  </div>
+  <div class="progress-area">
+    <div class="progress-bar-wrap">
+      <div class="progress-label">Прогресс</div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+    </div>
+    <div class="star-counter">⭐ <span id="starCount">0</span></div>
+  </div>
+</header>
+
+<main>
+
+  <!-- INTRO -->
+  <div class="intro-card">
+    <h2>Привет, Вероника! 👋</h2>
+    <p>Сегодня мы посмотрим, что ты уже знаешь. Это не контрольная — никаких оценок! Просто выполни каждое задание, а потом нажми кнопку, чтобы увидеть объяснение. За каждое задание — звёздочка ⭐</p>
+    <div class="intro-badges">
+      <span class="intro-badge">🔡 Части речи</span>
+      <span class="intro-badge">🧩 Состав слова</span>
+      <span class="intro-badge">🔬 Морфологический разбор</span>
+      <span class="intro-badge">📐 Синтаксический разбор</span>
+      <span class="intro-badge">✏️ Орфография</span>
+    </div>
+  </div>
+
+  <!-- ══ ЗАДАНИЕ 1 ══ -->
+  <div class="task-card" data-stars="1">
+    <div class="card-stripe stripe-pink"></div>
+    <div class="card-inner">
+      <div class="task-header">
+        <div class="task-icon icon-pink">🏷️</div>
+        <div class="task-meta">
+          <div class="task-num">Задание 1</div>
+          <div class="task-title">Определи часть речи</div>
+        </div>
+        <span class="task-tag tag-easy">Легко</span>
+      </div>
+
+      <p class="task-instr">Запиши рядом с каждым словом его часть речи. Используй сокращения: сущ., прил., гл., мест., нареч., предл.</p>
+
+      <div class="input-area">
+        <div class="input-row">
+          <span class="input-label">далёкий</span>
+          <input class="input-field" type="text" placeholder="часть речи...">
+        </div>
+        <div class="input-row">
+          <span class="input-label">бежать</span>
+          <input class="input-field" type="text" placeholder="часть речи...">
+        </div>
+        <div class="input-row">
+          <span class="input-label">быстро</span>
+          <input class="input-field" type="text" placeholder="часть речи...">
+        </div>
+        <div class="input-row">
+          <span class="input-label">он</span>
+          <input class="input-field" type="text" placeholder="часть речи...">
+        </div>
+        <div class="input-row">
+          <span class="input-label">над</span>
+          <input class="input-field" type="text" placeholder="часть речи...">
+        </div>
+        <div class="input-row">
+          <span class="input-label">прочитать</span>
+          <input class="input-field" type="text" placeholder="часть речи...">
+        </div>
+      </div>
+
+      <button class="btn-reveal" onclick="reveal(this)">
+        <span class="btn-icon">▼</span> Посмотреть объяснение
+      </button>
+
+      <div class="explanation">
+        <div class="explanation-inner">
+          <div class="expl-header">
+            <span class="expl-emoji">💡</span>
+            <span class="expl-title">Разбираем вместе</span>
+          </div>
+          <div class="expl-body">
+            <div class="answer-grid">
+              <div class="answer-item">
+                <span class="ans-word">далёкий</span>
+                <span class="ans-correct">✓ прилагательное</span>
+                <span class="ans-val">— отвечает на вопрос <em>какой?</em></span>
+              </div>
+              <div class="answer-item">
+                <span class="ans-word">бежать</span>
+                <span class="ans-correct">✓ глагол</span>
+                <span class="ans-val">— отвечает на вопрос <em>что делать?</em></span>
+              </div>
+              <div class="answer-item">
+                <span class="ans-word">быстро</span>
+                <span class="ans-correct">✓ наречие</span>
+                <span class="ans-val">— отвечает на вопрос <em>как?</em>, не изменяется</span>
+              </div>
+              <div class="answer-item">
+                <span class="ans-word">он</span>
+                <span class="ans-correct">✓ местоимение</span>
+                <span class="ans-val">— заменяет существительное</span>
+              </div>
+              <div class="answer-item">
+                <span class="ans-word">над</span>
+                <span class="ans-correct">✓ предлог</span>
+                <span class="ans-val">— служебная часть речи, не отвечает на вопросы</span>
+              </div>
+              <div class="answer-item">
+                <span class="ans-word">прочитать</span>
+                <span class="ans-correct">✓ глагол</span>
+                <span class="ans-val">— неопределённая форма (<em>что сделать?</em>)</span>
+              </div>
+            </div>
+            <div class="rule-box">
+              <div class="rule-title">🧠 Запомни</div>
+              <strong>Наречие</strong> — это особая часть речи. Оно не изменяется (нет окончания!), чаще всего отвечает на вопросы <em>как? где? когда? куда?</em> и относится к глаголу.<br>
+              <em>Бежать быстро, идти пешком, жить далеко.</em>
+            </div>
+            <div class="stars-reward">⭐ +1 звёздочка получена!</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ ЗАДАНИЕ 2 ══ -->
+  <div class="task-card" data-stars="1">
+    <div class="card-stripe stripe-purple"></div>
+    <div class="card-inner">
+      <div class="task-header">
+        <div class="task-icon icon-purple">🧩</div>
+        <div class="task-meta">
+          <div class="task-num">Задание 2</div>
+          <div class="task-title">Разбор слова по составу</div>
+        </div>
+        <span class="task-tag tag-med">Средне</span>
+      </div>
+
+      <p class="task-instr">Разбери каждое слово по составу: выдели приставку, корень, суффикс, окончание. Можно написать слово и нарисовать скобки — или просто описать словами.</p>
+
+      <div class="word-chips">
+        <span class="word-chip">подснежник</span>
+        <span class="word-chip">перелётный</span>
+        <span class="word-chip">лесник</span>
+        <span class="word-chip">приходить</span>
+      </div>
+
+      <textarea class="textarea-field" placeholder="Напиши свои ответы здесь... Например: подснежник — приставка: под-, корень: -снеж-, суффикс: -ник, окончание: нулевое"></textarea>
+
+      <button class="btn-reveal" onclick="reveal(this)" style="margin-top:14px">
+        <span class="btn-icon">▼</span> Посмотреть объяснение
+      </button>
+
+      <div class="explanation">
+        <div class="explanation-inner">
+          <div class="expl-header">
+            <span class="expl-emoji">🔍</span>
+            <span class="expl-title">Разбираем вместе</span>
+          </div>
+          <div class="expl-body">
+            <div class="rule-box">
+              <div class="rule-title">✅ Правильные разборы</div>
+              <strong>под-снеж-ник</strong> — приставка <em>под-</em>, корень <em>-снеж-</em>, суффикс <em>-ник</em>, нулевое окончание □<br><br>
+              <strong>пере-лёт-н-ый</strong> — приставка <em>пере-</em>, корень <em>-лёт-</em>, суффикс <em>-н-</em>, окончание <em>-ый</em><br><br>
+              <strong>лес-ник</strong> — корень <em>-лес-</em>, суффикс <em>-ник</em>, нулевое окончание □<br><br>
+              <strong>при-ход-и-ть</strong> — приставка <em>при-</em>, корень <em>-ход-</em>, суффикс <em>-и-</em>, суффикс (окончание инфинитива) <em>-ть</em>
+            </div>
+            <div class="rule-box" style="border-color: var(--accent);">
+              <div class="rule-title" style="color: var(--accent);">⚠️ Частые ошибки</div>
+              В слове <strong>перелётный</strong> корень — <em>-лёт-</em> (а не <em>-перелёт-</em>!). Приставку и корень легко перепутать.<br>
+              Нулевое окончание — это не «нет окончания», а окончание, которое не звучит, но существует: <em>лесник□</em> → <em>лесника, лесники…</em>
+            </div>
+            <div class="stars-reward">⭐ +1 звёздочка получена!</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ ЗАДАНИЕ 3 ══ -->
+  <div class="task-card" data-stars="1">
+    <div class="card-stripe stripe-blue"></div>
+    <div class="card-inner">
+      <div class="task-header">
+        <div class="task-icon icon-blue">🏛️</div>
+        <div class="task-meta">
+          <div class="task-num">Задание 3</div>
+          <div class="task-title">Склонение и падеж существительных</div>
+        </div>
+        <span class="task-tag tag-med">Средне</span>
+      </div>
+
+      <p class="task-instr">Определи падеж и склонение выделенных существительных. Задавай вопрос от глагола!</p>
+
+      <div class="sentences">
+        <div class="sentence-item">1. Дети играли <strong>у реки</strong>.</div>
+        <div class="sentence-item">2. Мы гуляли по <strong>лесу</strong>.</div>
+        <div class="sentence-item">3. Письмо пришло от <strong>бабушки</strong>.</div>
+        <div class="sentence-item">4. Котёнок спал на <strong>диване</strong>.</div>
+      </div>
+
+      <div class="input-area">
+        <div class="input-row">
+          <span class="input-label">у реки — падеж:</span>
+          <input class="input-field" type="text" placeholder="падеж, склонение...">
+        </div>
+        <div class="input-row">
+          <span class="input-label">по лесу — падеж:</span>
+          <input class="input-field" type="text" placeholder="падеж, склонение...">
+        </div>
+        <div class="input-row">
+          <span class="input-label">от бабушки — падеж:</span>
+          <input class="input-field" type="text" placeholder="падеж, склонение...">
+        </div>
+        <div class="input-row">
+          <span class="input-label">на диване — падеж:</span>
+          <input class="input-field" type="text" placeholder="падеж, склонение...">
+        </div>
+      </div>
+
+      <button class="btn-reveal" onclick="reveal(this)">
+        <span class="btn-icon">▼</span> Посмотреть объяснение
+      </button>
+
+      <div class="explanation">
+        <div class="explanation-inner">
+          <div class="expl-header">
+            <span class="expl-emoji">📋</span>
+            <span class="expl-title">Разбираем вместе</span>
+          </div>
+          <div class="expl-body">
+            <div class="answer-grid">
+              <div class="answer-item">
+                <span class="ans-word">у реки</span>
+                <span class="ans-correct">✓ Р.п., 1 скл.</span>
+                <span class="ans-val">играли <em>у чего? у реки</em> — нет кого? чего?</span>
+              </div>
+              <div class="answer-item">
+                <span class="ans-word">по лесу</span>
+                <span class="ans-correct">✓ Д.п., 2 скл.</span>
+                <span class="ans-val">гуляли <em>по чему? по лесу</em> — лес, м.р.</span>
+              </div>
+              <div class="answer-item">
+                <span class="ans-word">от бабушки</span>
+                <span class="ans-correct">✓ Р.п., 1 скл.</span>
+                <span class="ans-val">пришло <em>от кого? от бабушки</em></span>
+              </div>
+              <div class="answer-item">
+                <span class="ans-word">на диване</span>
+                <span class="ans-correct">✓ П.п., 2 скл.</span>
+                <span class="ans-val">спал <em>на чём? на диване</em> — диван, м.р.</span>
+              </div>
+            </div>
+            <div class="rule-box">
+              <div class="rule-title">🧠 Как определить склонение</div>
+              <strong>1-е склонение:</strong> сущ. ж.р. и м.р. на <em>-а, -я</em> (мама, дядя, река)<br>
+              <strong>2-е склонение:</strong> сущ. м.р. без окончания и ср.р. на <em>-о, -е</em> (лес, диван, небо)<br>
+              <strong>3-е склонение:</strong> сущ. ж.р. без окончания (дочь, рожь, ночь)
+            </div>
+            <hr class="expl-divider">
+            <p><strong>Хитрость!</strong> Р.п. и П.п. легко перепутать: <em>у реки (Р.п.)</em> и <em>о реке (П.п.)</em>. Предлоги помогут: П.п. — это предлоги <em>о, в, на, при</em>.</p>
+            <div class="stars-reward">⭐ +1 звёздочка получена!</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ ЗАДАНИЕ 4 ══ -->
+  <div class="task-card" data-stars="1">
+    <div class="card-stripe stripe-pink"></div>
+    <div class="card-inner">
+      <div class="task-header">
+        <div class="task-icon icon-pink">🔬</div>
+        <div class="task-meta">
+          <div class="task-num">Задание 4</div>
+          <div class="task-title">Морфологический разбор — существительное</div>
+        </div>
+        <span class="task-tag tag-hard">Сложно</span>
+      </div>
+
+      <p class="task-instr">Сделай полный морфологический разбор выделенного слова (цифра ³). Запиши всё по плану — постарайся вспомнить его самостоятельно.</p>
+
+      <div class="text-quote">
+        Дети радостно бежали навстречу <strong>маме³</strong>.
+      </div>
+
+      <textarea class="textarea-field" placeholder="I. (часть речи) — что? мама; н.ф. — …&#10;II. Постоянные: …&#10;III. Непостоянные: …&#10;IV. В предложении является …"></textarea>
+
+      <button class="btn-reveal" onclick="reveal(this)" style="margin-top:14px">
+        <span class="btn-icon">▼</span> Посмотреть объяснение
+      </button>
+
+      <div class="explanation">
+        <div class="explanation-inner">
+          <div class="expl-header">
+            <span class="expl-emoji">🔬</span>
+            <span class="expl-title">Образцовый разбор</span>
+          </div>
+          <div class="expl-body">
+            <div class="rule-box">
+              <div class="rule-title">✅ Правильный разбор слова МАМЕ</div>
+              <strong>I.</strong> <em>Маме</em> — имя существительное; н.ф. — <strong>мама</strong><br><br>
+              <strong>II. Постоянные признаки:</strong><br>
+              — нарицательное<br>
+              — одушевлённое (кто?)<br>
+              — женский род<br>
+              — 1-е склонение<br><br>
+              <strong>III. Непостоянные признаки:</strong><br>
+              — единственное число<br>
+              — дательный падеж (бежали навстречу <em>кому?</em> маме)<br><br>
+              <strong>IV.</strong> В предложении является <em>дополнением</em> (подчёркивается пунктиром _ _ _)
+            </div>
+            <div class="rule-box" style="border-color: var(--accent);">
+              <div class="rule-title" style="color: var(--accent);">📌 Запомни план наизусть!</div>
+              I. Часть речи, начальная форма (И.п., ед.ч.)<br>
+              II. Постоянные: собств./нарицат., одуш./неодуш., род, склонение<br>
+              III. Непостоянные: число, падеж<br>
+              IV. Роль в предложении
+            </div>
+            <div class="stars-reward">⭐ +1 звёздочка получена!</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ ЗАДАНИЕ 5 ══ -->
+  <div class="task-card" data-stars="1">
+    <div class="card-stripe stripe-green"></div>
+    <div class="card-inner">
+      <div class="task-header">
+        <div class="task-icon icon-green">⚡</div>
+        <div class="task-meta">
+          <div class="task-num">Задание 5</div>
+          <div class="task-title">Морфологический разбор — глагол</div>
+        </div>
+        <span class="task-tag tag-hard">Сложно</span>
+      </div>
+
+      <p class="task-instr">Сделай полный морфологический разбор глагола (цифра ²).</p>
+
+      <div class="text-quote">
+        Ребята <strong>читают²</strong> интересную книгу.
+      </div>
+
+      <textarea class="textarea-field" placeholder="I. (часть речи) — что делают? читают; н.ф. — …&#10;II. Постоянные: вид — …, спряжение — …&#10;III. Непостоянные: время — …, лицо — …, число — …&#10;IV. В предложении является …"></textarea>
+
+      <button class="btn-reveal" onclick="reveal(this)" style="margin-top:14px">
+        <span class="btn-icon">▼</span> Посмотреть объяснение
+      </button>
+
+      <div class="explanation">
+        <div class="explanation-inner">
+          <div class="expl-header">
+            <span class="expl-emoji">⚡</span>
+            <span class="expl-title">Образцовый разбор</span>
+          </div>
+          <div class="expl-body">
+            <div class="rule-box">
+              <div class="rule-title">✅ Правильный разбор слова ЧИТАЮТ</div>
+              <strong>I.</strong> <em>Читают</em> — глагол; н.ф. — <strong>читать</strong> (что делать?)<br><br>
+              <strong>II. Постоянные признаки:</strong><br>
+              — несовершенный вид (что делать? — без приставки <em>с-</em>)<br>
+              — I спряжение (<em>читать</em> — не на <em>-ить</em>, не в списке исключений)<br><br>
+              <strong>III. Непостоянные признаки:</strong><br>
+              — настоящее время<br>
+              — 3-е лицо (они)<br>
+              — множественное число<br><br>
+              <strong>IV.</strong> В предложении является <em>сказуемым</em> (подчёркивается двойной линией ══)
+            </div>
+            <div class="rule-box" style="border-color: var(--purple);">
+              <div class="rule-title" style="color: var(--purple);">🌟 Как определить спряжение</div>
+              Если окончание <strong>ударное</strong> — смотри на само окончание (-ут/-ют → I, -ат/-ят → II).<br>
+              Если окончание <strong>безударное</strong> — смотри на инфинитив:<br>
+              <strong>II спряжение</strong> = глаголы на <em>-ить</em> + 11 исключений<br>
+              (гнать, держать, смотреть, видеть, дышать, слышать, ненавидеть, зависеть, вертеть, обидеть, терпеть)<br>
+              Остальные — <strong>I спряжение</strong>
+            </div>
+            <div class="stars-reward">⭐ +1 звёздочка получена!</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ ЗАДАНИЕ 6 ══ -->
+  <div class="task-card" data-stars="1">
+    <div class="card-stripe stripe-gold"></div>
+    <div class="card-inner">
+      <div class="task-header">
+        <div class="task-icon icon-gold">📐</div>
+        <div class="task-meta">
+          <div class="task-num">Задание 6</div>
+          <div class="task-title">Синтаксический разбор предложения</div>
+        </div>
+        <span class="task-tag tag-hard">Сложно</span>
+      </div>
+
+      <p class="task-instr">Разбери предложение по членам (цифра ⁴). Определи вид предложения, найди все члены, составь схему.</p>
+
+      <div class="text-quote">
+        Золотые листья тихо кружились в осеннем воздухе.⁴
+      </div>
+
+      <div class="input-area">
+        <div class="input-row">
+          <span class="input-label">Вид (цель / интонация):</span>
+          <input class="input-field" type="text" placeholder="повеств./вопр./побуд., воскл./невоскл.">
+        </div>
+        <div class="input-row">
+          <span class="input-label">Подлежащее:</span>
+          <input class="input-field" type="text" placeholder="слово + вопрос">
+        </div>
+        <div class="input-row">
+          <span class="input-label">Сказуемое:</span>
+          <input class="input-field" type="text" placeholder="слово + вопрос">
+        </div>
+        <div class="input-row">
+          <span class="input-label">Второстепенные:</span>
+          <input class="input-field" type="text" placeholder="какие? где? как?...">
+        </div>
+      </div>
+      <textarea class="textarea-field" placeholder="Нарисуй схему предложения: [______ ══════ ～～～ ─── ─── ─ ─ ─]" style="min-height:60px; margin-top:10px"></textarea>
+
+      <button class="btn-reveal" onclick="reveal(this)" style="margin-top:14px">
+        <span class="btn-icon">▼</span> Посмотреть объяснение
+      </button>
+
+      <div class="explanation">
+        <div class="explanation-inner">
+          <div class="expl-header">
+            <span class="expl-emoji">📐</span>
+            <span class="expl-title">Полный разбор</span>
+          </div>
+          <div class="expl-body">
+            <div class="rule-box">
+              <div class="rule-title">✅ Разбор предложения</div>
+              <em>Золотые листья тихо кружились в осеннем воздухе.</em><br><br>
+              <strong>Вид:</strong> повествовательное, невосклицательное, распространённое.<br><br>
+              <strong>Подлежащее:</strong> <u>листья</u> (что? — сущ.)<br>
+              <strong>Сказуемое:</strong> <u style="text-decoration: underline double">кружились</u> (что делали? — гл.)<br><br>
+              <strong>Второстепенные члены:</strong><br>
+              — <em>золотые</em> — <strong>определение</strong> (листья <em>какие?</em>), подчёркивается волнистой линией<br>
+              — <em>тихо</em> — <strong>обстоятельство</strong> (кружились <em>как?</em>), подчёркивается пунктирной линией с точками<br>
+              — <em>в воздухе</em> — <strong>обстоятельство</strong> (кружились <em>где?</em>)<br>
+              — <em>осеннем</em> — <strong>определение</strong> (воздухе <em>каком?</em>)
+            </div>
+            <div class="rule-box" style="border-color: var(--accent3);">
+              <div class="rule-title" style="color: #a06000;">📌 Как различить второстепенные члены</div>
+              <strong>Определение</strong> — отвечает на вопросы <em>какой? чей?</em> → волнистая ∿∿∿<br>
+              <strong>Дополнение</strong> — отвечает на вопросы косвенных падежей <em>(кого? чего? кому? что?...)</em> → пунктир _ _ _<br>
+              <strong>Обстоятельство</strong> — отвечает на вопросы <em>где? когда? как? куда? откуда?</em> → пунктир с точками _._._
+            </div>
+            <div class="stars-reward">⭐ +1 звёздочка получена!</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ ЗАДАНИЕ 7 ══ -->
+  <div class="task-card" data-stars="1">
+    <div class="card-stripe stripe-blue"></div>
+    <div class="card-inner">
+      <div class="task-header">
+        <div class="task-icon icon-blue">🔗</div>
+        <div class="task-meta">
+          <div class="task-num">Задание 7</div>
+          <div class="task-title">Простое или сложное? Расставь запятые</div>
+        </div>
+        <span class="task-tag tag-med">Средне</span>
+      </div>
+
+      <p class="task-instr">Прочитай предложения. Определи: простое или сложное? Расставь запятые и объясни своё решение.</p>
+
+      <div class="sentences">
+        <div class="sentence-item">1. Ветер завыл молния сверкнула и дождь забарабанил по крыше.</div>
+        <div class="sentence-item">2. На столе лежали книги тетради карандаши и линейка.</div>
+        <div class="sentence-item">3. Солнце зашло за тучу и стало прохладно.</div>
+      </div>
+
+      <textarea class="textarea-field" placeholder="Запиши каждое предложение с правильными запятыми и объясни: почему здесь запятая?"></textarea>
+
+      <button class="btn-reveal" onclick="reveal(this)" style="margin-top:14px">
+        <span class="btn-icon">▼</span> Посмотреть объяснение
+      </button>
+
+      <div class="explanation">
+        <div class="explanation-inner">
+          <div class="expl-header">
+            <span class="expl-emoji">🔗</span>
+            <span class="expl-title">Разбираем вместе</span>
+          </div>
+          <div class="expl-body">
+            <div class="rule-box">
+              <div class="rule-title">✅ Ответы</div>
+              <strong>1. «Ветер завыл, молния сверкнула, и дождь забарабанил…»</strong><br>
+              → <em>Сложное предложение</em>. Три простых предложения: у каждого своё подлежащее и сказуемое. Перед союзом «и», соединяющим части сложного предложения, ставится запятая.<br><br>
+              <strong>2. «На столе лежали книги, тетради, карандаши и линейка.»</strong><br>
+              → <em>Простое предложение с однородными членами</em>. Одно подлежащее, одно сказуемое — много дополнений. Перед последним «и» запятая не нужна.<br><br>
+              <strong>3. «Солнце зашло за тучу, и стало прохладно.»</strong><br>
+              → <em>Сложное предложение</em>. Два простых: у второй части нет подлежащего, но это отдельное суждение.
+            </div>
+            <div class="rule-box" style="border-color: var(--purple);">
+              <div class="rule-title" style="color: var(--purple);">🌟 Главный секрет</div>
+              Чтобы понять, <strong>простое или сложное</strong> — найди все пары «подлежащее + сказуемое».<br>
+              Одна пара → простое. Две пары и больше → сложное.<br>
+              В сложном предложении перед союзами И, А, НО всегда ставится запятая.
+            </div>
+            <div class="stars-reward">⭐ +1 звёздочка получена!</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ ЗАДАНИЕ 8 ══ -->
+  <div class="task-card" data-stars="1">
+    <div class="card-stripe stripe-gold"></div>
+    <div class="card-inner">
+      <div class="task-header">
+        <div class="task-icon icon-gold">✏️</div>
+        <div class="task-meta">
+          <div class="task-num">Задание 8</div>
+          <div class="task-title">Орфография — вставь буквы</div>
+        </div>
+        <span class="task-tag tag-med">Средне</span>
+      </div>
+
+      <p class="task-instr">Вставь пропущенные буквы и раскрой скобки. Постарайся объяснить каждый случай.</p>
+
+      <div class="text-quote">
+        1. Мы подошл_ к высок_й берёз_.<br>
+        2. Река течёт по глубок_му оврагу.<br>
+        3. Дети (не) хотели уходить с поляны.<br>
+        4. Кот умыва_тся и мурлыч_т.<br>
+        5. Он уч_т_ся в пятом классе.
+      </div>
+
+      <textarea class="textarea-field" placeholder="Запиши предложения с вставленными буквами. Например: 1. Мы подошли к высокой берёзе. — потому что..."></textarea>
+
+      <button class="btn-reveal" onclick="reveal(this)" style="margin-top:14px">
+        <span class="btn-icon">▼</span> Посмотреть объяснение
+      </button>
+
+      <div class="explanation">
+        <div class="explanation-inner">
+          <div class="expl-header">
+            <span class="expl-emoji">✏️</span>
+            <span class="expl-title">Разбираем орфограммы</span>
+          </div>
+          <div class="expl-body">
+            <div class="rule-box">
+              <div class="rule-title">✅ Правильные ответы с объяснениями</div>
+              <strong>1. подошл<u>и</u> к высок<u>о</u>й берёз<u>е</u></strong><br>
+              — <em>к берёзе</em> → 1 скл., Д.п. → окончание <em>-е</em><br>
+              — <em>высокой</em> → прил. ж.р., Д.п. → окончание <em>-ой</em><br><br>
+              <strong>2. по глубок<u>о</u>му оврагу</strong><br>
+              — прил. м.р., Д.п. → окончание <em>-ому</em><br><br>
+              <strong>3. <u>не</u> хотели</strong> (раздельно)<br>
+              — «не» с глаголами пишется <em>раздельно</em><br><br>
+              <strong>4. умыва<u>е</u>тся и мурлыч<u>и</u>т</strong><br>
+              — <em>умываться</em> → I спр. → <em>-ет-</em><br>
+              — <em>мурлыкать</em> → I спр. → <em>-ит</em> (искл. чередование к/ч)<br><br>
+              <strong>5. уч<u>и</u>тся</strong> (без Ь!)<br>
+              — Задай вопрос: <em>что делает?</em> (без Ь в вопросе → без Ь в слове)<br>
+              — Ср.: <em>хочет уч<u>и</u>ться</em> (что делать? — с Ь)
+            </div>
+            <div class="rule-box" style="border-color: var(--accent);">
+              <div class="rule-title" style="color: var(--accent);">⚡ -тся / -ться — запомни навсегда!</div>
+              Задай вопрос к глаголу:<br>
+              <strong>что делает? → -тся</strong> (без мягкого знака)<br>
+              <strong>что делать? → -ться</strong> (с мягким знаком)<br>
+              Примеры: кот умыва<em>ется</em> (что делает?) / кот хочет умыва<em>ться</em> (что делать?)
+            </div>
+            <div class="stars-reward">⭐ +1 звёздочка получена!</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ БОНУСНЫЙ БЛОК ══ -->
+  <div class="bonus-divider">
+    <div class="bonus-divider-line"></div>
+    <div class="bonus-divider-badge">🚀 Бонусный раунд — если осталось время!</div>
+    <div class="bonus-divider-line"></div>
+  </div>
+
+  <div class="intro-card" style="background: linear-gradient(135deg, #1a3a5c 0%, #0d2d1f 100%); margin-bottom:28px;">
+    <h2>Дополнительные задания ✨</h2>
+    <p>Справилась с основными — отлично! Эти задания чуть сложнее и интереснее. Попробуй каждое, а потом открой объяснение — там много полезного.</p>
+    <div class="intro-badges">
+      <span class="intro-badge">🎭 Омонимы и многозначность</span>
+      <span class="intro-badge">🌀 Трудные глаголы</span>
+      <span class="intro-badge">🧠 Словосочетание</span>
+      <span class="intro-badge">🕵️ Найди ошибку</span>
+      <span class="intro-badge">🏆 Мегаразбор</span>
+    </div>
+  </div>
+
+  <!-- ══ БОНУС 1: ОМОНИМЫ И МНОГОЗНАЧНОСТЬ ══ -->
+  <div class="task-card bonus-card" data-stars="1">
+    <div class="card-stripe" style="background: linear-gradient(90deg, #f59e0b, #fcd34d);"></div>
+    <div class="card-inner">
+      <div class="task-header">
+        <div class="task-icon" style="background:#fef3c7;">🎭</div>
+        <div class="task-meta">
+          <div class="task-num">Бонус 1</div>
+          <div class="task-title">Слово-хамелеон: одно слово — разные части речи</div>
+        </div>
+        <span class="task-tag" style="background:#fef3c7; color:#b45309;">Любопытно</span>
+      </div>
+
+      <p class="task-instr">В каждой паре предложений одно и то же слово выделено жирным. Определи, какой частью речи оно является в каждом случае.</p>
+
+      <div class="sentences">
+        <div class="sentence-item">
+          1а. Мы вышли на <strong>прогулку</strong> рано утром.<br>
+          1б. Уже <strong>вечером</strong> мы вернулись домой.
+        </div>
+        <div class="sentence-item">
+          2а. <strong>Три</strong> кота спали на диване.<br>
+          2б. Нужно <strong>три</strong> морковь на тёрке.
+        </div>
+        <div class="sentence-item">
+          3а. Это задание <strong>просто</strong> невозможно решить.<br>
+          3б. Реши задачу — это <strong>просто</strong>!
+        </div>
+      </div>
+
+      <textarea class="textarea-field" placeholder="1а. прогулку — ?; 1б. вечером — ?&#10;2а. три — ?; 2б. три — ?&#10;3а. просто — ?; 3б. просто — ?"></textarea>
+
+      <button class="btn-reveal bonus-btn" onclick="reveal(this)" style="margin-top:14px">
+        <span class="btn-icon">▼</span> Посмотреть объяснение
+      </button>
+
+      <div class="explanation">
+        <div class="explanation-inner" style="background: linear-gradient(135deg, #fffbeb, #fef3c7);">
+          <div class="expl-header">
+            <span class="expl-emoji">🎭</span>
+            <span class="expl-title">Слова-хамелеоны</span>
+          </div>
+          <div class="expl-body">
+            <div class="rule-box" style="border-color: #f59e0b;">
+              <div class="rule-title" style="color: #b45309;">✅ Разбираем</div>
+              <strong>1а. <em>прогулку</em></strong> — имя существительное (вышли <em>на что?</em>)<br>
+              <strong>1б. <em>вечером</em></strong> — наречие (вернулись <em>когда?</em>, не изменяется, нет окончания в этом значении)<br><br>
+              <strong>2а. <em>три</em></strong> — имя числительное (обозначает количество)<br>
+              <strong>2б. <em>три</em></strong> — глагол! (повелительное наклонение: <em>что делай?</em> три = тереть)<br><br>
+              <strong>3а. <em>просто</em></strong> — наречие (невозможно <em>как?</em> — просто)<br>
+              <strong>3б. <em>просто</em></strong> — краткое прилагательное (это <em>каково?</em> — просто = простое)
+            </div>
+            <div class="rule-box" style="border-color: var(--purple);">
+              <div class="rule-title" style="color: var(--purple);">🧠 Почему это важно?</div>
+              Одно и то же слово может быть <strong>разными частями речи</strong> — в зависимости от того, что оно обозначает и какой вопрос к нему задаётся.<br><br>
+              Слово <em>вечером</em> произошло от существительного <em>вечер</em>, но в предложении «вернулись вечером» оно уже не изменяется по падежам — значит, стало <strong>наречием</strong>. Такое явление называется <em>переходом одной части речи в другую</em>.<br><br>
+              <em>Утром, вечером, летом, зимой, весной</em> — всё это наречия!
+            </div>
+            <div class="stars-reward">⭐ +1 бонусная звёздочка!</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ БОНУС 2: СЛОВОСОЧЕТАНИЕ ══ -->
+  <div class="task-card bonus-card" data-stars="1">
+    <div class="card-stripe" style="background: linear-gradient(90deg, #06b6d4, #67e8f9);"></div>
+    <div class="card-inner">
+      <div class="task-header">
+        <div class="task-icon" style="background:#e0f7fa;">🧠</div>
+        <div class="task-meta">
+          <div class="task-num">Бонус 2</div>
+          <div class="task-title">Словосочетание — что это и как выделить</div>
+        </div>
+        <span class="task-tag" style="background:#e0f7fa; color:#0369a1;">4 класс</span>
+      </div>
+
+      <p class="task-instr">Из предложения выпиши все словосочетания. Главное слово подчеркни, от него задай вопрос к зависимому слову.</p>
+
+      <div class="text-quote">
+        Маленькая девочка быстро решила трудную задачу.
+      </div>
+
+      <textarea class="textarea-field" placeholder="Пример: решила (что?) задачу — это словосочетание&#10;Запиши все, которые найдёшь..."></textarea>
+
+      <button class="btn-reveal bonus-btn" onclick="reveal(this)" style="margin-top:14px">
+        <span class="btn-icon">▼</span> Посмотреть объяснение
+      </button>
+
+      <div class="explanation">
+        <div class="explanation-inner" style="background: linear-gradient(135deg, #e0f7fa, #e8f5e9);">
+          <div class="expl-header">
+            <span class="expl-emoji">🔗</span>
+            <span class="expl-title">Словосочетания в этом предложении</span>
+          </div>
+          <div class="expl-body">
+            <div class="rule-box" style="border-color: #06b6d4;">
+              <div class="rule-title" style="color: #0369a1;">✅ Все словосочетания</div>
+              <strong>решила</strong> (что?) <em>задачу</em><br>
+              <strong>решила</strong> (как?) <em>быстро</em><br>
+              <strong>задачу</strong> (какую?) <em>трудную</em><br>
+              <strong>девочка</strong> (какая?) <em>маленькая</em>
+            </div>
+            <div class="rule-box" style="border-color: var(--accent);">
+              <div class="rule-title" style="color: var(--accent);">⚠️ Что НЕ является словосочетанием</div>
+              <strong>Девочка решила</strong> — это не словосочетание, это <em>грамматическая основа</em> (подлежащее + сказуемое)!<br><br>
+              Словосочетание — это два слова, связанные по смыслу, но <strong>без грамматической основы</strong>.
+            </div>
+            <div class="rule-box" style="border-color: var(--green);">
+              <div class="rule-title" style="color: #15803d;">🌟 Как определить главное слово</div>
+              Главное слово — то, от которого <em>задаётся вопрос</em>.<br>
+              Зависимое — то, которое <em>отвечает на вопрос</em>.<br><br>
+              <strong>Красивая</strong> (какая?) <em>роза</em> — главное: <u>роза</u><br>
+              <strong>Роза</strong> (какая?) <em>красивая</em> — нет, так не говорят! Значит, главное всегда существительное в паре с прилагательным.
+            </div>
+            <div class="stars-reward">⭐ +1 бонусная звёздочка!</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ БОНУС 3: НАЙДИ ОШИБКУ ══ -->
+  <div class="task-card bonus-card" data-stars="1">
+    <div class="card-stripe" style="background: linear-gradient(90deg, #ef4444, #fb923c);"></div>
+    <div class="card-inner">
+      <div class="task-header">
+        <div class="task-icon" style="background:#fee2e2;">🕵️</div>
+        <div class="task-meta">
+          <div class="task-num">Бонус 3</div>
+          <div class="task-title">Сыщик: найди ошибки и исправь</div>
+        </div>
+        <span class="task-tag" style="background:#fee2e2; color:#dc2626;">Детектив</span>
+      </div>
+
+      <p class="task-instr">В каждом предложении спрятана одна или две ошибки. Найди, исправь и объясни — что было не так.</p>
+
+      <div class="sentences">
+        <div class="sentence-item">1. Мы пришли к <strong>бабушки</strong> на день рождения.</div>
+        <div class="sentence-item">2. Дети хотят <strong>учится</strong> в новой школе.</div>
+        <div class="sentence-item">3. На столе стояла <strong>красивый</strong> ваза с цветами.</div>
+        <div class="sentence-item">4. Мы <strong>не</strong> смогли решить эту задачу <strong>не</strong> сразу.</div>
+        <div class="sentence-item">5. Он писал в тетрадь <strong>медленно и аккуратно</strong> но учитель всё равно поставил пятёрку.</div>
+      </div>
+
+      <textarea class="textarea-field" placeholder="1. Ошибка: ... Правильно: ... Потому что...&#10;2. ..."></textarea>
+
+      <button class="btn-reveal bonus-btn" onclick="reveal(this)" style="margin-top:14px">
+        <span class="btn-icon">▼</span> Посмотреть объяснение
+      </button>
+
+      <div class="explanation">
+        <div class="explanation-inner" style="background: linear-gradient(135deg, #fff5f5, #fff0e6);">
+          <div class="expl-header">
+            <span class="expl-emoji">🕵️</span>
+            <span class="expl-title">Разбор ошибок</span>
+          </div>
+          <div class="expl-body">
+            <div class="rule-box" style="border-color: #ef4444;">
+              <div class="rule-title" style="color: #dc2626;">✅ Все ошибки найдены!</div>
+              <strong>1.</strong> <em>к бабушки</em> → <strong>к бабушке</strong><br>
+              Дательный падеж (к кому?), 1 склонение → окончание <em>-е</em>, а не <em>-и</em>.<br><br>
+
+              <strong>2.</strong> <em>учится</em> → <strong>учиться</strong><br>
+              «Хотят <em>что делать?</em>» — вопрос с Ь → глагол с Ь в инфинитиве.<br><br>
+
+              <strong>3.</strong> <em>красивый ваза</em> → <strong>красивая ваза</strong><br>
+              <em>Ваза</em> — ж.р., значит прилагательное тоже ж.р. → <em>красивая</em>.<br><br>
+
+              <strong>4.</strong> <em>не ... не сразу</em> → <strong>не смогли решить сразу</strong><br>
+              Двойное «не» здесь неуместно. Правильно: либо «не смогли решить сразу», либо «смогли решить не сразу».<br><br>
+
+              <strong>5.</strong> Пропущена запятая перед <em>но</em>: <strong>медленно и аккуратно, но учитель…</strong><br>
+              Перед союзом «но» всегда ставится запятая, он противопоставляет части.
+            </div>
+            <div class="rule-box" style="border-color: var(--purple);">
+              <div class="rule-title" style="color: var(--purple);">🧠 Как стать грамотным сыщиком</div>
+              При проверке текста смотри в первую очередь на:<br>
+              1️⃣ Окончания существительных (падеж → склонение → правило)<br>
+              2️⃣ Окончания прилагательных (согласуется ли с существительным?)<br>
+              3️⃣ Глаголы на <em>-тся / -ться</em><br>
+              4️⃣ Запятые перед союзами <em>а, но, однако</em><br>
+              5️⃣ Согласование рода и числа
+            </div>
+            <div class="stars-reward">⭐ +1 бонусная звёздочка!</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ БОНУС 4: ТРУДНЫЕ ГЛАГОЛЫ ══ -->
+  <div class="task-card bonus-card" data-stars="1">
+    <div class="card-stripe" style="background: linear-gradient(90deg, #10b981, #34d399);"></div>
+    <div class="card-inner">
+      <div class="task-header">
+        <div class="task-icon" style="background:#d1fae5;">🌀</div>
+        <div class="task-meta">
+          <div class="task-num">Бонус 4</div>
+          <div class="task-title">Трудные глаголы: вид, время, спряжение</div>
+        </div>
+        <span class="task-tag" style="background:#d1fae5; color:#065f46;">Непросто!</span>
+      </div>
+
+      <p class="task-instr">Заполни таблицу. Для каждого глагола определи: вид (сов./несов.), инфинитив, спряжение, форму 3-го лица ед.ч. настоящего или будущего времени.</p>
+
+      <div class="text-quote" style="font-size:14px; line-height:2.2;">
+        решает · написал · бежит · зависит · стелет · борется
+      </div>
+
+      <textarea class="textarea-field" style="min-height:130px;" placeholder="решает — несов. вид, решать, I спр., решает (3 л., ед.ч., наст.вр.)&#10;написал — ...&#10;бежит — ...&#10;зависит — ...&#10;стелет — ...&#10;борется — ..."></textarea>
+
+      <button class="btn-reveal bonus-btn" onclick="reveal(this)" style="margin-top:14px">
+        <span class="btn-icon">▼</span> Посмотреть объяснение
+      </button>
+
+      <div class="explanation">
+        <div class="explanation-inner" style="background: linear-gradient(135deg, #f0fdf4, #ecfdf5);">
+          <div class="expl-header">
+            <span class="expl-emoji">🌀</span>
+            <span class="expl-title">Разбираем сложные случаи</span>
+          </div>
+          <div class="expl-body">
+            <div class="rule-box" style="border-color: #10b981;">
+              <div class="rule-title" style="color: #065f46;">✅ Таблица ответов</div>
+              <strong>решает</strong> — несов.вид, решать, I спр. → <em>реша-ет</em> (3л., ед.ч.)<br>
+              <strong>написал</strong> — сов.вид, написать, I спр. → буд.вр.: <em>напиш-ет</em><br>
+              <strong>бежит</strong> — несов.вид, бежать → <strong>исключение!</strong> I спр. → <em>бег-ут</em> (3л., мн.ч.)<br>
+              <strong>зависит</strong> — несов.вид, зависеть → <strong>исключение!</strong> II спр. → <em>завис-ит</em><br>
+              <strong>стелет</strong> — несов.вид, стелить/стлать → I спр. (особый случай) → <em>стел-ет</em><br>
+              <strong>борется</strong> — несов.вид, бороться, I спр. → <em>бор-ется</em>
+            </div>
+            <div class="rule-box" style="border-color: var(--accent);">
+              <div class="rule-title" style="color: var(--accent);">⚡ 11 глаголов-исключений II спряжения — учим!</div>
+              Все остальные на <em>-ить</em> — II спряжение.<br>
+              Но есть 11 исключений, которые НЕ на <em>-ить</em>, а тоже II спряжение:<br><br>
+              <strong>Гнать, держать, смотреть, видеть,</strong><br>
+              <strong>дышать, слышать, ненавидеть,</strong><br>
+              <strong>зависеть, вертеть, обидеть, терпеть.</strong><br><br>
+              Учи их как стихотворение — тогда не забудешь!
+            </div>
+            <div class="rule-box" style="border-color: #06b6d4;">
+              <div class="rule-title" style="color: #0369a1;">🌟 Вид глагола — просто!</div>
+              <strong>Несовершенный вид</strong> — отвечает на вопрос <em>что делать?</em> (процесс, без конца)<br>
+              читать, рисовать, бежать, решать<br><br>
+              <strong>Совершенный вид</strong> — отвечает на вопрос <em>что сделать?</em> (результат, завершение)<br>
+              прочитать, нарисовать, добежать, решить<br><br>
+              Подсказка: совершенный вид почти всегда с <strong>приставкой</strong>!
+            </div>
+            <div class="stars-reward">⭐ +1 бонусная звёздочка!</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ БОНУС 5: МЕГАРАЗБОР ══ -->
+  <div class="task-card bonus-card" data-stars="1">
+    <div class="card-stripe" style="background: linear-gradient(90deg, #8b5cf6, #c084fc);"></div>
+    <div class="card-inner">
+      <div class="task-header">
+        <div class="task-icon" style="background:#f3e8ff;">🏆</div>
+        <div class="task-meta">
+          <div class="task-num">Бонус 5</div>
+          <div class="task-title">Мегаразбор: всё сразу одним текстом</div>
+        </div>
+        <span class="task-tag" style="background:#f3e8ff; color:#7c3aed;">Финальный босс</span>
+      </div>
+
+      <p class="task-instr">Прочитай текст. Выполни все задания к нему. Это похоже на то, что бывает в настоящих тестах!</p>
+
+      <div class="text-quote">
+        Ранним утром маленькая лисица³ осторожно⁴ выбралась² из норы и огляделась по сторонам.
+      </div>
+
+      <div class="sentences" style="margin-bottom:16px;">
+        <div class="sentence-item"><strong>А.</strong> Выпиши все словосочетания из предложения (не менее 4-х).</div>
+        <div class="sentence-item"><strong>Б.</strong> Сделай морфологический разбор слова <em>лисица³</em>.</div>
+        <div class="sentence-item"><strong>В.</strong> Укажи, какой частью речи является слово <em>осторожно⁴</em>. Разбери его по составу.</div>
+        <div class="sentence-item"><strong>Г.</strong> Сделай морфологический разбор слова <em>выбралась²</em>.</div>
+        <div class="sentence-item"><strong>Д.</strong> Сделай синтаксический разбор всего предложения. Нарисуй схему.</div>
+      </div>
+
+      <textarea class="textarea-field" style="min-height:200px;" placeholder="А. Словосочетания:&#10;&#10;Б. Лисица — ...&#10;&#10;В. Осторожно — ...&#10;&#10;Г. Выбралась — ...&#10;&#10;Д. Схема:"></textarea>
+
+      <button class="btn-reveal bonus-btn" onclick="reveal(this)" style="margin-top:14px">
+        <span class="btn-icon">▼</span> Посмотреть подробный разбор
+      </button>
+
+      <div class="explanation">
+        <div class="explanation-inner" style="background: linear-gradient(135deg, #faf5ff, #ede9fe);">
+          <div class="expl-header">
+            <span class="expl-emoji">🏆</span>
+            <span class="expl-title">Образцовый полный разбор</span>
+          </div>
+          <div class="expl-body">
+            <div class="rule-box" style="border-color: var(--purple);">
+              <div class="rule-title" style="color: var(--purple);">А. Словосочетания</div>
+              <strong>выбралась</strong> (откуда?) <em>из норы</em><br>
+              <strong>выбралась</strong> (когда?) <em>утром</em><br>
+              <strong>лисица</strong> (какая?) <em>маленькая</em><br>
+              <strong>утром</strong> (каким?) <em>ранним</em><br>
+              <strong>выбралась</strong> (как?) <em>осторожно</em><br>
+              ✘ <em>лисица выбралась</em> — это грамматическая основа, не словосочетание!
+            </div>
+            <div class="rule-box" style="border-color: #8b5cf6;">
+              <div class="rule-title" style="color: #7c3aed;">Б. Морфологический разбор: ЛИСИЦА</div>
+              <strong>I.</strong> Лисица — сущ.; н.ф. — <em>лисица</em><br>
+              <strong>II.</strong> нарицательное, одушевлённое, ж.р., 1 скл.<br>
+              <strong>III.</strong> ед.ч., именительный падеж<br>
+              <strong>IV.</strong> подлежащее (═══ кто? лисица)
+            </div>
+            <div class="rule-box" style="border-color: #06b6d4;">
+              <div class="rule-title" style="color: #0369a1;">В. Слово ОСТОРОЖНО</div>
+              Часть речи: <strong>наречие</strong> (выбралась <em>как?</em> осторожно)<br>
+              Состав: корень <em>-осторож-</em>, суффикс <em>-н-</em>, суффикс <em>-о</em>, нулевое окончание (наречие не изменяется!)<br>
+              <em>Кстати:</em> это наречие образовалось от прилагательного <em>осторожный</em> с помощью суффикса <em>-о</em>.
+            </div>
+            <div class="rule-box" style="border-color: #10b981;">
+              <div class="rule-title" style="color: #065f46;">Г. Морфологический разбор: ВЫБРАЛАСЬ</div>
+              <strong>I.</strong> Выбралась — глагол; н.ф. — <em>выбраться</em> (что сделать?)<br>
+              <strong>II.</strong> совершенный вид; I спряжение (выбраться → не на -ить)<br>
+              <strong>III.</strong> прошедшее время; ед.ч.; женский род<br>
+              <strong>IV.</strong> сказуемое (═══)
+            </div>
+            <div class="rule-box" style="border-color: var(--accent3);">
+              <div class="rule-title" style="color: #a06000;">Д. Синтаксический разбор</div>
+              <em>Предложение: повествовательное, невосклицательное, распространённое.</em><br><br>
+              <u>Лисица</u> [подлежащее] <u style="text-decoration:double underline">выбралась и огляделась</u> [однородные сказуемые]<br><br>
+              Второстепенные:<br>
+              — <em>ранним</em> — определение (утром <em>каким?</em>) ∿∿∿<br>
+              — <em>утром</em> — обстоятельство (выбралась <em>когда?</em>) _._._<br>
+              — <em>маленькая</em> — определение (лисица <em>какая?</em>) ∿∿∿<br>
+              — <em>из норы</em> — обстоятельство (выбралась <em>откуда?</em>) _._._<br>
+              — <em>осторожно</em> — обстоятельство (выбралась <em>как?</em>) _._._<br>
+              — <em>по сторонам</em> — обстоятельство (огляделась <em>куда?</em>) _._._<br><br>
+              <strong>Схема:</strong> [маленькая лисица ══ и ══ _._._]
+            </div>
+            <div class="stars-reward">🏆 +1 звёздочка за Финального босса!</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FINAL CARD -->
+  <div class="final-card" id="finalCard" style="display:none; animation: cardIn 0.6s ease both;">
+    <div style="font-size:48px; margin-bottom:16px">🎉</div>
+    <h2>Молодец, Вероника!</h2>
+    <p>Ты прошла всю диагностику и бонусный раунд! Это серьёзно. Теперь мы точно знаем, над чем будем работать — и ты точно напишешь тест в апреле на отлично.</p>
+    <div style="margin-top:24px; font-size:32px; letter-spacing:4px">⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐</div>
+  </div>
+
+</main>
+
+<script>
+let totalStars = 0;
+let openedCount = 0;
+const TOTAL = 13;
+
+function reveal(btn) {
+  const card = btn.closest('.task-card');
+  const panel = btn.nextElementSibling;
+  const isOpen = panel.classList.contains('open');
+
+  if (!isOpen) {
+    panel.classList.add('open');
+    btn.classList.add('open');
+    btn.innerHTML = '<span class="btn-icon">▼</span> Скрыть объяснение';
+
+    // Award star only once
+    if (!card.dataset.awarded) {
+      card.dataset.awarded = '1';
+      totalStars++;
+      openedCount++;
+      document.getElementById('starCount').textContent = totalStars;
+
+      // Animate star counter
+      const sc = document.getElementById('starCount');
+      sc.style.transform = 'scale(1.6)';
+      sc.style.transition = 'transform 0.2s';
+      setTimeout(() => { sc.style.transform = 'scale(1)'; }, 200);
+
+      // Update progress
+      const pct = Math.round((openedCount / TOTAL) * 100);
+      document.getElementById('progressFill').style.width = pct + '%';
+
+      // Show final card when all done
+      if (openedCount === TOTAL) {
+        setTimeout(() => {
+          const fc = document.getElementById('finalCard');
+          fc.style.display = 'block';
+          fc.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 400);
+      }
+    }
+  } else {
+    panel.classList.remove('open');
+    btn.classList.remove('open');
+    btn.innerHTML = '<span class="btn-icon">▼</span> Посмотреть объяснение';
+  }
+}
+</script>
+
+</body>
+</html>
