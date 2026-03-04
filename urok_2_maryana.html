@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Урок 2 — Ударение 🎯</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&family=Chewy&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sun: #FFD93D; --sky: #6BCB77; --ocean: #4D96FF;
+    --coral: #FF6B6B; --lavender: #C77DFF; --cream: #FFF8ED; --dark: #2D2D2D;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Nunito', sans-serif; background: var(--cream); color: var(--dark); min-height: 100vh; }
+
+  .hero { background: linear-gradient(135deg, #4D96FF 0%, #C77DFF 100%); padding: 40px 20px 56px; text-align: center; clip-path: ellipse(100% 88% at 50% 12%); position: relative; overflow: hidden; }
+  .hero::before { content:'🎯'; font-size:80px; position:absolute; top:15px; left:30px; opacity:.2; animation:float 3s ease-in-out infinite; }
+  .hero::after  { content:'⚡'; font-size:60px; position:absolute; top:20px; right:40px; opacity:.2; animation:float 4s ease-in-out infinite reverse; }
+  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+  .lesson-badge { display:inline-block; background:rgba(255,255,255,.25); color:white; font-size:13px; font-weight:800; letter-spacing:2px; text-transform:uppercase; padding:5px 18px; border-radius:20px; margin-bottom:12px; }
+  .hero h1 { font-family:'Chewy',cursive; font-size:clamp(1.9rem,6vw,3.1rem); color:white; text-shadow:2px 4px 0 rgba(0,0,0,.15); line-height:1.2; margin-bottom:6px; }
+  .hero p { color:rgba(255,255,255,.9); font-size:.95rem; font-weight:700; }
+
+  .progress-wrap { max-width:680px; margin:-18px auto 0; padding:0 20px; }
+  .progress-bar-bg { background:white; border-radius:12px; height:16px; box-shadow:0 4px 12px rgba(0,0,0,.1); overflow:hidden; }
+  .progress-bar-fill { background:linear-gradient(90deg,var(--sky),var(--sun)); height:100%; width:3.3%; border-radius:12px; }
+  .progress-label { text-align:right; font-size:11px; font-weight:800; color:#999; margin-top:4px; letter-spacing:1px; }
+
+  main { max-width:740px; margin:0 auto; padding:28px 18px 60px; display:flex; flex-direction:column; gap:26px; }
+
+  .card { background:white; border-radius:22px; padding:26px 28px; box-shadow:0 6px 22px rgba(0,0,0,.07); position:relative; overflow:hidden; }
+  .card::before { content:''; position:absolute; top:0; left:0; right:0; height:5px; }
+  .card.blue::before   { background:var(--ocean); }
+  .card.green::before  { background:var(--sky); }
+  .card.yellow::before { background:var(--sun); }
+  .card.red::before    { background:var(--coral); }
+  .card.purple::before { background:var(--lavender); }
+
+  .section-tag { display:inline-flex; align-items:center; gap:6px; font-size:11px; font-weight:800; letter-spacing:1.5px; text-transform:uppercase; padding:4px 12px; border-radius:10px; margin-bottom:14px; }
+  .tag-blue   { background:#E8F4FF; color:var(--ocean); }
+  .tag-green  { background:#E6F9EC; color:#2e9e4f; }
+  .tag-yellow { background:#FFF8DC; color:#b88a00; }
+  .tag-red    { background:#FFF0F0; color:var(--coral); }
+  .tag-purple { background:#F3E8FF; color:#8b34d4; }
+
+  .card h2 { font-family:'Chewy',cursive; font-size:1.45rem; margin-bottom:14px; line-height:1.2; }
+  .en { font-size:.75rem; color:#bbb; font-weight:700; font-style:italic; margin-left:3px; }
+
+  .theory-box { background:linear-gradient(135deg,#EEF4FF,#F3E8FF); border-left:4px solid var(--ocean); border-radius:12px; padding:16px 20px; font-size:.97rem; line-height:1.8; margin-bottom:14px; }
+  .big-accent { font-size:1.85rem; font-family:'Chewy',cursive; color:var(--ocean); }
+
+  .pair-grid { display:flex; flex-wrap:wrap; gap:12px; justify-content:center; margin:16px 0; }
+  .pair-card { background:white; border:3px solid #e0e0f0; border-radius:18px; padding:14px 16px; text-align:center; min-width:120px; cursor:pointer; transition:transform .2s, box-shadow .2s, border-color .2s; box-shadow:0 4px 10px rgba(0,0,0,.07); }
+  .pair-card:hover { transform:translateY(-4px); box-shadow:0 8px 20px rgba(77,150,255,.25); border-color:var(--ocean); }
+  .pair-card .word-emoji { font-size:1.7rem; margin-bottom:4px; }
+  .pair-card .word-ru { font-size:1.2rem; font-weight:900; }
+  .pair-card .word-ru .stressed { color:var(--coral); border-bottom:3px dotted var(--coral); }
+  .pair-card .word-meaning-ru { font-size:.78rem; color:#555; font-weight:700; margin-top:3px; }
+  .pair-card .word-meaning-en { font-size:.7rem; color:#bbb; font-style:italic; }
+  .pair-card.active { border-color:var(--coral); background:#FFF5F5; }
+
+  .quiz-question { background:#FAFAFA; border:2px dashed #DDD; border-radius:14px; padding:16px 18px; margin-bottom:14px; }
+  .quiz-question p { font-size:.97rem; font-weight:700; margin-bottom:10px; line-height:1.6; }
+  .quiz-options { display:flex; flex-wrap:wrap; gap:10px; }
+  .quiz-btn { background:white; border:2.5px solid #DDD; border-radius:30px; padding:8px 18px; font-family:'Nunito',sans-serif; font-size:.88rem; font-weight:700; cursor:pointer; transition:all .15s; }
+  .quiz-btn:hover    { border-color:var(--ocean); color:var(--ocean); }
+  .quiz-btn.correct  { background:#E6F9EC; border-color:var(--sky); color:#2e9e4f; pointer-events:none; }
+  .quiz-btn.wrong    { background:#FFF0F0; border-color:var(--coral); color:var(--coral); pointer-events:none; }
+  .quiz-btn:disabled { pointer-events:none; opacity:.6; }
+  .feedback { font-size:.85rem; margin-top:9px; font-weight:700; min-height:20px; line-height:1.5; }
+  .feedback.ok  { color:#2e9e4f; }
+  .feedback.err { color:var(--coral); }
+
+  .syllable-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:13px; }
+  .syllable-item { background:#F8F8FF; border:2px solid #E0E0F0; border-radius:14px; padding:13px 15px; }
+  .syllable-item label { font-weight:800; font-size:.9rem; display:block; margin-bottom:3px; }
+  .syllable-item .hint { font-size:.7rem; color:#ccc; font-style:italic; margin-bottom:7px; display:block; }
+  .syllable-item input { width:100%; border:2px solid #E0E0F0; border-radius:8px; padding:7px 11px; font-family:'Nunito',sans-serif; font-size:1rem; font-weight:700; outline:none; transition:border-color .15s; }
+  .syllable-item input:focus { border-color:var(--ocean); }
+  .syllable-item input.correct { border-color:var(--sky); background:#E6F9EC; }
+  .syllable-item input.wrong   { border-color:var(--coral); background:#FFF0F0; }
+  .ans-reveal { font-size:.78rem; color:#2e9e4f; margin-top:5px; display:none; font-weight:700; }
+
+  .clap-grid { display:flex; flex-wrap:wrap; gap:11px; justify-content:center; }
+  .clap-btn { background:white; border:2.5px solid #DDD; border-radius:16px; padding:11px 16px; cursor:pointer; font-family:'Nunito',sans-serif; font-weight:800; font-size:.88rem; transition:all .2s; text-align:center; }
+  .clap-btn:hover { border-color:var(--lavender); transform:translateY(-3px); }
+  .clap-btn .clap-ru { font-size:.97rem; }
+  .clap-btn .clap-en { font-size:.68rem; color:#bbb; font-style:italic; margin-top:2px; }
+  .clap-btn.active { background:var(--lavender); border-color:var(--lavender); color:white; }
+  .clap-btn.active .clap-en { color:rgba(255,255,255,.7); }
+
+  .check-btn { display:inline-block; background:linear-gradient(135deg,var(--ocean),var(--lavender)); color:white; border:none; border-radius:30px; padding:11px 30px; font-family:'Nunito',sans-serif; font-size:.97rem; font-weight:800; cursor:pointer; margin-top:15px; transition:transform .15s, box-shadow .15s; box-shadow:0 4px 12px rgba(77,150,255,.3); }
+  .check-btn:hover { transform:translateY(-2px); box-shadow:0 8px 20px rgba(77,150,255,.4); }
+
+  .reading-link { display:flex; align-items:center; gap:14px; background:linear-gradient(135deg,#E6F9EC,#E8F4FF); border-radius:16px; padding:15px 18px; text-decoration:none; color:inherit; transition:transform .2s; border:2px solid transparent; margin-bottom:10px; }
+  .reading-link:hover { transform:translateY(-3px); border-color:var(--sky); }
+  .reading-link .link-icon { font-size:1.7rem; }
+  .reading-link .link-title { font-weight:800; font-size:.92rem; }
+  .reading-link .link-sub   { font-size:.72rem; color:#aaa; }
+
+  .hw-list { list-style:none; display:flex; flex-direction:column; gap:11px; }
+  .hw-list li { display:flex; align-items:flex-start; gap:12px; background:#FAFAFA; border-radius:12px; padding:13px 16px; font-size:.9rem; line-height:1.65; }
+  .hw-num { background:var(--sun); color:var(--dark); font-weight:900; font-size:.8rem; min-width:26px; height:26px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:2px; }
+
+  .info-note { background:#FFF8DC; border-radius:12px; padding:12px 17px; font-size:.87rem; line-height:1.65; margin-top:13px; }
+
+  .star-row { display:flex; gap:5px; justify-content:center; margin-top:7px; }
+  .star { font-size:1.9rem; cursor:pointer; filter:grayscale(1); opacity:.3; transition:transform .15s; }
+  .star.lit { filter:none; opacity:1; animation:pop .3s; }
+  @keyframes pop { 0%{transform:scale(1)} 50%{transform:scale(1.45)} 100%{transform:scale(1)} }
+
+  @media(max-width:500px){ .card{padding:19px 14px;} }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="lesson-badge">Блок 1 · Урок 2</div>
+  <h1>Ударение — дирижёр слова 🎼<br>
+    <small style="font-size:.52em;opacity:.85">Word stress — the conductor of a word!</small>
+  </h1>
+  <p>5 марта 2026 · 45 минут</p>
+</header>
+
+<div class="progress-wrap">
+  <div class="progress-bar-bg"><div class="progress-bar-fill"></div></div>
+  <div class="progress-label">УРОК 2 / 60</div>
+</div>
+
+<main>
+
+  <!-- 1. WARM-UP -->
+  <section class="card blue">
+    <div class="section-tag tag-blue">🔁 Разминка · Warm-up</div>
+    <h2>Помним с прошлого урока?</h2>
+    <p style="font-size:.92rem;line-height:1.75;margin-bottom:16px;">
+      На прошлом уроке <em>(last lesson)</em> мы узнали: звуки мы <strong>слышим</strong> <span class="en">we hear sounds</span>, буквы мы <strong>видим</strong> <span class="en">we see letters</span>.<br>
+      Гласных <span class="en">(vowels)</span> в русском языке 6: <strong>А, О, У, Э, И, Ы</strong>. Все остальные — согласные <span class="en">(consonants)</span>.
+    </p>
+
+    <div class="quiz-question">
+      <p>⚡ Какой из этих звуков <strong>гласный</strong>? <span class="en">Which one is a vowel?</span></p>
+      <div class="quiz-options">
+        <button class="quiz-btn" onclick="answer(this,'wrong','Нет — М это согласный. Nope — М is a consonant.')">М</button>
+        <button class="quiz-btn" onclick="answer(this,'correct','Да! У — гласный звук. Yes! У is a vowel 🎉')">У</button>
+        <button class="quiz-btn" onclick="answer(this,'wrong','Нет — С это согласный. No — С is a consonant.')">С</button>
+        <button class="quiz-btn" onclick="answer(this,'wrong','Нет — Н это согласный. No — Н is a consonant.')">Н</button>
+      </div>
+      <div class="feedback" id="fb0"></div>
+    </div>
+
+    <div class="quiz-question">
+      <p>⚡ Сколько <strong>гласных букв</strong> <span class="en">(vowel letters)</span> в слове <strong>КОРОВА</strong> <span class="en">(cow)</span>?</p>
+      <div class="quiz-options">
+        <button class="quiz-btn" onclick="answer(this,'wrong','Попробуй ещё! К-О-Р-О-В-А — выдели гласные.')">2</button>
+        <button class="quiz-btn" onclick="answer(this,'correct','Верно! О, О, А — три гласных. Correct — three vowels! 🐄')">3</button>
+        <button class="quiz-btn" onclick="answer(this,'wrong','Многовато! Считай только гласные: О, О, А.')">4</button>
+      </div>
+      <div class="feedback" id="fb1"></div>
+    </div>
+  </section>
+
+  <!-- 2. THEORY -->
+  <section class="card purple">
+    <div class="section-tag tag-purple">📖 Новая тема · New topic</div>
+    <h2>Что такое ударение? <span style="font-size:.58em;color:#ccc">What is word stress?</span></h2>
+
+    <div class="theory-box">
+      <div style="margin-bottom:10px;"><span class="big-accent">Уда́рение</span> <span class="en">= word stress</span></div>
+      Один слог <span class="en">(syllable)</span> в слове произносится <strong>громче</strong> <span class="en">(louder)</span> и <strong>дольше</strong> <span class="en">(longer)</span> — это <strong>ударный слог</strong> <span class="en">(stressed syllable)</span>.<br><br>
+      Над ударной гласной ставим знак <strong style="font-size:1.4rem"> ´ </strong><br>
+      Пример: &nbsp;<strong>со-ба́-ка</strong> <span class="en">dog</span> → ударение на слоге <strong style="color:var(--coral)">БА</strong>
+    </div>
+
+    <div class="info-note">
+      🪄 <strong>Важно!</strong> В русском языке ударение <strong>меняет смысл слова</strong> <span class="en">(changes the meaning!)</span><br>
+      В английском такого нет — поэтому это нужно запомнить! <span class="en">English doesn't do this, so it's extra important to learn!</span>
+    </div>
+
+    <p style="font-weight:800;font-size:.97rem;margin:18px 0 10px;">👇 Нажми на слово, чтобы узнать его смысл · <span class="en">Tap a word to learn its meaning</span></p>
+
+    <div class="pair-grid" id="pairGrid"></div>
+    <div id="pairMsg" style="text-align:center;font-size:.97rem;font-weight:800;min-height:28px;color:var(--ocean);margin-top:8px;line-height:1.55;"></div>
+  </section>
+
+  <!-- 3. EXERCISE 1 — which syllable? -->
+  <section class="card yellow">
+    <div class="section-tag tag-yellow">✏️ Упражнение 1 · Exercise 1</div>
+    <h2>Где ударение? <span style="font-size:.58em;color:#ccc">Which syllable is stressed?</span></h2>
+    <p style="font-size:.91rem;margin-bottom:16px;line-height:1.65;">
+      Нажми на <strong>ударный слог</strong> в каждом слове <span class="en">(tap the stressed syllable in each word)</span>.
+    </p>
+    <div id="stressGame"></div>
+    <button class="check-btn" onclick="checkStress()">Проверить ✅</button>
+    <div id="stressResult" style="margin-top:13px;font-weight:800;font-size:.97rem;"></div>
+  </section>
+
+  <!-- 4. EXERCISE 2 — омографы -->
+  <section class="card red">
+    <div class="section-tag tag-red">🎯 Упражнение 2 · Exercise 2</div>
+    <h2>Одно слово — два смысла! <span style="font-size:.58em;color:#ccc">Same spelling, different meaning</span></h2>
+    <p style="font-size:.91rem;margin-bottom:14px;line-height:1.65;">
+      Прочитай предложение и выбери правильный смысл слова.<br>
+      <span class="en">Read the sentence and choose the correct meaning.</span>
+    </p>
+
+    <div class="quiz-question">
+      <p>1. «Мама испекла <em>(baked)</em> пирог <em>(pie)</em> с <strong>му́кой</strong>.»</p>
+      <div class="quiz-options">
+        <button class="quiz-btn" onclick="answer(this,'wrong','Нет! Мука́ (ударение на А) = suffering 😢. Му́ка (ударение на У) = flour для выпечки.')">😢 страдание <span class="en">suffering</span></button>
+        <button class="quiz-btn" onclick="answer(this,'correct','Правильно! Му́ка = flour 🍞 Ударение на У! Correct!')">🍞 мука для хлеба <span class="en">flour</span></button>
+      </div>
+      <div class="feedback" id="fb2"></div>
+    </div>
+
+    <div class="quiz-question">
+      <p>2. «Рыцарь <em>(knight)</em> жил в красивом <strong>за́мке</strong>.»</p>
+      <div class="quiz-options">
+        <button class="quiz-btn" onclick="answer(this,'correct','Верно! За́мок = castle 🏰 Ударение на ЗА! Correct!')">🏰 замок <span class="en">castle</span></button>
+        <button class="quiz-btn" onclick="answer(this,'wrong','Нет! Замо́к (ударение на О) = lock 🔒. За́мок (ударение на ЗА) = castle.')">🔒 замок <span class="en">door lock</span></button>
+      </div>
+      <div class="feedback" id="fb3"></div>
+    </div>
+
+    <div class="quiz-question">
+      <p>3. «Где мой <strong>замо́к</strong>? Я не могу <em>(can't)</em> закрыть <em>(close)</em> дверь <em>(door)</em>.»</p>
+      <div class="quiz-options">
+        <button class="quiz-btn" onclick="answer(this,'wrong','Нет. Ударение на О говорит нам: замо́к = lock 🔒.')">🏰 замок <span class="en">castle</span></button>
+        <button class="quiz-btn" onclick="answer(this,'correct','Правильно! Замо́к = lock 🔒 Ударение на О! Correct!')">🔒 замок <span class="en">door lock</span></button>
+      </div>
+      <div class="feedback" id="fb4"></div>
+    </div>
+  </section>
+
+  <!-- 5. EXERCISE 3 — syllables written -->
+  <section class="card green">
+    <div class="section-tag tag-green">📝 Упражнение 3 · Exercise 3</div>
+    <h2>Напиши слоги + ударение <span style="font-size:.58em;color:#ccc">Write syllables + stress</span></h2>
+    <p style="font-size:.91rem;margin-bottom:5px;line-height:1.65;">
+      Раздели слово чёрточкой <strong>-</strong> и поставь <strong>´</strong> над ударной гласной.<br>
+      <span class="en">Split the word with dashes and mark the stressed vowel with ´</span>
+    </p>
+    <p style="font-size:.8rem;color:#aaa;margin-bottom:16px;">Пример: <strong>со-ба́-ка</strong> <span class="en">(dog)</span></p>
+
+    <div class="syllable-grid">
+      <div class="syllable-item">
+        <label>🌳 дерево <span class="en">tree</span></label>
+        <span class="hint">3 syllables / 3 слога</span>
+        <input type="text" placeholder="де-ре-во" id="s1" data-ans="де-ре-во" data-ans2="де́-ре-во">
+        <div class="ans-reveal" id="ar1">✅ де́-ре-во</div>
+      </div>
+      <div class="syllable-item">
+        <label>🌦️ погода <span class="en">weather</span></label>
+        <span class="hint">3 syllables / 3 слога</span>
+        <input type="text" placeholder="по-го-да" id="s2" data-ans="по-го-да" data-ans2="по-го́-да">
+        <div class="ans-reveal" id="ar2">✅ по-го́-да</div>
+      </div>
+      <div class="syllable-item">
+        <label>📚 учебник <span class="en">textbook</span></label>
+        <span class="hint">3 syllables / 3 слога</span>
+        <input type="text" id="s3" data-ans="у-чеб-ник" data-ans2="у-че́б-ник">
+        <div class="ans-reveal" id="ar3">✅ у-че́б-ник</div>
+      </div>
+      <div class="syllable-item">
+        <label>🍏 яблоко <span class="en">apple</span></label>
+        <span class="hint">3 syllables / 3 слога</span>
+        <input type="text" id="s4" data-ans="яб-ло-ко" data-ans2="я́б-ло-ко">
+        <div class="ans-reveal" id="ar4">✅ я́б-ло-ко</div>
+      </div>
+      <div class="syllable-item">
+        <label>🌙 ночник <span class="en">night lamp</span></label>
+        <span class="hint">2 syllables / 2 слога</span>
+        <input type="text" id="s5" data-ans="ноч-ник" data-ans2="ноч-ни́к">
+        <div class="ans-reveal" id="ar5">✅ ноч-ни́к</div>
+      </div>
+    </div>
+    <button class="check-btn" onclick="checkSyllables()">Проверить ✅</button>
+    <div id="syllResult" style="margin-top:13px;font-weight:800;font-size:.97rem;"></div>
+  </section>
+
+  <!-- 6. CLAP GAME -->
+  <section class="card purple">
+    <div class="section-tag tag-purple">🎵 Ритм-игра · Rhythm game</div>
+    <h2>Хлопай на ударный слог! <span style="font-size:.58em;color:#ccc">Clap on the stressed syllable!</span></h2>
+    <p style="font-size:.91rem;margin-bottom:15px;line-height:1.65;">
+      Нажми на слово — увидишь разбивку. Произнеси вслух и <strong>хлопни</strong> на выделенный слог!<br>
+      <span class="en">Tap a word, see the syllables, say it out loud and clap on the highlighted syllable!</span>
+    </p>
+    <div class="clap-grid" id="clapGrid"></div>
+    <div id="clapMsg" style="text-align:center;margin-top:15px;font-size:1.05rem;font-weight:800;min-height:32px;color:var(--lavender);line-height:1.55;"></div>
+  </section>
+
+  <!-- 7. READING -->
+  <section class="card blue">
+    <div class="section-tag tag-blue">📖 Чтение · Reading</div>
+    <h2>Читаем вслух <span style="font-size:.58em;color:#ccc">Read aloud</span></h2>
+    <p style="font-size:.91rem;margin-bottom:13px;line-height:1.65;">
+      Открой страничку с текстами. При чтении <strong>стучи пальцем</strong> по столу на каждом ударном слоге — как барабанщик <span class="en">(like a drummer)</span>!<br>
+      <span class="en">Open the reading page. Tap your finger on the desk for every stressed syllable.</span>
+    </p>
+    <a class="reading-link" href="https://alyonazinevichtutorrussian.github.io/russian-materials/" target="_blank">
+      <span class="link-icon">🔗</span>
+      <div>
+        <div class="link-title">Открыть материалы для чтения · Reading materials</div>
+        <div class="link-sub">alyonazinevichtutorrussian.github.io</div>
+      </div>
+    </a>
+  </section>
+
+  <!-- 8. HOMEWORK -->
+  <section class="card yellow">
+    <div class="section-tag tag-yellow">🏠 Домашнее задание · Homework</div>
+    <h2>До следующего урока <span style="font-size:.58em;color:#ccc">Before next lesson</span></h2>
+    <ul class="hw-list">
+      <li>
+        <div class="hw-num">1</div>
+        <div>
+          Запиши <strong>5 любых слов</strong> <span class="en">(any 5 words)</span>. Раздели на слоги и поставь ударение.<br>
+          Пример: <strong>ко-ро́-ва</strong> 🐄
+        </div>
+      </li>
+      <li>
+        <div class="hw-num">2</div>
+        <div>
+          Нарисуй или напиши оба значения: <strong>за́мок</strong> 🏰 <span class="en">castle</span> и <strong>замо́к</strong> 🔒 <span class="en">lock</span>
+        </div>
+      </li>
+      <li>
+        <div class="hw-num">3</div>
+        <div>
+          Повтори тему гласных и согласных <span class="en">(vowels &amp; consonants)</span> — ссылки с прошлого урока:<br><br>
+          <a href="https://drive.google.com/file/d/1AdhEZELqa6zkM7b2epBFzYhsETe9SSjR/view?usp=sharing" target="_blank" style="color:var(--ocean);font-weight:800;text-decoration:none;">📺 Теория (видео)</a>
+          &nbsp;·&nbsp;
+          <a href="https://learningapps.org/11990874" target="_blank" style="color:var(--ocean);font-weight:800;text-decoration:none;">🎮 Игра</a>
+          &nbsp;·&nbsp;
+          <a href="https://alyonazinevichtutorrussian.github.io/russian-materials/urok_bilingual.html" target="_blank" style="color:var(--ocean);font-weight:800;text-decoration:none;">✏️ Упражнения</a>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <!-- 9. REFLECTION -->
+  <section class="card green">
+    <div class="section-tag tag-green">🌟 Рефлексия · Self-reflection</div>
+    <h2>Как прошёл урок? <span style="font-size:.58em;color:#ccc">How was the lesson?</span></h2>
+    <p style="font-size:.91rem;margin-bottom:14px;line-height:1.6;">Нажми на звёздочки · <span class="en">Tap the stars to rate from 1–10</span></p>
+
+    <p style="font-weight:800;margin-bottom:6px;">Насколько ты была активна? <span class="en">How active were you?</span></p>
+    <div class="star-row" id="stars1"></div>
+
+    <p style="font-weight:800;margin-top:17px;margin-bottom:6px;">Насколько тема была сложной? <span class="en">How difficult was the topic?</span></p>
+    <div class="star-row" id="stars2"></div>
+
+    <p style="font-weight:800;margin-top:17px;margin-bottom:6px;">Насколько хорошо ты поняла? <span class="en">How well did you understand?</span></p>
+    <div class="star-row" id="stars3"></div>
+
+    <div id="balloons" style="display:none;justify-content:center;gap:6px;font-size:1.6rem;margin-top:14px;">🎈🎊🌟🎉🎈</div>
+  </section>
+
+</main>
+
+<script>
+// Quiz helper
+function answer(btn, type, msg) {
+  const q = btn.closest('.quiz-question');
+  q.querySelectorAll('.quiz-btn').forEach(b => b.disabled = true);
+  btn.classList.add(type);
+  const fb = q.querySelector('.feedback');
+  fb.textContent = msg;
+  fb.className = 'feedback ' + (type === 'correct' ? 'ok' : 'err');
+}
+
+// Word pairs
+const pairs = [
+  { emoji1:'🏰', ru1:'за́мок',  meaning1:'замок-крепость',     en1:'castle',
+    emoji2:'🔒', ru2:'замо́к',  meaning2:'замок для двери',      en2:'door lock',
+    msg:'За́мок = castle 🏰 (stress on ЗА)  ·  Замо́к = lock 🔒 (stress on МО)' },
+  { emoji1:'😢', ru1:'му́ка',   meaning1:'страдание',            en1:'suffering',
+    emoji2:'🍞', ru2:'мука́',   meaning2:'для хлеба / для торта', en2:'flour',
+    msg:'Му́ка = suffering 😢 (stress on МУ)  ·  Мука́ = flour 🍞 (stress on КА)' },
+  { emoji1:'🗺️', ru1:'а́тлас', meaning1:'книга с картами',      en1:'atlas / map book',
+    emoji2:'🧵', ru2:'атла́с',  meaning2:'блестящая ткань',       en2:'satin fabric',
+    msg:'А́тлас = atlas 🗺️ (stress on А)  ·  Атла́с = satin 🧵 (stress on ЛА)' },
+];
+
+function buildPairs() {
+  const grid = document.getElementById('pairGrid');
+  pairs.forEach((p) => {
+    [
+      { emoji:p.emoji1, ru:p.ru1, meaning:p.meaning1, en:p.en1 },
+      { emoji:p.emoji2, ru:p.ru2, meaning:p.meaning2, en:p.en2 },
+    ].forEach(item => {
+      const card = document.createElement('div');
+      card.className = 'pair-card';
+      card.innerHTML = `
+        <div class="word-emoji">${item.emoji}</div>
+        <div class="word-ru">${item.ru}</div>
+        <div class="word-meaning-ru">${item.meaning}</div>
+        <div class="word-meaning-en">${item.en}</div>`;
+      card.onclick = () => {
+        document.querySelectorAll('.pair-card').forEach(c => c.classList.remove('active'));
+        card.classList.add('active');
+        document.getElementById('pairMsg').textContent = p.msg;
+      };
+      grid.appendChild(card);
+    });
+  });
+}
+buildPairs();
+
+// Stress game
+const stressWords = [
+  { label:'👩 мама · mom',           syllables:['МА','МА'],       correct:0 },
+  { label:'🐄 корова · cow',         syllables:['КО','РО','ВА'],  correct:1 },
+  { label:'☁️ облако · cloud',       syllables:['ОБ','ЛА','КО'], correct:0 },
+  { label:'🐶 щенок · puppy',        syllables:['ЩЕ','НОК'],      correct:1 },
+  { label:'📖 книга · book',         syllables:['КНИ','ГА'],      correct:0 },
+  { label:'🎒 портфель · schoolbag', syllables:['ПОРТ','ФЕЛЬ'],   correct:0 },
+];
+let stressSel = new Array(stressWords.length).fill(-1);
+
+function buildStressGame() {
+  const div = document.getElementById('stressGame');
+  div.innerHTML = '';
+  stressWords.forEach((item, wi) => {
+    const row = document.createElement('div');
+    row.style.cssText = 'display:flex;align-items:center;gap:10px;margin-bottom:13px;flex-wrap:wrap;';
+    const lbl = document.createElement('span');
+    lbl.textContent = item.label;
+    lbl.style.cssText = 'min-width:170px;font-weight:800;font-size:.87rem;';
+    row.appendChild(lbl);
+    item.syllables.forEach((syl, si) => {
+      const btn = document.createElement('button');
+      btn.textContent = syl;
+      btn.className = 'quiz-btn';
+      btn.style.letterSpacing = '1.5px';
+      btn.id = `syl_${wi}_${si}`;
+      btn.onclick = () => {
+        item.syllables.forEach((_,i) => {
+          const b = document.getElementById(`syl_${wi}_${i}`);
+          b.style.background=''; b.style.borderColor=''; b.style.color='';
+        });
+        stressSel[wi] = si;
+        btn.style.background='var(--ocean)'; btn.style.borderColor='var(--ocean)'; btn.style.color='white';
+      };
+      row.appendChild(btn);
+    });
+    div.appendChild(row);
+  });
+}
+buildStressGame();
+
+function checkStress() {
+  let ok = 0;
+  stressWords.forEach((item, wi) => {
+    item.syllables.forEach((_,i) => {
+      const b = document.getElementById(`syl_${wi}_${i}`);
+      b.style.background=''; b.style.borderColor=''; b.style.color='';
+    });
+    const rightBtn = document.getElementById(`syl_${wi}_${item.correct}`);
+    rightBtn.style.background='#E6F9EC'; rightBtn.style.borderColor='var(--sky)';
+    if (stressSel[wi] >= 0 && stressSel[wi] !== item.correct) {
+      document.getElementById(`syl_${wi}_${stressSel[wi]}`).style.background='#FFF0F0';
+      document.getElementById(`syl_${wi}_${stressSel[wi]}`).style.borderColor='var(--coral)';
+    }
+    if (stressSel[wi] === item.correct) ok++;
+  });
+  const r = document.getElementById('stressResult');
+  r.textContent = `${ok}/${stressWords.length} ` +
+    (ok===stressWords.length ? '🎉 Отлично! Perfect!' : ok>=4 ? '👍 Хорошо! Good job!' : '📚 Попробуем ещё! Try again!');
+  r.style.color = ok===stressWords.length ? '#2e9e4f' : ok>=4 ? '#b88a00' : 'var(--coral)';
+}
+
+// Syllable check
+function norm(s) {
+  return s.trim().toLowerCase()
+    .replace(/ё/g,'е').replace(/[́̀´`''']/g,'').replace(/\s+/g,'');
+}
+function checkSyllables() {
+  let ok = 0;
+  [1,2,3,4,5].forEach(i => {
+    const inp = document.getElementById('s'+i);
+    const ar  = document.getElementById('ar'+i);
+    const user = norm(inp.value);
+    const a1   = norm(inp.dataset.ans);
+    const a2   = norm(inp.dataset.ans2 || '');
+    if (inp.value.trim() === '') { inp.className=''; ar.style.display='none'; return; }
+    if (user===a1 || user===a2) {
+      inp.className='correct'; ok++; ar.style.display='none';
+    } else {
+      inp.className='wrong'; ar.style.display='block';
+    }
+  });
+  const r = document.getElementById('syllResult');
+  r.textContent = `${ok}/5 ` +
+    (ok>=4 ? '🎉 Супер! Awesome!' : ok>=3 ? '👍 Неплохо! Not bad!' : 'Попробуй ещё раз! Try again!');
+  r.style.color = ok>=4 ? '#2e9e4f' : ok>=3 ? '#b88a00' : 'var(--coral)';
+}
+
+// Clap game
+const clapWords = [
+  { ru:'радость', en:'joy',       syl:'<b style="color:var(--coral)">РА</b>-дость',    note:'stress on РА' },
+  { ru:'молоко',  en:'milk',      syl:'мо-ло-<b style="color:var(--coral)">КО</b>',    note:'stress on КО' },
+  { ru:'карандаш',en:'pencil',    syl:'ка-ран-<b style="color:var(--coral)">ДАШ</b>',  note:'stress on ДАШ' },
+  { ru:'учитель', en:'teacher',   syl:'<b style="color:var(--coral)">У</b>-чи-тель',   note:'stress on У' },
+  { ru:'машина',  en:'car',       syl:'ма-<b style="color:var(--coral)">ШИ</b>-на',    note:'stress on ШИ' },
+  { ru:'ребята',  en:'guys/kids', syl:'ре-<b style="color:var(--coral)">БЯ</b>-та',    note:'stress on БЯ' },
+];
+
+function buildClap() {
+  const grid = document.getElementById('clapGrid');
+  clapWords.forEach(w => {
+    const btn = document.createElement('button');
+    btn.className = 'clap-btn';
+    btn.innerHTML = `<div class="clap-ru">${w.ru}</div><div class="clap-en">${w.en}</div>`;
+    btn.onclick = () => {
+      document.querySelectorAll('.clap-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('clapMsg').innerHTML =
+        `👏 ${w.syl} &nbsp;<span style="color:#999;font-size:.78rem">(${w.note})</span>`;
+    };
+    grid.appendChild(btn);
+  });
+}
+buildClap();
+
+// Stars
+['stars1','stars2','stars3'].forEach(id => {
+  const wrap = document.getElementById(id);
+  for(let i=0;i<10;i++){
+    const s = document.createElement('span');
+    s.className = 'star'; s.textContent = '⭐';
+    s.onclick = () => {
+      wrap.querySelectorAll('.star').forEach((st,j) => st.classList.toggle('lit', j<=i));
+      const allLit = ['stars1','stars2','stars3'].every(
+        sid => document.querySelector('#'+sid+' .star.lit')
+      );
+      if(allLit) document.getElementById('balloons').style.display='flex';
+    };
+    wrap.appendChild(s);
+  }
+});
+</script>
+</body>
+</html>
