@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Русский язык · 4 класс · Вероника</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f0e1a;
+    --card: #1a1830;
+    --accent1: #ff6b6b;
+    --accent2: #ffd93d;
+    --accent3: #6bcb77;
+    --accent4: #4d96ff;
+    --accent5: #c77dff;
+    --accent6: #ff9f43;
+    --text: #f0eeff;
+    --muted: #9993cc;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Nunito', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Starfield background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 80% 10%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 45% 80%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 70% 60%, rgba(255,255,255,0.2) 0%, transparent 100%),
+      radial-gradient(2px 2px at 10% 70%, rgba(255,255,255,0.2) 0%, transparent 100%),
+      radial-gradient(1px 1px at 90% 40%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 55% 20%, rgba(255,255,255,0.25) 0%, transparent 100%),
+      radial-gradient(1px 1px at 35% 55%, rgba(255,255,255,0.2) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* HEADER */
+  header {
+    padding: 48px 0 32px;
+    text-align: center;
+  }
+
+  .header-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--accent5), var(--accent4));
+    color: white;
+    font-family: 'Unbounded', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 6px 18px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+  }
+
+  h1 {
+    font-family: 'Unbounded', sans-serif;
+    font-size: clamp(28px, 5vw, 52px);
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 12px;
+    background: linear-gradient(135deg, #fff 0%, var(--accent2) 50%, var(--accent1) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .subtitle {
+    color: var(--muted);
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  /* PROGRESS BAR */
+  .progress-section {
+    background: var(--card);
+    border-radius: 20px;
+    padding: 24px 28px;
+    margin: 32px 0;
+    border: 1px solid rgba(255,255,255,0.07);
+  }
+
+  .progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+  }
+
+  .progress-label {
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .progress-count {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--accent2);
+  }
+
+  .progress-bar {
+    height: 10px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    border-radius: 10px;
+    background: linear-gradient(90deg, var(--accent5), var(--accent4));
+    width: 0%;
+    transition: width 1s ease;
+  }
+
+  /* SECTION TITLES */
+  .section-title {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin: 40px 0 16px;
+  }
+
+  /* LESSON GRID */
+  .lessons-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .lesson-card {
+    background: var(--card);
+    border-radius: 18px;
+    padding: 22px;
+    text-decoration: none;
+    color: var(--text);
+    border: 1px solid rgba(255,255,255,0.07);
+    transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+    display: block;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .lesson-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--card-accent);
+    border-radius: 18px 18px 0 0;
+  }
+
+  .lesson-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(255,255,255,0.15);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+  }
+
+  .lesson-card.locked {
+    opacity: 0.45;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  .lesson-card.done .lesson-status {
+    background: var(--accent3);
+    color: #0f0e1a;
+  }
+
+  .card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 14px;
+  }
+
+  .card-emoji {
+    font-size: 32px;
+    line-height: 1;
+  }
+
+  .lesson-status {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.1);
+    color: var(--muted);
+  }
+
+  .lesson-number {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+
+  .lesson-title {
+    font-size: 16px;
+    font-weight: 800;
+    margin-bottom: 8px;
+    line-height: 1.3;
+  }
+
+  .lesson-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 12px;
+  }
+
+  .tag {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.06);
+    color: var(--muted);
+  }
+
+  /* FINAL TEST */
+  .final-card {
+    background: linear-gradient(135deg, #1a1235, #2a1a3a);
+    border: 2px solid var(--accent5);
+    border-radius: 20px;
+    padding: 28px;
+    text-decoration: none;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    margin-top: 24px;
+    box-shadow: 0 0 40px rgba(199,125,255,0.15);
+  }
+
+  .final-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 60px rgba(199,125,255,0.25);
+  }
+
+  .final-card.locked {
+    opacity: 0.4;
+    pointer-events: none;
+  }
+
+  .final-icon {
+    font-size: 52px;
+    flex-shrink: 0;
+  }
+
+  .final-title {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 18px;
+    font-weight: 900;
+    margin-bottom: 6px;
+  }
+
+  .final-desc {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 48px 0 32px;
+    color: var(--muted);
+    font-size: 13px;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-8px); }
+  }
+
+  .floating {
+    animation: float 4s ease-in-out infinite;
+    display: inline-block;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <div class="header-badge">📚 Курс подготовки</div>
+    <h1>Русский язык<br>4 класс</h1>
+    <p class="subtitle">Подготовка к итоговому тестированию · Вероника</p>
+    <p style="color: var(--muted); font-size:14px;">8 уроков + итоговый тест · ~4 недели</p>
+  </header>
+
+  <div class="progress-section">
+    <div class="progress-header">
+      <span class="progress-label">⚡ Прогресс курса</span>
+      <span class="progress-count" id="progressCount">0 / 8</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+  </div>
+
+  <p class="section-title">🔴 Приоритет 1 — Разборы</p>
+
+  <div class="lessons-grid">
+    <a href="lesson1.html" class="lesson-card" style="--card-accent: linear-gradient(90deg, #ff6b6b, #ff9f43);" data-lesson="1">
+      <div class="card-top">
+        <span class="card-emoji">🔬</span>
+        <span class="lesson-status" id="status-1">Начать</span>
+      </div>
+      <div class="lesson-number">Урок 1</div>
+      <div class="lesson-title">Морфологический разбор существительного</div>
+      <div class="lesson-tags">
+        <span class="tag">Теория</span>
+        <span class="tag">Тренажёр</span>
+        <span class="tag">3 уровня</span>
+      </div>
+    </a>
+
+    <a href="lesson2.html" class="lesson-card" style="--card-accent: linear-gradient(90deg, #ff9f43, #ffd93d);" data-lesson="2">
+      <div class="card-top">
+        <span class="card-emoji">⚡</span>
+        <span class="lesson-status" id="status-2">Начать</span>
+      </div>
+      <div class="lesson-number">Урок 2</div>
+      <div class="lesson-title">Морфологический разбор прилагательного и глагола</div>
+      <div class="lesson-tags">
+        <span class="tag">Теория</span>
+        <span class="tag">Тренажёр</span>
+        <span class="tag">Спряжение</span>
+      </div>
+    </a>
+
+    <a href="lesson3.html" class="lesson-card" style="--card-accent: linear-gradient(90deg, #4d96ff, #6bcb77);" data-lesson="3">
+      <div class="card-top">
+        <span class="card-emoji">📐</span>
+        <span class="lesson-status" id="status-3">Начать</span>
+      </div>
+      <div class="lesson-number">Урок 3</div>
+      <div class="lesson-title">Синтаксический разбор предложения</div>
+      <div class="lesson-tags">
+        <span class="tag">Члены предложения</span>
+        <span class="tag">Схема</span>
+        <span class="tag">Тест</span>
+      </div>
+    </a>
+  </div>
+
+  <p class="section-title">🟡 Приоритет 2 — Грамматика</p>
+
+  <div class="lessons-grid">
+    <a href="lesson4.html" class="lesson-card" style="--card-accent: linear-gradient(90deg, #6bcb77, #4d96ff);" data-lesson="4">
+      <div class="card-top">
+        <span class="card-emoji">🧩</span>
+        <span class="lesson-status" id="status-4">Начать</span>
+      </div>
+      <div class="lesson-number">Урок 4</div>
+      <div class="lesson-title">Части речи. Состав слова</div>
+      <div class="lesson-tags">
+        <span class="tag">8 частей речи</span>
+        <span class="tag">Морфемика</span>
+        <span class="tag">Тренажёр</span>
+      </div>
+    </a>
+
+    <a href="lesson5.html" class="lesson-card" style="--card-accent: linear-gradient(90deg, #c77dff, #4d96ff);" data-lesson="5">
+      <div class="card-top">
+        <span class="card-emoji">🔗</span>
+        <span class="lesson-status" id="status-5">Начать</span>
+      </div>
+      <div class="lesson-number">Урок 5</div>
+      <div class="lesson-title">Простые и сложные предложения. Однородные члены</div>
+      <div class="lesson-tags">
+        <span class="tag">Запятые</span>
+        <span class="tag">Союзы</span>
+        <span class="tag">Схемы</span>
+      </div>
+    </a>
+
+    <a href="lesson6.html" class="lesson-card" style="--card-accent: linear-gradient(90deg, #ffd93d, #ff6b6b);" data-lesson="6">
+      <div class="card-top">
+        <span class="card-emoji">🏛️</span>
+        <span class="lesson-status" id="status-6">Начать</span>
+      </div>
+      <div class="lesson-number">Урок 6</div>
+      <div class="lesson-title">Склонение. Падежи существительных и прилагательных</div>
+      <div class="lesson-tags">
+        <span class="tag">3 склонения</span>
+        <span class="tag">Окончания</span>
+        <span class="tag">Тест</span>
+      </div>
+    </a>
+  </div>
+
+  <p class="section-title">🟢 Приоритет 3 — Орфография</p>
+
+  <div class="lessons-grid">
+    <a href="lesson7.html" class="lesson-card" style="--card-accent: linear-gradient(90deg, #ff6b6b, #c77dff);" data-lesson="7">
+      <div class="card-top">
+        <span class="card-emoji">✏️</span>
+        <span class="lesson-status" id="status-7">Начать</span>
+      </div>
+      <div class="lesson-number">Урок 7</div>
+      <div class="lesson-title">Орфография: безударные окончания, -тся/-ться, ь после шипящих</div>
+      <div class="lesson-tags">
+        <span class="tag">Правила</span>
+        <span class="tag">Диктант</span>
+        <span class="tag">Разбор ошибок</span>
+      </div>
+    </a>
+
+    <a href="lesson8.html" class="lesson-card" style="--card-accent: linear-gradient(90deg, #6bcb77, #ffd93d);" data-lesson="8">
+      <div class="card-top">
+        <span class="card-emoji">🚀</span>
+        <span class="lesson-status" id="status-8">Начать</span>
+      </div>
+      <div class="lesson-number">Урок 8</div>
+      <div class="lesson-title">Повторение и тренировка: все темы вместе</div>
+      <div class="lesson-tags">
+        <span class="tag">Мегаразбор</span>
+        <span class="tag">Словосочетания</span>
+        <span class="tag">Комплексный</span>
+      </div>
+    </a>
+  </div>
+
+  <a href="final_test.html" class="final-card" id="finalCard">
+    <div class="final-icon floating">🏆</div>
+    <div>
+      <div class="final-title">Итоговое тестирование · 4 класс</div>
+      <div class="final-desc">Полный тест по программе 4 класса (Канакина/Горецкий) · 30 заданий · Все темы · Автоматическая проверка и результаты</div>
+    </div>
+  </a>
+
+  <footer>
+    <p>Курс создан специально для Вероники · Подготовка к тесту в апреле</p>
+    <p style="margin-top:8px;">📖 Учебник: Канакина/Горецкий 4 класс</p>
+  </footer>
+</div>
+
+<script>
+  // Track completed lessons
+  const completed = [];
+  for (let i = 1; i <= 8; i++) {
+    if (localStorage.getItem('lesson_' + i + '_done') === 'true') {
+      completed.push(i);
+    }
+  }
+
+  // Update UI
+  completed.forEach(n => {
+    const card = document.querySelector('[data-lesson="' + n + '"]');
+    const status = document.getElementById('status-' + n);
+    if (card) card.classList.add('done');
+    if (status) { status.textContent = '✓ Готово'; }
+  });
+
+  const total = completed.length;
+  document.getElementById('progressCount').textContent = total + ' / 8';
+  document.getElementById('progressFill').style.width = (total / 8 * 100) + '%';
+</script>
+</body>
+</html>
