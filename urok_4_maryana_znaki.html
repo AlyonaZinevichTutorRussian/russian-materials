@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Урок 4 — Разделительный Ъ и Ь | Марьяна</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --mint: #3ecfaa;
+    --mint-light: #d4f5ed;
+    --coral: #ff7b6b;
+    --coral-light: #ffe5e1;
+    --sun: #ffd166;
+    --sun-light: #fff6db;
+    --blue: #4a9eff;
+    --blue-light: #ddeeff;
+    --purple: #a78bfa;
+    --purple-light: #ede9fe;
+    --orange: #ff9f43;
+    --orange-light: #fff0e0;
+    --bg: #f5f9ff;
+    --card: #ffffff;
+    --text: #2d3a4a;
+    --soft: #7a8fa6;
+    --radius: 18px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Nunito', sans-serif; background: var(--bg); color: var(--text); padding-bottom: 60px; }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, #a78bfa 0%, #4a9eff 100%);
+    padding: 32px 24px 44px; text-align: center; position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: ''; position: absolute; inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.06'%3E%3Ccircle cx='40' cy='40' r='30'/%3E%3C/g%3E%3C/svg%3E");
+  }
+  .hero-chip { display: inline-block; background: rgba(255,255,255,0.2); border-radius: 20px; padding: 4px 14px; font-size: 12px; font-weight: 800; color: white; letter-spacing: 1px; margin-bottom: 10px; }
+  .hero-title { font-family: 'Caveat', cursive; font-size: 40px; font-weight: 700; color: white; line-height: 1.1; margin-bottom: 8px; }
+  .hero-sub { font-size: 14px; color: rgba(255,255,255,0.85); font-weight: 600; }
+  .hero-emoji { font-size: 36px; margin-bottom: 10px; display: block; }
+
+  /* PROGRESS */
+  .progress-wrap { background: white; padding: 14px 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); position: sticky; top: 0; z-index: 100; }
+  .progress-label { font-size: 12px; font-weight: 700; color: var(--soft); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; display: flex; justify-content: space-between; }
+  .progress-bar { height: 8px; background: #e8eef5; border-radius: 99px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--purple), var(--blue)); border-radius: 99px; transition: width 0.5s ease; width: 0%; }
+
+  /* LAYOUT */
+  .section { max-width: 680px; margin: 0 auto; padding: 28px 20px 0; animation: fadeUp 0.4s ease both; }
+  @keyframes fadeUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+
+  .section-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+  .section-icon { width: 46px; height: 46px; border-radius: 13px; display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0; }
+  .section-title { font-size: 21px; font-weight: 800; }
+  .section-sub { font-size: 13px; color: var(--soft); font-weight: 600; margin-top: 2px; }
+
+  /* THEORY CARD */
+  .theory { background: white; border-radius: var(--radius); padding: 20px; margin-bottom: 12px; box-shadow: 0 2px 14px rgba(0,0,0,0.06); }
+  .theory.purple { border-left: 4px solid var(--purple); }
+  .theory.orange { border-left: 4px solid var(--orange); }
+  .theory.mint { border-left: 4px solid var(--mint); }
+  .theory.coral { border-left: 4px solid var(--coral); }
+  .theory.blue { border-left: 4px solid var(--blue); }
+
+  .t-label { font-size: 10px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 6px; }
+  .theory.purple .t-label { color: var(--purple); }
+  .theory.orange .t-label { color: var(--orange); }
+  .theory.mint .t-label { color: var(--mint); }
+  .theory.coral .t-label { color: var(--coral); }
+  .theory.blue .t-label { color: var(--blue); }
+
+  .t-text { font-size: 15px; font-weight: 600; line-height: 1.65; }
+  .t-text strong { color: var(--purple); }
+  .theory.orange .t-text strong { color: var(--orange); }
+  .theory.mint .t-text strong { color: var(--mint); }
+  .theory.coral .t-text strong { color: var(--coral); }
+  .theory.blue .t-text strong { color: var(--blue); }
+
+  /* ENGLISH TOOLTIP */
+  .en {
+    display: inline-block;
+    border-bottom: 2px dotted var(--blue);
+    cursor: help; position: relative;
+    color: inherit;
+  }
+  .en::after {
+    content: attr(data-en);
+    position: absolute; bottom: calc(100% + 6px); left: 50%;
+    transform: translateX(-50%);
+    background: var(--blue); color: white;
+    padding: 4px 10px; border-radius: 8px;
+    font-size: 12px; font-weight: 700; white-space: nowrap;
+    opacity: 0; pointer-events: none; transition: opacity 0.2s;
+    z-index: 20;
+  }
+  .en:hover::after { opacity: 1; }
+  .en-badge {
+    display: inline-block;
+    background: var(--blue-light); color: var(--blue);
+    border-radius: 6px; padding: 1px 7px;
+    font-size: 12px; font-weight: 700;
+    margin-left: 4px;
+  }
+
+  /* BIG LETTERS DISPLAY */
+  .big-letters { display: flex; gap: 16px; justify-content: center; margin: 16px 0; }
+  .big-letter-card {
+    flex: 1; max-width: 220px;
+    border-radius: 16px; padding: 20px 16px;
+    text-align: center; border: 3px solid;
+  }
+  .big-letter-card.tverd { border-color: var(--orange); background: var(--orange-light); }
+  .big-letter-card.myagk { border-color: var(--purple); background: var(--purple-light); }
+  .big-letter-sign { font-size: 64px; font-weight: 900; line-height: 1; margin-bottom: 8px; }
+  .big-letter-card.tverd .big-letter-sign { color: var(--orange); }
+  .big-letter-card.myagk .big-letter-sign { color: var(--purple); }
+  .big-letter-name { font-size: 14px; font-weight: 800; margin-bottom: 4px; }
+  .big-letter-en { font-size: 11px; color: var(--soft); font-weight: 600; }
+
+  /* COMPARE TABLE */
+  .compare-table { width: 100%; border-collapse: collapse; border-radius: 12px; overflow: hidden; margin: 12px 0; }
+  .compare-table th { padding: 10px 14px; font-size: 14px; font-weight: 800; text-align: left; }
+  .compare-table td { padding: 10px 14px; font-size: 14px; font-weight: 600; border-top: 1px solid #eef2f7; }
+  .compare-table .col-tverd { background: var(--orange-light); }
+  .compare-table .col-myagk { background: var(--purple-light); }
+  .compare-table th.col-tverd { color: var(--orange); }
+  .compare-table th.col-myagk { color: var(--purple); }
+  .word-example { font-size: 17px; font-weight: 800; }
+  .word-highlight { color: var(--orange); }
+  .word-highlight.m { color: var(--purple); }
+
+  /* EXERCISE CARD */
+  .ex-card { background: white; border-radius: var(--radius); padding: 22px; margin-bottom: 14px; box-shadow: 0 2px 14px rgba(0,0,0,0.06); }
+  .ex-num { font-size: 10px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: var(--soft); margin-bottom: 8px; }
+  .ex-title { font-size: 16px; font-weight: 800; margin-bottom: 4px; line-height: 1.3; }
+  .ex-hint { font-size: 13px; color: var(--soft); font-weight: 600; margin-bottom: 14px; }
+
+  /* MC */
+  .mc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+  .mc-btn {
+    padding: 10px 14px; border-radius: 10px; border: 2px solid #e0e8f0; background: white;
+    font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer;
+    transition: all 0.2s; text-align: left;
+  }
+  .mc-btn:hover:not(:disabled) { border-color: var(--blue); color: var(--blue); }
+  .mc-btn.correct { background: var(--mint); color: white; border-color: var(--mint); }
+  .mc-btn.wrong { background: var(--coral); color: white; border-color: var(--coral); }
+  .mc-btn.show-correct { background: var(--mint-light); border-color: var(--mint); color: #1a9e7a; }
+
+  /* SORT SIGN */
+  .sign-bank { display: flex; flex-wrap: wrap; gap: 8px; padding: 12px; background: var(--bg); border-radius: 12px; margin-bottom: 12px; }
+  .sign-chip {
+    padding: 8px 16px; border-radius: 10px; border: 2px solid #e0e8f0; background: white;
+    font-size: 16px; font-weight: 800; cursor: pointer; transition: all 0.2s; user-select: none;
+  }
+  .sign-chip:hover:not(.used) { transform: scale(1.06); }
+  .sign-chip.used { opacity: 0.3; pointer-events: none; }
+  .sign-chip.tverd-chip { border-color: var(--orange); color: var(--orange); background: var(--orange-light); }
+  .sign-chip.myagk-chip { border-color: var(--purple); color: var(--purple); background: var(--purple-light); }
+
+  .sort-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .sort-col { border-radius: 12px; padding: 12px; min-height: 90px; }
+  .sort-col.tverd-col { background: var(--orange-light); border: 2px dashed var(--orange); }
+  .sort-col.myagk-col { background: var(--purple-light); border: 2px dashed var(--purple); }
+  .sort-col-title { font-size: 13px; font-weight: 800; margin-bottom: 8px; }
+  .sort-col.tverd-col .sort-col-title { color: var(--orange); }
+  .sort-col.myagk-col .sort-col-title { color: var(--purple); }
+  .sort-items { display: flex; flex-wrap: wrap; gap: 6px; min-height: 36px; }
+  .placed-chip {
+    padding: 5px 12px; border-radius: 8px; font-size: 14px; font-weight: 700;
+    border: 2px solid; cursor: pointer;
+  }
+  .placed-tverd { background: var(--orange); color: white; border-color: var(--orange); }
+  .placed-myagk { background: var(--purple); color: white; border-color: var(--purple); }
+
+  /* FILL BLANK */
+  .blank-row { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid #eef2f7; }
+  .blank-row:last-child { border-bottom: none; }
+  .blank-num { font-size: 13px; color: var(--soft); font-weight: 700; width: 20px; }
+  .blank-word { font-size: 20px; font-weight: 800; flex: 1; letter-spacing: 1px; }
+  .blank-spot {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 32px; height: 32px; border: 2px dashed #aac; border-radius: 8px;
+    font-size: 18px; font-weight: 800; cursor: pointer; transition: all 0.2s;
+    vertical-align: middle; color: transparent;
+  }
+  .blank-spot:hover { background: #f0f0ff; }
+  .blank-spot.filled-tverd { background: var(--orange-light); border-color: var(--orange); border-style: solid; color: var(--orange); }
+  .blank-spot.filled-myagk { background: var(--purple-light); border-color: var(--purple); border-style: solid; color: var(--purple); }
+  .blank-spot.correct-reveal { background: var(--mint-light); border-color: var(--mint); border-style: solid; color: var(--mint); }
+  .blank-spot.wrong-reveal { background: var(--coral-light); border-color: var(--coral); border-style: solid; color: var(--coral); }
+  .blank-translation { font-size: 11px; color: var(--soft); font-weight: 600; }
+
+  /* CHECK BTN */
+  .check-btn {
+    padding: 10px 24px; border-radius: 10px; border: none;
+    background: linear-gradient(135deg, var(--purple), var(--blue));
+    color: white; font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 800;
+    cursor: pointer; transition: transform 0.15s, box-shadow 0.15s; margin-top: 10px;
+  }
+  .check-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(167,139,250,0.4); }
+
+  /* FEEDBACK */
+  .fb { margin-top: 10px; padding: 10px 14px; border-radius: 10px; font-size: 14px; font-weight: 700; display: none; }
+  .fb.ok { background: var(--mint-light); color: #1a9e7a; display: block; }
+  .fb.err { background: var(--coral-light); color: #c0392b; display: block; }
+
+  /* RULE SUMMARY */
+  .rule-summary {
+    background: linear-gradient(135deg, #a78bfa22, #4a9eff22);
+    border: 2px solid var(--purple); border-radius: var(--radius);
+    padding: 20px; margin-bottom: 14px;
+  }
+  .rule-summary-title { font-size: 15px; font-weight: 800; color: var(--purple); margin-bottom: 12px; }
+  .rule-row { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 10px; }
+  .rule-row:last-child { margin-bottom: 0; }
+  .rule-badge {
+    min-width: 36px; height: 36px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; font-weight: 900; flex-shrink: 0;
+  }
+  .rule-badge.t { background: var(--orange-light); color: var(--orange); }
+  .rule-badge.m { background: var(--purple-light); color: var(--purple); }
+  .rule-text { font-size: 14px; font-weight: 600; line-height: 1.5; padding-top: 6px; }
+  .rule-text em { font-style: normal; font-weight: 800; }
+
+  /* DIVIDER */
+  .divider { max-width: 680px; margin: 28px auto 0; padding: 0 20px; }
+  .divider hr { border: none; border-top: 2px dashed #d4dce8; }
+
+  /* FINISH */
+  .finish-wrap { max-width: 680px; margin: 28px auto 0; padding: 0 20px; }
+  .finish-card { background: linear-gradient(135deg, var(--purple), var(--blue)); border-radius: 20px; padding: 30px 24px; text-align: center; color: white; display: none; }
+  .finish-card.on { display: block; }
+  .finish-title { font-family: 'Caveat', cursive; font-size: 36px; font-weight: 700; margin-bottom: 8px; }
+  .finish-sub { font-size: 15px; font-weight: 600; opacity: 0.9; }
+  .finish-stars { font-size: 40px; margin: 10px 0; }
+
+  /* WORDWALL LINK */
+  .ext-link {
+    display: flex; align-items: center; gap: 12px;
+    background: white; border-radius: 14px; padding: 14px 18px;
+    border: 2px solid var(--purple); margin-bottom: 12px;
+    text-decoration: none; color: var(--text); transition: all 0.2s;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  }
+  .ext-link:hover { background: var(--purple-light); border-color: var(--purple); transform: translateY(-2px); }
+  .ext-icon { font-size: 26px; }
+  .ext-title { font-size: 15px; font-weight: 800; }
+  .ext-sub { font-size: 12px; color: var(--soft); font-weight: 600; }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <span class="hero-emoji">✂️</span>
+  <div class="hero-chip">12 марта 2026 · Урок 4</div>
+  <div class="hero-title">Разделительный Ъ и Ь</div>
+  <div class="hero-sub">Separating Hard Sign &amp; Soft Sign</div>
+</div>
+
+<!-- PROGRESS -->
+<div class="progress-wrap">
+  <div class="progress-label">
+    <span>📊 Прогресс</span>
+    <span id="score-lbl">0 / 0</span>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="pfill"></div></div>
+</div>
+
+<!-- ══════════════════════════════════ -->
+<!-- БЛОК 1: ОБЪЯСНЕНИЕ -->
+<!-- ══════════════════════════════════ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon" style="background:#ede9fe">📖</div>
+    <div>
+      <div class="section-title">Объяснение</div>
+      <div class="section-sub">Explanation — читаем внимательно!</div>
+    </div>
+  </div>
+
+  <!-- Big letters -->
+  <div class="big-letters">
+    <div class="big-letter-card tverd">
+      <div class="big-letter-sign">Ъ</div>
+      <div class="big-letter-name">Твёрдый знак</div>
+      <div class="big-letter-en">Hard Sign</div>
+    </div>
+    <div class="big-letter-card myagk">
+      <div class="big-letter-sign">Ь</div>
+      <div class="big-letter-name">Мягкий знак</div>
+      <div class="big-letter-en">Soft Sign</div>
+    </div>
+  </div>
+
+  <div class="theory purple">
+    <div class="t-label">🔑 Главное правило</div>
+    <div class="t-text">
+      Оба знака <strong>не обозначают звука</strong> <span class="en-badge">no sound</span> — они разделяют согласный и следующую гласную Е, Ё, Ю, Я.<br><br>
+      Без знака буква <em>слипается</em> с согласным. Знак говорит: «Стоп! Читай отдельно!»<br><br>
+      <em>семя</em> → [с'эм'а] &nbsp; VS &nbsp; <em>семья</em> → [с'ем'<strong>й'а</strong>]
+    </div>
+  </div>
+
+  <!-- ЪЬ comparison -->
+  <div class="theory orange">
+    <div class="t-label">🟠 Разделительный Ъ (Hard Sign)</div>
+    <div class="t-text">
+      Ставится после <strong><span class="en" data-en="prefix">приставки</span></strong>, которая заканчивается на <strong>согласную</strong>.<br><br>
+      <span class="en-badge">prefix + consonant → Ъ</span><br><br>
+      Примеры:<br>
+      &nbsp;• <strong>объ</strong>езд = об + ъ + езд<br>
+      &nbsp;• <strong>съ</strong>ел = с + ъ + ел<br>
+      &nbsp;• <strong>подъ</strong>езд = под + ъ + езд<br>
+      &nbsp;• <strong>въ</strong>езд = в + ъ + езд
+    </div>
+  </div>
+
+  <div class="theory purple">
+    <div class="t-label">🟣 Разделительный Ь (Soft Sign)</div>
+    <div class="t-text">
+      Ставится <strong>внутри слова</strong> (не после приставки) перед буквами Е, Ё, Ю, Я, И.<br><br>
+      <span class="en-badge">inside the word (not prefix)</span><br><br>
+      Примеры:<br>
+      &nbsp;• <strong>семь</strong>я = семь + ь + я<br>
+      &nbsp;• <strong>вь</strong>юга = вь + юга<br>
+      &nbsp;• <strong>руч</strong>ьи = ручь + и<br>
+      &nbsp;• <strong>обезь</strong>яна = обезь + яна<br>
+      &nbsp;• <strong>плать</strong>е = плать + е
+    </div>
+  </div>
+
+  <!-- Rule summary -->
+  <div class="rule-summary">
+    <div class="rule-summary-title">📋 Запомни таблицу</div>
+    <div class="rule-row">
+      <div class="rule-badge t">Ъ</div>
+      <div class="rule-text">
+        После <em>приставки</em> <span class="en-badge">after prefix</span>, которая кончается на согласную<br>
+        + перед Е, Ё, Ю, Я<br>
+        <span style="color:#aaa">Пример: об·ъ·явить, с·ъ·есть</span>
+      </div>
+    </div>
+    <div class="rule-row">
+      <div class="rule-badge m">Ь</div>
+      <div class="rule-text">
+        <em>Внутри корня</em> <span class="en-badge">inside root</span> или суффикса<br>
+        + перед Е, Ё, Ю, Я, И<br>
+        <span style="color:#aaa">Пример: семь·я, вь·юга, ручь·и</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Comparison table -->
+  <div class="theory mint">
+    <div class="t-label">🔍 Сравни пары слов</div>
+    <div class="t-text" style="padding:0">
+      <table class="compare-table">
+        <tr>
+          <th class="col-tverd">Ъ (Hard Sign)</th>
+          <th class="col-myagk">Ь (Soft Sign)</th>
+        </tr>
+        <tr>
+          <td class="col-tverd"><span class="word-example">с<span class="word-highlight">ъ</span>ел</span><br><span style="font-size:12px;color:#999">с- это приставка</span></td>
+          <td class="col-myagk"><span class="word-example">семь<span class="word-highlight m">ь</span>я</span><br><span style="font-size:12px;color:#999">внутри корня</span></td>
+        </tr>
+        <tr>
+          <td class="col-tverd"><span class="word-example">об<span class="word-highlight">ъ</span>езд</span><br><span style="font-size:12px;color:#999">об- это приставка</span></td>
+          <td class="col-myagk"><span class="word-example">вь<span class="word-highlight m">ь</span>юга</span><br><span style="font-size:12px;color:#999">внутри корня</span></td>
+        </tr>
+        <tr>
+          <td class="col-tverd"><span class="word-example">под<span class="word-highlight">ъ</span>езд</span><br><span style="font-size:12px;color:#999">под- это приставка</span></td>
+          <td class="col-myagk"><span class="word-example">обезь<span class="word-highlight m">ь</span>яна</span><br><span style="font-size:12px;color:#999">внутри слова</span></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ -->
+<!-- БЛОК 2: УПРАЖНЕНИЯ -->
+<!-- ══════════════════════════════════ -->
+<div class="divider"><hr></div>
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon" style="background:#fff0e0">✏️</div>
+    <div>
+      <div class="section-title">Упражнения</div>
+      <div class="section-sub">Exercises — проверяем!</div>
+    </div>
+  </div>
+
+  <!-- EX 1: MC — понимание -->
+  <div class="ex-card">
+    <div class="ex-num">Упражнение 1 — Понимание</div>
+    <div class="ex-title">Выбери правильный ответ 🎯</div>
+    <div class="ex-hint">Choose the right answer</div>
+
+    <div id="mc-quiz">
+      <div style="margin-bottom:18px" data-answered="0">
+        <div style="font-size:15px;font-weight:700;margin-bottom:8px">В слове <strong>«объявление»</strong> — какой знак и почему?</div>
+        <div class="mc-grid">
+          <button class="mc-btn" onclick="mc(this,true,1)">Ъ — потому что «об-» это приставка <span class="en-badge">prefix</span></button>
+          <button class="mc-btn" onclick="mc(this,false,1)">Ь — потому что внутри слова</button>
+        </div>
+        <div class="fb" id="fb1"></div>
+      </div>
+
+      <div style="margin-bottom:18px" data-answered="0">
+        <div style="font-size:15px;font-weight:700;margin-bottom:8px">В слове <strong>«обезьяна»</strong> — какой знак?</div>
+        <div class="mc-grid">
+          <button class="mc-btn" onclick="mc(this,false,2)">Ъ — после приставки</button>
+          <button class="mc-btn" onclick="mc(this,true,2)">Ь — внутри корня, не после приставки</button>
+        </div>
+        <div class="fb" id="fb2"></div>
+      </div>
+
+      <div style="margin-bottom:18px" data-answered="0">
+        <div style="font-size:15px;font-weight:700;margin-bottom:8px">Приставка <strong>«с-»</strong> + слово <strong>«ел»</strong> = ?</div>
+        <div class="mc-grid">
+          <button class="mc-btn" onclick="mc(this,true,3)">съел (Ъ — приставка с согласной)</button>
+          <button class="mc-btn" onclick="mc(this,false,3)">сьел (Ь)</button>
+          <button class="mc-btn" onclick="mc(this,false,3)">сел (без знака)</button>
+        </div>
+        <div class="fb" id="fb3"></div>
+      </div>
+
+      <div data-answered="0">
+        <div style="font-size:15px;font-weight:700;margin-bottom:8px">В каком слове нужен разделительный <strong>Ь</strong>?</div>
+        <div class="mc-grid">
+          <button class="mc-btn" onclick="mc(this,false,4)">подъезд</button>
+          <button class="mc-btn" onclick="mc(this,true,4)">платье 👗</button>
+          <button class="mc-btn" onclick="mc(this,false,4)">съезд</button>
+          <button class="mc-btn" onclick="mc(this,false,4)">объект</button>
+        </div>
+        <div class="fb" id="fb4"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EX 2: SORT -->
+  <div class="ex-card">
+    <div class="ex-num">Упражнение 2 — Сортировка</div>
+    <div class="ex-title">Нажми на слово — положи в нужный столбик! 🗂</div>
+    <div class="ex-hint">Tap a word, then tap the column (Ъ or Ь)</div>
+
+    <div class="sign-bank" id="sort-bank">
+      <span class="sign-chip" onclick="selectWord(this)">объяснить</span>
+      <span class="sign-chip" onclick="selectWord(this)">семья</span>
+      <span class="sign-chip" onclick="selectWord(this)">съехать</span>
+      <span class="sign-chip" onclick="selectWord(this)">вьюга</span>
+      <span class="sign-chip" onclick="selectWord(this)">подъём</span>
+      <span class="sign-chip" onclick="selectWord(this)">ручьи</span>
+      <span class="sign-chip" onclick="selectWord(this)">въезд</span>
+      <span class="sign-chip" onclick="selectWord(this)">обезьяна</span>
+    </div>
+
+    <div class="sort-cols">
+      <div class="sort-col tverd-col" onclick="dropWord('tverd')">
+        <div class="sort-col-title">🟠 Ъ (твёрдый / Hard Sign)<br><span style="font-weight:600;font-size:11px">после приставки</span></div>
+        <div class="sort-items" id="col-tverd"></div>
+      </div>
+      <div class="sort-col myagk-col" onclick="dropWord('myagk')">
+        <div class="sort-col-title">🟣 Ь (мягкий / Soft Sign)<br><span style="font-weight:600;font-size:11px">внутри корня</span></div>
+        <div class="sort-items" id="col-myagk"></div>
+      </div>
+    </div>
+    <button class="check-btn" onclick="checkSort()">Проверить ✓</button>
+    <div class="fb" id="fb-sort"></div>
+  </div>
+
+  <!-- EX 3: FILL THE BLANK -->
+  <div class="ex-card">
+    <div class="ex-num">Упражнение 3 — Вставь знак</div>
+    <div class="ex-title">Нажми на клетку — выбери Ъ или Ь! ✍️</div>
+    <div class="ex-hint">Tap the box to cycle through: Ъ → Ь → empty</div>
+
+    <div id="fill-ex">
+      <div class="blank-row">
+        <span class="blank-num">1.</span>
+        <span class="blank-word">об<span class="blank-spot" onclick="cycleBlank(this,'Ъ')" data-correct="Ъ"></span>яснить</span>
+        <span class="blank-translation">to explain</span>
+      </div>
+      <div class="blank-row">
+        <span class="blank-num">2.</span>
+        <span class="blank-word">сем<span class="blank-spot" onclick="cycleBlank(this,'Ь')" data-correct="Ь"></span>я</span>
+        <span class="blank-translation">family</span>
+      </div>
+      <div class="blank-row">
+        <span class="blank-num">3.</span>
+        <span class="blank-word">с<span class="blank-spot" onclick="cycleBlank(this,'Ъ')" data-correct="Ъ"></span>ел</span>
+        <span class="blank-translation">ate (he ate)</span>
+      </div>
+      <div class="blank-row">
+        <span class="blank-num">4.</span>
+        <span class="blank-word">плат<span class="blank-spot" onclick="cycleBlank(this,'Ь')" data-correct="Ь"></span>е</span>
+        <span class="blank-translation">dress 👗</span>
+      </div>
+      <div class="blank-row">
+        <span class="blank-num">5.</span>
+        <span class="blank-word">под<span class="blank-spot" onclick="cycleBlank(this,'Ъ')" data-correct="Ъ"></span>езд</span>
+        <span class="blank-translation">entrance / porch</span>
+      </div>
+      <div class="blank-row">
+        <span class="blank-num">6.</span>
+        <span class="blank-word">в<span class="blank-spot" onclick="cycleBlank(this,'Ь')" data-correct="Ь"></span>юга</span>
+        <span class="blank-translation">blizzard ❄️</span>
+      </div>
+      <div class="blank-row">
+        <span class="blank-num">7.</span>
+        <span class="blank-word">об<span class="blank-spot" onclick="cycleBlank(this,'Ъ')" data-correct="Ъ"></span>ём</span>
+        <span class="blank-translation">volume / size</span>
+      </div>
+      <div class="blank-row">
+        <span class="blank-num">8.</span>
+        <span class="blank-word">обез<span class="blank-spot" onclick="cycleBlank(this,'Ь')" data-correct="Ь"></span>яна</span>
+        <span class="blank-translation">monkey 🐒</span>
+      </div>
+    </div>
+    <button class="check-btn" onclick="checkFill()">Проверить ✓</button>
+    <div class="fb" id="fb-fill"></div>
+  </div>
+
+  <!-- EX 4: Wordwall -->
+  <div class="ex-card" style="border: 2px solid var(--purple)">
+    <div class="ex-num">⭐ Бонус — Онлайн игра</div>
+    <div class="ex-title">Поиграй на Wordwall! 🎮</div>
+    <div class="ex-hint">Буквы Е Ё Ю Я — сопоставь звуки и слова</div>
+    <a class="ext-link" href="https://wordwall.net/ru/resource/38259998/%D1%80%D1%83%D1%81%D1%81%D0%BA%D0%B8%D0%B9/%D0%B1%D1%83%D0%BA%D0%B2%D1%8B-%D0%B5-%D1%91-%D1%8E-%D1%8F" target="_blank">
+      <div class="ext-icon">🎯</div>
+      <div>
+        <div class="ext-title">Wordwall: Буквы Е, Ё, Ю, Я</div>
+        <div class="ext-sub">Сопоставить звук и слово · Match sounds to words</div>
+      </div>
+      <div style="margin-left:auto;font-size:18px">→</div>
+    </a>
+  </div>
+</div>
+
+<!-- FINISH -->
+<div class="finish-wrap">
+  <div class="finish-card" id="finish">
+    <div class="finish-stars">🌟🌟🌟</div>
+    <div class="finish-title">Умничка, Марьяна!</div>
+    <div class="finish-sub">Разделительный Ъ и Ь — освоено! ✅<br>Separating signs — done! 💪</div>
+  </div>
+</div>
+
+<div style="height:40px"></div>
+
+<script>
+// ── PROGRESS ──
+let total = 0, done = 0;
+function reg() { total++; updProg(); }
+function comp() { done++; updProg(); }
+function updProg() {
+  const p = total > 0 ? (done/total)*100 : 0;
+  document.getElementById('pfill').style.width = p + '%';
+  document.getElementById('score-lbl').textContent = done + ' / ' + total;
+  if (done >= total && total > 0) document.getElementById('finish').classList.add('on');
+}
+window.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('#mc-quiz > div').forEach(() => reg());
+  document.querySelectorAll('#sort-bank .sign-chip').forEach(() => reg());
+  document.querySelectorAll('#fill-ex .blank-spot').forEach(() => reg());
+});
+
+// ── MC ──
+function mc(btn, correct, n) {
+  const box = btn.closest('[data-answered]');
+  if (box.dataset.answered === '1') return;
+  box.dataset.answered = '1';
+  btn.closest('[data-answered]').querySelectorAll('.mc-btn').forEach(b => b.disabled = true);
+  const fb = document.getElementById('fb'+n);
+  if (correct) {
+    btn.classList.add('correct');
+    fb.textContent = '✅ Верно! Well done!';
+    fb.className = 'fb ok';
+    comp();
+  } else {
+    btn.classList.add('wrong');
+    btn.closest('[data-answered]').querySelectorAll('.mc-btn').forEach(b => { if(b!==btn) b.classList.add('show-correct'); });
+    const hints = {
+      1: 'Верно: «об-» — это приставка (prefix), поэтому Ъ.',
+      2: 'Верно: «обезьяна» — Ь внутри корня (inside root), не после приставки.',
+      3: 'Верно: «с-» — приставка + «ел» → съел.',
+      4: 'Верно: платье — Ь внутри корня (dress, inside root).'
+    };
+    fb.textContent = '❌ ' + hints[n];
+    fb.className = 'fb err';
+    comp();
+  }
+}
+
+// ── SORT ──
+const sortAnswer = {
+  объяснить: 'tverd', съехать: 'tverd', подъём: 'tverd', въезд: 'tverd',
+  семья: 'myagk', вьюга: 'myagk', ручьи: 'myagk', обезьяна: 'myagk'
+};
+let selectedChip = null;
+
+function selectWord(chip) {
+  if (chip.classList.contains('used')) return;
+  document.querySelectorAll('.sign-chip.selected').forEach(c => c.classList.remove('selected'));
+  chip.classList.add('selected');
+  chip.style.boxShadow = '0 0 0 3px var(--purple)';
+  selectedChip = chip;
+}
+
+function dropWord(col) {
+  if (!selectedChip) return;
+  const word = selectedChip.textContent;
+  selectedChip.classList.add('used');
+  selectedChip.style.boxShadow = '';
+  selectedChip.classList.remove('selected');
+
+  const el = document.createElement('span');
+  el.textContent = word;
+  el.className = 'placed-chip placed-' + col;
+  document.getElementById('col-' + col).appendChild(el);
+  selectedChip = null;
+}
+
+function checkSort() {
+  const placed = {};
+  ['tverd','myagk'].forEach(col => {
+    document.querySelectorAll('#col-'+col+' .placed-chip').forEach(el => {
+      placed[el.textContent] = col;
+    });
+  });
+  if (Object.keys(placed).length < 8) {
+    const fb = document.getElementById('fb-sort');
+    fb.textContent = '⚠️ Разложи все 8 слов!'; fb.className='fb err'; return;
+  }
+  let correct = 0;
+  for (const [w, col] of Object.entries(placed)) {
+    if (sortAnswer[w] === col) correct++;
+  }
+  done -= 8; done += correct; if(done<0) done=0; updProg();
+  const fb = document.getElementById('fb-sort');
+  if (correct === 8) {
+    fb.textContent = '🎉 Отлично! Все 8 слов верно!'; fb.className='fb ok';
+  } else {
+    fb.textContent = `${correct}/8 верно. Ъ: объяснить, съехать, подъём, въезд. Ь: семья, вьюга, ручьи, обезьяна.`;
+    fb.className = 'fb err';
+  }
+}
+
+// ── FILL BLANK ──
+function cycleBlank(el, correct) {
+  const states = ['', 'Ъ', 'Ь'];
+  const cur = states.indexOf(el.textContent);
+  const next = (cur + 1) % 3;
+  el.textContent = states[next];
+  el.className = 'blank-spot';
+  if (states[next] === 'Ъ') el.classList.add('filled-tverd');
+  if (states[next] === 'Ь') el.classList.add('filled-myagk');
+}
+
+function checkFill() {
+  const spots = document.querySelectorAll('#fill-ex .blank-spot');
+  let correct = 0;
+  spots.forEach(s => {
+    const answer = s.dataset.correct;
+    s.classList.remove('filled-tverd','filled-myagk');
+    if (s.textContent === answer) {
+      s.classList.add('correct-reveal'); correct++;
+    } else {
+      s.classList.add('wrong-reveal');
+      s.textContent = answer;
+    }
+  });
+  done -= 8; done += correct; if(done<0) done=0; updProg();
+  const fb = document.getElementById('fb-fill');
+  if (correct === 8) {
+    fb.textContent = '🎉 Все 8 верно! Perfect!'; fb.className='fb ok';
+  } else {
+    fb.textContent = `${correct}/8 верно. Зелёный = правильно, красный = исправлено.`; fb.className='fb err';
+  }
+}
+</script>
+</body>
+</html>
