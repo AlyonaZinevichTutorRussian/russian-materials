@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Урок 3 — Повторение | Марьяна</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --mint: #3ecfaa;
+    --mint-light: #d4f5ed;
+    --coral: #ff7b6b;
+    --coral-light: #ffe5e1;
+    --sun: #ffd166;
+    --sun-light: #fff6db;
+    --blue: #4a9eff;
+    --blue-light: #ddeeff;
+    --purple: #a78bfa;
+    --purple-light: #ede9fe;
+    --bg: #f5f9ff;
+    --card: #ffffff;
+    --text: #2d3a4a;
+    --text-soft: #7a8fa6;
+    --radius: 18px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 0 0 60px;
+  }
+
+  /* HEADER */
+  .hero {
+    background: linear-gradient(135deg, #3ecfaa 0%, #4a9eff 100%);
+    padding: 32px 24px 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.08'%3E%3Ccircle cx='30' cy='30' r='20'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+  .hero-date {
+    font-size: 13px; font-weight: 700; letter-spacing: 2px;
+    color: rgba(255,255,255,0.8); text-transform: uppercase; margin-bottom: 8px;
+  }
+  .hero-title {
+    font-family: 'Caveat', cursive;
+    font-size: 38px; font-weight: 700; color: white;
+    line-height: 1.1; margin-bottom: 6px;
+  }
+  .hero-sub {
+    font-size: 14px; color: rgba(255,255,255,0.85); font-weight: 600;
+  }
+  .hero-emoji { font-size: 32px; margin-bottom: 10px; display: block; }
+
+  /* PROGRESS BAR */
+  .progress-wrap {
+    background: white;
+    padding: 16px 24px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    position: sticky; top: 0; z-index: 100;
+  }
+  .progress-label {
+    font-size: 12px; font-weight: 700; color: var(--text-soft);
+    text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px;
+    display: flex; justify-content: space-between;
+  }
+  .progress-bar {
+    height: 8px; background: #e8eef5; border-radius: 99px; overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--mint), var(--blue));
+    border-radius: 99px;
+    transition: width 0.5s ease;
+    width: 0%;
+  }
+
+  /* SECTION */
+  .section {
+    max-width: 680px; margin: 0 auto;
+    padding: 28px 20px 0;
+  }
+  .section-header {
+    display: flex; align-items: center; gap: 12px; margin-bottom: 16px;
+  }
+  .section-icon {
+    width: 44px; height: 44px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; flex-shrink: 0;
+  }
+  .section-title {
+    font-size: 20px; font-weight: 800; line-height: 1.2;
+  }
+  .section-sub {
+    font-size: 13px; color: var(--text-soft); font-weight: 600; margin-top: 2px;
+  }
+
+  /* THEORY CARD */
+  .theory-card {
+    background: white;
+    border-radius: var(--radius);
+    padding: 20px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 14px rgba(0,0,0,0.06);
+    border-left: 4px solid var(--mint);
+  }
+  .theory-card.coral { border-color: var(--coral); }
+  .theory-card.sun { border-color: var(--sun); }
+  .theory-card.blue { border-color: var(--blue); }
+  .theory-card.purple { border-color: var(--purple); }
+
+  .theory-label {
+    font-size: 10px; font-weight: 800; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--mint); margin-bottom: 6px;
+  }
+  .theory-card.coral .theory-label { color: var(--coral); }
+  .theory-card.sun .theory-label { color: #c49a00; }
+  .theory-card.blue .theory-label { color: var(--blue); }
+  .theory-card.purple .theory-label { color: var(--purple); }
+
+  .theory-text {
+    font-size: 15px; line-height: 1.6; font-weight: 600;
+  }
+  .theory-text strong { color: var(--mint); }
+  .theory-card.coral .theory-text strong { color: var(--coral); }
+  .theory-card.sun .theory-text strong { color: #c49a00; }
+  .theory-card.blue .theory-text strong { color: var(--blue); }
+  .theory-card.purple .theory-text strong { color: var(--purple); }
+
+  /* ALPHABET GRID */
+  .alpha-grid {
+    display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0;
+  }
+  .letter-chip {
+    width: 38px; height: 38px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 17px; font-weight: 800;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+    user-select: none;
+  }
+  .letter-chip:hover { transform: scale(1.1); }
+  .letter-chip.vowel {
+    background: var(--coral-light); color: var(--coral);
+    border: 2px solid var(--coral);
+  }
+  .letter-chip.consonant {
+    background: var(--blue-light); color: var(--blue);
+    border: 2px solid var(--blue);
+  }
+  .letter-chip.special {
+    background: #f0f0f0; color: #999;
+    border: 2px solid #ccc;
+  }
+  .letter-chip.revealed-vowel { background: var(--coral); color: white; }
+  .letter-chip.revealed-consonant { background: var(--blue); color: white; }
+
+  /* EXERCISES */
+  .exercise-card {
+    background: white;
+    border-radius: var(--radius);
+    padding: 22px;
+    margin-bottom: 14px;
+    box-shadow: 0 2px 14px rgba(0,0,0,0.06);
+  }
+  .ex-number {
+    font-size: 10px; font-weight: 800; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--text-soft); margin-bottom: 8px;
+  }
+  .ex-title {
+    font-size: 16px; font-weight: 800; margin-bottom: 14px; line-height: 1.3;
+  }
+
+  /* SORT EXERCISE */
+  .sort-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 12px; margin-bottom: 14px;
+  }
+  .sort-column {
+    border-radius: 12px; padding: 12px;
+    min-height: 80px;
+  }
+  .sort-column.vowels-col { background: var(--coral-light); border: 2px dashed var(--coral); }
+  .sort-column.consonants-col { background: var(--blue-light); border: 2px dashed var(--blue); }
+  .sort-col-title {
+    font-size: 12px; font-weight: 800; margin-bottom: 8px;
+    text-align: center;
+  }
+  .sort-column.vowels-col .sort-col-title { color: var(--coral); }
+  .sort-column.consonants-col .sort-col-title { color: var(--blue); }
+  .sort-items {
+    display: flex; flex-wrap: wrap; gap: 5px; min-height: 40px;
+  }
+  .word-chip {
+    background: white;
+    border-radius: 8px; padding: 5px 10px;
+    font-size: 14px; font-weight: 700;
+    cursor: pointer;
+    border: 2px solid #e0e8f0;
+    transition: all 0.2s;
+    user-select: none;
+  }
+  .word-chip:hover { border-color: var(--blue); color: var(--blue); transform: scale(1.05); }
+  .word-chip.placed-vowel { background: var(--coral); color: white; border-color: var(--coral); }
+  .word-chip.placed-consonant { background: var(--blue); color: white; border-color: var(--blue); }
+
+  .word-bank {
+    display: flex; flex-wrap: wrap; gap: 6px;
+    padding: 10px; background: var(--bg);
+    border-radius: 10px; margin-bottom: 12px;
+  }
+
+  /* STRESS EXERCISE */
+  .stress-word {
+    font-size: 22px; font-weight: 800;
+    letter-spacing: 3px; margin: 6px 0;
+    display: flex; gap: 0; align-items: center;
+  }
+  .syl {
+    padding: 6px 3px;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: background 0.2s;
+    border-bottom: 3px solid transparent;
+  }
+  .syl:hover { background: var(--sun-light); }
+  .syl.stressed {
+    background: var(--sun-light);
+    border-bottom-color: var(--sun);
+    color: #c49a00;
+  }
+  .syl.stress-correct { background: #d4f5ed; border-bottom-color: var(--mint); color: var(--mint); }
+  .syl.stress-wrong { background: var(--coral-light); border-bottom-color: var(--coral); color: var(--coral); }
+
+  .stress-row {
+    display: flex; align-items: center; gap: 14px;
+    padding: 10px 0; border-bottom: 1px solid #eef2f7;
+  }
+  .stress-row:last-child { border-bottom: none; }
+  .stress-row-num { font-size: 13px; color: var(--text-soft); font-weight: 700; width: 18px; }
+
+  /* EYO EXERCISE */
+  .eyo-sentence {
+    font-size: 16px; font-weight: 600; line-height: 1.8;
+    padding: 12px 0; border-bottom: 1px solid #eef2f7;
+  }
+  .eyo-sentence:last-child { border-bottom: none; }
+  .eyo-blank {
+    display: inline-block;
+    min-width: 40px; border-bottom: 2px solid var(--blue);
+    padding: 0 4px; text-align: center;
+    cursor: pointer; font-weight: 800; color: var(--blue);
+    transition: background 0.2s;
+    border-radius: 4px 4px 0 0;
+  }
+  .eyo-blank:hover { background: var(--blue-light); }
+  .eyo-blank.filled-correct { color: var(--mint); border-color: var(--mint); background: var(--mint-light); }
+  .eyo-blank.filled-wrong { color: var(--coral); border-color: var(--coral); background: var(--coral-light); }
+
+  /* SOFT SIGN */
+  .soft-word-row {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 12px; border-radius: 10px; margin-bottom: 8px;
+    background: var(--bg);
+  }
+  .soft-word-text {
+    font-size: 18px; font-weight: 800; flex: 1;
+  }
+  .soft-sign-spot {
+    display: inline-block;
+    width: 28px; height: 28px;
+    border: 2px dashed var(--purple);
+    border-radius: 6px;
+    text-align: center; line-height: 24px;
+    font-weight: 800; font-size: 16px;
+    cursor: pointer; color: transparent;
+    transition: all 0.2s;
+    vertical-align: middle;
+  }
+  .soft-sign-spot.revealed {
+    color: var(--purple); background: var(--purple-light);
+    border-style: solid;
+  }
+  .soft-sign-spot.no-sign.revealed {
+    color: var(--coral); background: var(--coral-light);
+    border-color: var(--coral); font-size: 12px;
+  }
+  .soft-word-hint { font-size: 12px; color: var(--text-soft); font-weight: 600; }
+
+  /* MULTIPLE CHOICE */
+  .mc-options {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 8px; margin-top: 10px;
+  }
+  .mc-btn {
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 2px solid #e0e8f0;
+    background: white;
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px; font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .mc-btn:hover { border-color: var(--blue); color: var(--blue); }
+  .mc-btn.correct { background: var(--mint); color: white; border-color: var(--mint); }
+  .mc-btn.wrong { background: var(--coral); color: white; border-color: var(--coral); }
+  .mc-btn.show-correct { background: var(--mint-light); border-color: var(--mint); color: var(--mint); }
+
+  /* FEEDBACK */
+  .feedback-bar {
+    margin-top: 12px; padding: 10px 14px;
+    border-radius: 10px; font-size: 14px; font-weight: 700;
+    display: none;
+  }
+  .feedback-bar.correct { background: var(--mint-light); color: #1a9e7a; }
+  .feedback-bar.wrong { background: var(--coral-light); color: #c0392b; }
+  .feedback-bar.visible { display: block; }
+
+  /* CHECK BUTTON */
+  .check-btn {
+    padding: 10px 22px;
+    border-radius: 10px;
+    border: none;
+    background: linear-gradient(135deg, var(--mint), var(--blue));
+    color: white;
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px; font-weight: 800;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+    margin-top: 10px;
+  }
+  .check-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(62,207,170,0.4); }
+  .check-btn:active { transform: translateY(0); }
+
+  /* SCORE BADGE */
+  .score-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--sun-light);
+    border: 2px solid var(--sun);
+    border-radius: 20px; padding: 4px 14px;
+    font-size: 13px; font-weight: 800; color: #c49a00;
+  }
+
+  /* FINISH BANNER */
+  .finish-banner {
+    max-width: 680px; margin: 28px auto 0;
+    padding: 0 20px;
+  }
+  .finish-card {
+    background: linear-gradient(135deg, var(--mint), var(--blue));
+    border-radius: 20px; padding: 30px 24px;
+    text-align: center; color: white;
+    display: none;
+  }
+  .finish-card.visible { display: block; }
+  .finish-title { font-family: 'Caveat', cursive; font-size: 34px; font-weight: 700; margin-bottom: 8px; }
+  .finish-sub { font-size: 15px; font-weight: 600; opacity: 0.9; }
+  .finish-stars { font-size: 36px; margin: 10px 0; }
+
+  /* DIVIDER */
+  .section-divider {
+    max-width: 680px; margin: 28px auto 0;
+    padding: 0 20px;
+  }
+  .divider-line {
+    border: none; border-top: 2px dashed #d4dce8; margin: 0;
+  }
+
+  /* TOOLTIP */
+  [data-tip] {
+    position: relative; cursor: help;
+  }
+  [data-tip]::after {
+    content: attr(data-tip);
+    position: absolute; bottom: calc(100% + 6px); left: 50%;
+    transform: translateX(-50%);
+    background: var(--text); color: white;
+    padding: 5px 10px; border-radius: 8px;
+    font-size: 12px; font-weight: 600; white-space: nowrap;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.2s;
+    z-index: 10;
+  }
+  [data-tip]:hover::after { opacity: 1; }
+
+  /* SCROLLIN ANIMATIONS */
+  .section { animation: fadeUp 0.4s ease both; }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="hero">
+  <span class="hero-emoji">🔤</span>
+  <div class="hero-date">10 марта 2026 · Урок 3</div>
+  <div class="hero-title">Повторяем всё,<br>что уже знаем!</div>
+  <div class="hero-sub">Звуки и буквы · Гласные и согласные · Ударение · Е Ё Ю Я · Мягкий знак</div>
+</div>
+
+<!-- PROGRESS -->
+<div class="progress-wrap">
+  <div class="progress-label">
+    <span>📊 Прогресс урока</span>
+    <span id="score-display">0 / 0 выполнено</span>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- БЛОК 1: ЗВУКИ И БУКВЫ -->
+<!-- ═══════════════════════════════════════ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon" style="background:#d4f5ed">🔊</div>
+    <div>
+      <div class="section-title">Звуки и буквы</div>
+      <div class="section-sub">Слышим звуки — пишем буквы</div>
+    </div>
+  </div>
+
+  <div class="theory-card">
+    <div class="theory-label">📌 Правило</div>
+    <div class="theory-text">
+      <strong>Буква</strong> — это то, что мы <em>видим и пишем</em>.<br>
+      <strong>Звук</strong> — это то, что мы <em>слышим и произносим</em>.<br><br>
+      Звуки пишем в квадратных скобках: [а], [м], [й']<br>
+      Буквы — без скобок: А, М, Й
+    </div>
+  </div>
+
+  <!-- EXERCISE 1: звук или буква? -->
+  <div class="exercise-card">
+    <div class="ex-number">Упражнение 1</div>
+    <div class="ex-title">Выбери правильный ответ 🎯</div>
+
+    <div id="sb-quiz">
+      <!-- Q1 -->
+      <div style="margin-bottom:18px" data-answered="0">
+        <div style="font-size:15px;font-weight:700;margin-bottom:8px">Мы <em>слышим</em> когда говорим — это...</div>
+        <div class="mc-options">
+          <button class="mc-btn" onclick="mcAnswer(this, false, 1)">Буквы</button>
+          <button class="mc-btn" onclick="mcAnswer(this, true, 1)">Звуки</button>
+        </div>
+        <div class="feedback-bar" id="fb-sb1"></div>
+      </div>
+      <!-- Q2 -->
+      <div style="margin-bottom:18px" data-answered="0">
+        <div style="font-size:15px;font-weight:700;margin-bottom:8px">В слове «кот» — сколько букв?</div>
+        <div class="mc-options">
+          <button class="mc-btn" onclick="mcAnswer(this, false, 2)">2</button>
+          <button class="mc-btn" onclick="mcAnswer(this, true, 2)">3</button>
+          <button class="mc-btn" onclick="mcAnswer(this, false, 2)">4</button>
+          <button class="mc-btn" onclick="mcAnswer(this, false, 2)">5</button>
+        </div>
+        <div class="feedback-bar" id="fb-sb2"></div>
+      </div>
+      <!-- Q3 -->
+      <div data-answered="0">
+        <div style="font-size:15px;font-weight:700;margin-bottom:8px">В слове «ёж» — сколько звуков?</div>
+        <div class="mc-options">
+          <button class="mc-btn" onclick="mcAnswer(this, false, 3)">1</button>
+          <button class="mc-btn" onclick="mcAnswer(this, false, 3)">2</button>
+          <button class="mc-btn" onclick="mcAnswer(this, true, 3)">3</button>
+          <button class="mc-btn" onclick="mcAnswer(this, false, 3)">4</button>
+        </div>
+        <div class="feedback-bar" id="fb-sb3"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- БЛОК 2: ГЛАСНЫЕ И СОГЛАСНЫЕ -->
+<!-- ═══════════════════════════════════════ -->
+<div class="section-divider"><hr class="divider-line"></div>
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon" style="background:#ffe5e1">🅰️</div>
+    <div>
+      <div class="section-title">Гласные и согласные</div>
+      <div class="section-sub">Гласные «поют», согласные «мешают»</div>
+    </div>
+  </div>
+
+  <div class="theory-card coral">
+    <div class="theory-label">📌 Гласные</div>
+    <div class="theory-text">
+      Гласных букв <strong>10:</strong><br>
+      <strong>А О У И Э Ы — Е Ё Ю Я</strong><br>
+      Гласный звук тянется, поёт 🎵. При произношении воздух проходит свободно.
+    </div>
+  </div>
+
+  <div class="theory-card blue">
+    <div class="theory-label">📌 Согласные</div>
+    <div class="theory-text">
+      Согласных букв <strong>21</strong> (не считая Ъ и Ь).<br>
+      Согласный звук встречает «преграду» — губы, зубы, язык.<br>
+      Согласные бывают <strong>твёрдые / мягкие</strong> и <strong>звонкие / глухие</strong>.
+    </div>
+  </div>
+
+  <!-- EXERCISE 2: сортировка -->
+  <div class="exercise-card">
+    <div class="ex-number">Упражнение 2</div>
+    <div class="ex-title">Разложи слова в нужный столбик! Нажимай на слово, чтобы переместить 🗂</div>
+
+    <div class="word-bank" id="sort-bank">
+      <span class="word-chip" onclick="sortWord(this, 'vowel')">арбуз</span>
+      <span class="word-chip" onclick="sortWord(this, 'consonant')">стол</span>
+      <span class="word-chip" onclick="sortWord(this, 'vowel')">окно</span>
+      <span class="word-chip" onclick="sortWord(this, 'consonant')">брат</span>
+      <span class="word-chip" onclick="sortWord(this, 'vowel')">утка</span>
+      <span class="word-chip" onclick="sortWord(this, 'consonant')">рыба</span>
+    </div>
+    <div style="font-size:12px;color:var(--text-soft);margin-bottom:10px;font-weight:600">
+      Подсказка: слово начинается на гласную или согласную букву?
+    </div>
+
+    <div class="sort-grid">
+      <div class="sort-column vowels-col">
+        <div class="sort-col-title">🔴 Начинается на ГЛАСНУЮ</div>
+        <div class="sort-items" id="vowel-col"></div>
+      </div>
+      <div class="sort-column consonants-col">
+        <div class="sort-col-title">🔵 Начинается на СОГЛАСНУЮ</div>
+        <div class="sort-items" id="consonant-col"></div>
+      </div>
+    </div>
+    <button class="check-btn" onclick="checkSort()">Проверить ✓</button>
+    <div class="feedback-bar" id="fb-sort"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- БЛОК 3: УДАРЕНИЕ -->
+<!-- ═══════════════════════════════════════ -->
+<div class="section-divider"><hr class="divider-line"></div>
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon" style="background:#fff6db">💥</div>
+    <div>
+      <div class="section-title">Ударение</div>
+      <div class="section-sub">Один слог — самый «громкий»</div>
+    </div>
+  </div>
+
+  <div class="theory-card sun">
+    <div class="theory-label">📌 Правило</div>
+    <div class="theory-text">
+      <strong>Ударный слог</strong> произносится сильнее, дольше.<br>
+      Ударение меняет смысл слова: <strong>зА́мок</strong> (строение) и <strong>замО́к</strong> (на двери).<br>
+      Чтобы найти ударный слог — позови слово: «Э-эй! <em>___</em>!»
+    </div>
+  </div>
+
+  <!-- EXERCISE 3: поставь ударение -->
+  <div class="exercise-card">
+    <div class="ex-number">Упражнение 3</div>
+    <div class="ex-title">Нажми на ударный слог в каждом слове 💥</div>
+
+    <div id="stress-exercise">
+      <div class="stress-row">
+        <span class="stress-row-num">1.</span>
+        <div class="stress-word" data-correct="0">
+          <span class="syl" onclick="tapSyl(this)">мо</span><span style="color:#ccc">-</span><span class="syl" onclick="tapSyl(this)">ро</span><span style="color:#ccc">-</span><span class="syl" onclick="tapSyl(this)">же</span><span style="color:#ccc">-</span><span class="syl" onclick="tapSyl(this)">ное</span>
+        </div>
+      </div>
+      <div class="stress-row">
+        <span class="stress-row-num">2.</span>
+        <div class="stress-word" data-correct="1">
+          <span class="syl" onclick="tapSyl(this)">кни</span><span style="color:#ccc">-</span><span class="syl" onclick="tapSyl(this)">га</span>
+        </div>
+      </div>
+      <div class="stress-row">
+        <span class="stress-row-num">3.</span>
+        <div class="stress-word" data-correct="1">
+          <span class="syl" onclick="tapSyl(this)">де</span><span style="color:#ccc">-</span><span class="syl" onclick="tapSyl(this)">ре</span><span style="color:#ccc">-</span><span class="syl" onclick="tapSyl(this)">во</span>
+        </div>
+      </div>
+      <div class="stress-row">
+        <span class="stress-row-num">4.</span>
+        <div class="stress-word" data-correct="0">
+          <span class="syl" onclick="tapSyl(this)">зá</span><span style="color:#ccc">-</span><span class="syl" onclick="tapSyl(this)">мок</span>
+        </div>
+        <span style="font-size:12px;color:var(--text-soft);font-weight:600">(строение)</span>
+      </div>
+      <div class="stress-row">
+        <span class="stress-row-num">5.</span>
+        <div class="stress-word" data-correct="1">
+          <span class="syl" onclick="tapSyl(this)">за</span><span style="color:#ccc">-</span><span class="syl" onclick="tapSyl(this)">мóк</span>
+        </div>
+        <span style="font-size:12px;color:var(--text-soft);font-weight:600">(на двери)</span>
+      </div>
+    </div>
+    <button class="check-btn" onclick="checkStress()">Проверить ✓</button>
+    <div class="feedback-bar" id="fb-stress"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- БЛОК 4: БУКВЫ Е Ё Ю Я -->
+<!-- ═══════════════════════════════════════ -->
+<div class="section-divider"><hr class="divider-line"></div>
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon" style="background:#ede9fe">✨</div>
+    <div>
+      <div class="section-title">Буквы Е, Ё, Ю, Я</div>
+      <div class="section-sub">Иногда одна буква = два звука!</div>
+    </div>
+  </div>
+
+  <div class="theory-card purple">
+    <div class="theory-label">📌 Два звука или один?</div>
+    <div class="theory-text">
+      Буквы <strong>Е Ё Ю Я</strong> обозначают <strong>2 звука</strong> когда стоят:<br>
+      ✅ В <strong>начале слова</strong>: <em>Яблоко</em> = [й'а]блоко<br>
+      ✅ После <strong>гласной</strong>: <em>маяк</em> = ма[й'а]к<br>
+      ✅ После <strong>Ъ или Ь</strong>: <em>семья</em> = семь[й'а]<br><br>
+      В остальных случаях — <strong>1 звук</strong> (смягчают согласный):<br>
+      <em>лес</em> = [л']ес, <em>мяч</em> = [м']яч
+    </div>
+  </div>
+
+  <!-- EXERCISE 4: сколько звуков? -->
+  <div class="exercise-card">
+    <div class="ex-number">Упражнение 4</div>
+    <div class="ex-title">Сколько звуков обозначает выделенная буква? Нажми 1 или 2 🔢</div>
+
+    <div id="eyo-exercise">
+
+      <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #eef2f7" data-correct="2" data-answered="0">
+        <div style="font-size:18px;font-weight:800;flex:1"><span style="color:var(--purple);font-size:22px">Я</span>блоко</div>
+        <div style="display:flex;gap:6px">
+          <button class="mc-btn" style="width:50px" onclick="eyoAnswer(this, false)">1</button>
+          <button class="mc-btn" style="width:50px" onclick="eyoAnswer(this, true)">2</button>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #eef2f7" data-correct="1" data-answered="0">
+        <div style="font-size:18px;font-weight:800;flex:1">л<span style="color:var(--purple);font-size:22px">Е</span>с</div>
+        <div style="display:flex;gap:6px">
+          <button class="mc-btn" style="width:50px" onclick="eyoAnswer(this, true)">1</button>
+          <button class="mc-btn" style="width:50px" onclick="eyoAnswer(this, false)">2</button>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #eef2f7" data-correct="2" data-answered="0">
+        <div style="font-size:18px;font-weight:800;flex:1">ма<span style="color:var(--purple);font-size:22px">Я</span>к</div>
+        <div style="display:flex;gap:6px">
+          <button class="mc-btn" style="width:50px" onclick="eyoAnswer(this, false)">1</button>
+          <button class="mc-btn" style="width:50px" onclick="eyoAnswer(this, true)">2</button>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #eef2f7" data-correct="1" data-answered="0">
+        <div style="font-size:18px;font-weight:800;flex:1">м<span style="color:var(--purple);font-size:22px">Я</span>ч</div>
+        <div style="display:flex;gap:6px">
+          <button class="mc-btn" style="width:50px" onclick="eyoAnswer(this, true)">1</button>
+          <button class="mc-btn" style="width:50px" onclick="eyoAnswer(this, false)">2</button>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:12px;padding:10px 0" data-correct="2" data-answered="0">
+        <div style="font-size:18px;font-weight:800;flex:1">сем<span style="color:var(--purple);font-size:22px">Ь</span><span style="color:var(--coral);font-size:22px">Я</span></div>
+        <div style="display:flex;gap:6px">
+          <button class="mc-btn" style="width:50px" onclick="eyoAnswer(this, false)">1</button>
+          <button class="mc-btn" style="width:50px" onclick="eyoAnswer(this, true)">2</button>
+        </div>
+        <span style="font-size:11px;color:var(--text-soft);font-weight:600">Я — ?</span>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- БЛОК 5: МЯГКИЙ ЗНАК -->
+<!-- ═══════════════════════════════════════ -->
+<div class="section-divider"><hr class="divider-line"></div>
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon" style="background:#ede9fe">🫧</div>
+    <div>
+      <div class="section-title">Мягкий знак (Ь)</div>
+      <div class="section-sub">Показатель мягкости согласного</div>
+    </div>
+  </div>
+
+  <div class="theory-card purple">
+    <div class="theory-label">📌 Правило</div>
+    <div class="theory-text">
+      <strong>Мягкий знак (Ь)</strong> не обозначает звука — он только показывает, что <strong>согласный перед ним мягкий</strong>.<br><br>
+      🔤 конь = [кон'], соль = [сол'], пальто = [пал'то]<br><br>
+      Ь стоит в <strong>конце слова</strong> или <strong>в середине</strong> между согласными.
+    </div>
+  </div>
+
+  <!-- EXERCISE 5: нужен ли Ь? -->
+  <div class="exercise-card">
+    <div class="ex-number">Упражнение 5</div>
+    <div class="ex-title">Нажми на клетку — узнай, нужен ли Ь! 🫧</div>
+
+    <div style="margin-bottom: 8px; font-size:13px; color: var(--text-soft); font-weight:600">
+      Произнеси слово вслух. Слышишь мягкость? Нажми и проверь!
+    </div>
+
+    <div class="soft-word-row">
+      <div class="soft-word-text">ден<span class="soft-sign-spot" onclick="revealSoft(this, true)">ь</span></div>
+      <div class="soft-word-hint">ден_ — «день»?</div>
+    </div>
+    <div class="soft-word-row">
+      <div class="soft-word-text">стол<span class="soft-sign-spot no-sign" onclick="revealSoft(this, false)">✗</span></div>
+      <div class="soft-word-hint">стол_ — «стол»?</div>
+    </div>
+    <div class="soft-word-row">
+      <div class="soft-word-text">пал<span class="soft-sign-spot" onclick="revealSoft(this, true)">ь</span>то</div>
+      <div class="soft-word-hint">пал_то — «пальто»?</div>
+    </div>
+    <div class="soft-word-row">
+      <div class="soft-word-text">угол<span class="soft-sign-spot no-sign" onclick="revealSoft(this, false)">✗</span></div>
+      <div class="soft-word-hint">угол_ — «угол»?</div>
+    </div>
+    <div class="soft-word-row">
+      <div class="soft-word-text">кон<span class="soft-sign-spot" onclick="revealSoft(this, true)">ь</span></div>
+      <div class="soft-word-hint">кон_ — «конь»?</div>
+    </div>
+    <div class="soft-word-row">
+      <div class="soft-word-text">бол<span class="soft-sign-spot" onclick="revealSoft(this, true)">ь</span></div>
+      <div class="soft-word-hint">бол_ — «боль»?</div>
+    </div>
+
+    <div class="feedback-bar" id="fb-soft"></div>
+  </div>
+
+  <!-- EXERCISE 6: финальное -->
+  <div class="exercise-card" style="border: 2px solid var(--sun)">
+    <div class="ex-number">⭐ Финальное задание</div>
+    <div class="ex-title">Вставь нужную букву или знак: Ь или ничего 📝</div>
+
+    <div id="final-ex">
+      <div style="display:flex;align-items:center;gap:8px;padding:10px 0;border-bottom:1px solid #eef2f7" data-answered="0">
+        <div style="font-size:17px;font-weight:700;flex:1">ел__ (лесное дерево)</div>
+        <div style="display:flex;gap:6px">
+          <button class="mc-btn" onclick="finalAnswer(this, true)">ель</button>
+          <button class="mc-btn" onclick="finalAnswer(this, false)">ел</button>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;padding:10px 0;border-bottom:1px solid #eef2f7" data-answered="0">
+        <div style="font-size:17px;font-weight:700;flex:1">мел__ (пишут на доске)</div>
+        <div style="display:flex;gap:6px">
+          <button class="mc-btn" onclick="finalAnswer(this, false)">мел</button>
+          <button class="mc-btn" onclick="finalAnswer(this, true)">мель</button>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;padding:10px 0" data-answered="0">
+        <div style="font-size:17px;font-weight:700;flex:1">угол__ (геометрическая фигура)</div>
+        <div style="display:flex;gap:6px">
+          <button class="mc-btn" onclick="finalAnswer(this, true)">угол</button>
+          <button class="mc-btn" onclick="finalAnswer(this, false)">уголь</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FINISH -->
+<div class="finish-banner">
+  <div class="finish-card" id="finish-card">
+    <div class="finish-stars">🌟🌟🌟</div>
+    <div class="finish-title">Молодец, Марьяна!</div>
+    <div class="finish-sub">Ты повторила все темы Блока 1.<br>Теперь ты готова к мягкому знаку — новой теме! 💪</div>
+  </div>
+</div>
+
+<div style="height:40px"></div>
+
+<script>
+// ── STATE ──
+let totalTasks = 0;
+let completedTasks = 0;
+
+function updateProgress() {
+  const pct = totalTasks > 0 ? (completedTasks / totalTasks) * 100 : 0;
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('score-display').textContent = completedTasks + ' / ' + totalTasks + ' выполнено';
+  if (completedTasks >= totalTasks && totalTasks > 0) {
+    document.getElementById('finish-card').classList.add('visible');
+  }
+}
+
+function registerTask() { totalTasks++; updateProgress(); }
+function completeTask() { completedTasks++; updateProgress(); }
+
+// Count all interactive items
+window.addEventListener('DOMContentLoaded', () => {
+  // MC questions (3 in sb-quiz)
+  document.querySelectorAll('#sb-quiz > div').forEach(() => registerTask());
+  // Sort words (6)
+  document.querySelectorAll('#sort-bank .word-chip').forEach(() => registerTask());
+  // Stress (5)
+  document.querySelectorAll('#stress-exercise .stress-word').forEach(() => registerTask());
+  // EYO (5 rows)
+  document.querySelectorAll('#eyo-exercise > div').forEach(() => registerTask());
+  // Soft sign (6)
+  document.querySelectorAll('.soft-sign-spot').forEach(() => registerTask());
+  // Final (3)
+  document.querySelectorAll('#final-ex > div').forEach(() => registerTask());
+});
+
+// ── MC ANSWER ──
+function mcAnswer(btn, isCorrect, qNum) {
+  const container = btn.closest('[data-answered]');
+  if (container.dataset.answered === '1') return;
+  container.dataset.answered = '1';
+
+  const btns = container.querySelectorAll('.mc-btn');
+  btns.forEach(b => b.disabled = true);
+
+  const fb = document.getElementById('fb-sb' + qNum);
+  if (isCorrect) {
+    btn.classList.add('correct');
+    fb.textContent = '✅ Верно!';
+    fb.className = 'feedback-bar correct visible';
+    completeTask();
+  } else {
+    btn.classList.add('wrong');
+    fb.className = 'feedback-bar wrong visible';
+    // Show correct
+    btns.forEach(b => {
+      if (b !== btn && !b.classList.contains('wrong')) b.classList.add('show-correct');
+    });
+    const msgs = {1:'Мы слышим — звуки!', 2:'В слове «кот» 3 буквы: К-О-Т', 3:'«Ёж» = [й\'-о-ж] — 3 звука! Ё в начале = 2 звука'};
+    fb.textContent = '❌ ' + (msgs[qNum] || 'Попробуй ещё раз');
+    fb.className = 'feedback-bar wrong visible';
+    completeTask();
+  }
+}
+
+// ── SORT ──
+const sortCorrect = { арбуз:'vowel', окно:'vowel', утка:'vowel', стол:'consonant', брат:'consonant', рыба:'consonant' };
+const sortPlaced = {};
+
+function sortWord(chip, targetCol) {
+  const word = chip.textContent;
+  if (sortPlaced[word]) return;
+  sortPlaced[word] = targetCol;
+
+  const newChip = chip.cloneNode(true);
+  newChip.classList.add('placed-' + targetCol);
+  newChip.onclick = null;
+
+  document.getElementById(targetCol + '-col').appendChild(newChip);
+  chip.style.opacity = '0.3';
+  chip.onclick = null;
+}
+
+function checkSort() {
+  let correct = 0; let total = 0;
+  for (const [word, placed] of Object.entries(sortPlaced)) {
+    total++;
+    if (sortCorrect[word] === placed) correct++;
+  }
+  if (total < 6) {
+    const fb = document.getElementById('fb-sort');
+    fb.textContent = '⚠️ Разложи все 6 слов!';
+    fb.className = 'feedback-bar wrong visible';
+    return;
+  }
+
+  // Mark already done
+  const alreadyDone = document.querySelectorAll('#vowel-col .placed-vowel, #consonant-col .placed-consonant').length;
+  for (let i = 0; i < 6; i++) completeTask();
+  // Reset counter
+  completedTasks -= 6;
+  completedTasks += correct;
+  updateProgress();
+
+  const fb = document.getElementById('fb-sort');
+  if (correct === 6) {
+    fb.textContent = '🎉 Отлично! Все 6 слов правильно!';
+    fb.className = 'feedback-bar correct visible';
+  } else {
+    fb.textContent = `✅ ${correct} из 6. Арбуз, окно, утка — на гласную. Стол, брат, рыба — на согласную.`;
+    fb.className = 'feedback-bar wrong visible';
+  }
+}
+
+// ── STRESS ──
+function tapSyl(syl) {
+  const word = syl.closest('.stress-word');
+  word.querySelectorAll('.syl').forEach(s => s.classList.remove('stressed'));
+  syl.classList.add('stressed');
+}
+
+function checkStress() {
+  const words = document.querySelectorAll('#stress-exercise .stress-word');
+  let correct = 0;
+  words.forEach(word => {
+    const syls = word.querySelectorAll('.syl');
+    const correctIdx = parseInt(word.dataset.correct);
+    const stressed = word.querySelector('.syl.stressed');
+    if (!stressed) return;
+    const idx = Array.from(syls).indexOf(stressed);
+    if (idx === correctIdx) {
+      stressed.classList.add('stress-correct');
+      correct++;
+    } else {
+      stressed.classList.add('stress-wrong');
+      syls[correctIdx].classList.add('stress-correct');
+    }
+  });
+
+  // Reset + add
+  completedTasks -= 5;
+  completedTasks += correct;
+  updateProgress();
+
+  const fb = document.getElementById('fb-stress');
+  if (correct >= 4) {
+    fb.textContent = `✅ ${correct}/5 верно! Зелёный — правильный слог.`;
+    fb.className = 'feedback-bar correct visible';
+  } else {
+    fb.textContent = `${correct}/5 верно. Зелёный — правильный слог. Мороженое: мо-РО-же-ное`;
+    fb.className = 'feedback-bar wrong visible';
+  }
+}
+
+// ── EYO ──
+function eyoAnswer(btn, isCorrect) {
+  const container = btn.closest('[data-answered]');
+  if (container.dataset.answered === '1') return;
+  container.dataset.answered = '1';
+
+  const btns = container.querySelectorAll('.mc-btn');
+  btns.forEach(b => b.disabled = true);
+  if (isCorrect) {
+    btn.classList.add('correct');
+    completeTask();
+  } else {
+    btn.classList.add('wrong');
+    btns.forEach(b => { if (b !== btn) b.classList.add('show-correct'); });
+    completeTask();
+  }
+}
+
+// ── SOFT SIGN ──
+function revealSoft(el, hasSign) {
+  if (el.classList.contains('revealed')) return;
+  el.classList.add('revealed');
+  completeTask();
+}
+
+// ── FINAL ──
+function finalAnswer(btn, isCorrect) {
+  const container = btn.closest('[data-answered]');
+  if (container.dataset.answered === '1') return;
+  container.dataset.answered = '1';
+
+  const btns = container.querySelectorAll('.mc-btn');
+  btns.forEach(b => b.disabled = true);
+  if (isCorrect) {
+    btn.classList.add('correct');
+    completeTask();
+  } else {
+    btn.classList.add('wrong');
+    btns.forEach(b => { if (b !== btn) b.classList.add('show-correct'); });
+    completeTask();
+  }
+}
+</script>
+</body>
+</html>
