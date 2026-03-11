@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Nunito+Sans:ital,wght@0,400;0,600;1,400&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  body {
+    font-family: 'Nunito Sans', 'Arial', sans-serif;
+    background: #fff;
+    width: 210mm;
+    min-height: 297mm;
+    overflow: hidden;
+  }
+
+  /* ── BACKGROUND ── */
+  .page {
+    width: 210mm;
+    min-height: 297mm;
+    padding: 0;
+    position: relative;
+    background: #FAFAF9;
+  }
+
+  /* Decorative dots background */
+  .page::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, #E2E8F0 1px, transparent 1px);
+    background-size: 18px 18px;
+    opacity: 0.5;
+    z-index: 0;
+  }
+
+  .inner {
+    position: relative;
+    z-index: 1;
+    padding: 7mm 8mm 6mm 8mm;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: linear-gradient(135deg, #6D28D9 0%, #7C3AED 40%, #A855F7 80%, #C084FC 100%);
+    border-radius: 18px;
+    padding: 13px 22px 12px 22px;
+    margin-bottom: 10px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 6px 24px rgba(109,40,217,0.35);
+  }
+
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -30px; right: -30px;
+    width: 130px; height: 130px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 50%;
+  }
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: -20px; left: 40px;
+    width: 80px; height: 80px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 50%;
+  }
+
+  .header-main {
+    font-family: 'Nunito', sans-serif;
+    font-size: 22pt;
+    font-weight: 900;
+    color: #fff;
+    letter-spacing: 0.5px;
+    line-height: 1.1;
+    position: relative;
+    z-index: 2;
+  }
+  .header-en {
+    font-family: 'Nunito', sans-serif;
+    font-size: 11pt;
+    font-weight: 600;
+    color: #DDD6FE;
+    margin-top: 2px;
+    position: relative;
+    z-index: 2;
+    letter-spacing: 0.3px;
+  }
+  .header-sub {
+    font-size: 8.5pt;
+    color: #EDE9FE;
+    margin-top: 4px;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* ── STEP CARDS ── */
+  .steps-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .step {
+    display: flex;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.10);
+  }
+
+  /* Icon column */
+  .step-icon {
+    width: 44px;
+    min-width: 44px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 10px;
+    font-size: 20px;
+    line-height: 1;
+  }
+
+  /* Content column */
+  .step-body {
+    flex: 1;
+    padding: 9px 12px 9px 8px;
+  }
+
+  .step-title-row {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    margin-bottom: 5px;
+    flex-wrap: wrap;
+  }
+  .step-num {
+    font-family: 'Nunito', sans-serif;
+    font-size: 7.5pt;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    opacity: 0.75;
+    white-space: nowrap;
+  }
+  .step-ru {
+    font-family: 'Nunito', sans-serif;
+    font-size: 10.5pt;
+    font-weight: 800;
+    color: #1E1B4B;
+    line-height: 1.2;
+  }
+  .step-en-title {
+    font-size: 8pt;
+    font-style: italic;
+    color: #6B7280;
+    font-weight: 400;
+  }
+
+  /* Phrases list */
+  .phrases {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-bottom: 6px;
+  }
+  .phrase-pair {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .phrase-ru {
+    font-size: 8.5pt;
+    font-weight: 700;
+    color: #1F2937;
+    line-height: 1.35;
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+  }
+  .phrase-ru::before {
+    content: '•';
+    font-size: 9pt;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .phrase-en {
+    font-size: 7.5pt;
+    font-style: italic;
+    color: #9CA3AF;
+    padding-left: 12px;
+    line-height: 1.3;
+    margin-bottom: 2px;
+  }
+
+  /* Example */
+  .example-block {
+    border-radius: 8px;
+    padding: 5px 9px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .example-label {
+    font-size: 7pt;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #9CA3AF;
+    margin-bottom: 1px;
+  }
+  .example-line {
+    font-size: 8pt;
+    font-style: italic;
+    line-height: 1.4;
+    display: flex;
+    gap: 5px;
+    align-items: baseline;
+  }
+  .flag { font-size: 9pt; flex-shrink: 0; }
+
+  /* ── COLOUR THEMES ── */
+  /* 1 purple */
+  .s1 .step-icon { background: #7C3AED; }
+  .s1 .step-body { background: linear-gradient(135deg, #F5F0FF 0%, #EDE9FE 100%); }
+  .s1 .step-num  { color: #7C3AED; }
+  .s1 .phrase-ru::before { color: #7C3AED; }
+  .s1 .example-block { background: rgba(124,58,237,0.08); }
+  .s1 .example-line { color: #4C1D95; }
+
+  /* 2 teal */
+  .s2 .step-icon { background: #0D9488; }
+  .s2 .step-body { background: linear-gradient(135deg, #F0FDFA 0%, #CCFBF1 100%); }
+  .s2 .step-num  { color: #0D9488; }
+  .s2 .phrase-ru::before { color: #0D9488; }
+  .s2 .example-block { background: rgba(13,148,136,0.08); }
+  .s2 .example-line { color: #134E4A; }
+
+  /* 3 orange */
+  .s3 .step-icon { background: #EA580C; }
+  .s3 .step-body { background: linear-gradient(135deg, #FFF7ED 0%, #FED7AA 100%); }
+  .s3 .step-num  { color: #EA580C; }
+  .s3 .phrase-ru::before { color: #EA580C; }
+  .s3 .example-block { background: rgba(234,88,12,0.08); }
+  .s3 .example-line { color: #7C2D12; }
+
+  /* 4 blue */
+  .s4 .step-icon { background: #2563EB; }
+  .s4 .step-body { background: linear-gradient(135deg, #EFF6FF 0%, #BFDBFE 100%); }
+  .s4 .step-num  { color: #2563EB; }
+  .s4 .phrase-ru::before { color: #2563EB; }
+  .s4 .example-block { background: rgba(37,99,235,0.08); }
+  .s4 .example-line { color: #1E3A8A; }
+
+  /* 5 rose */
+  .s5 .step-icon { background: #BE185D; }
+  .s5 .step-body { background: linear-gradient(135deg, #FDF2F8 0%, #FBCFE8 100%); }
+  .s5 .step-num  { color: #BE185D; }
+  .s5 .phrase-ru::before { color: #BE185D; }
+  .s5 .example-block { background: rgba(190,24,93,0.08); }
+  .s5 .example-line { color: #831843; }
+
+  /* 6 green */
+  .s6 .step-icon { background: #16A34A; }
+  .s6 .step-body { background: linear-gradient(135deg, #F0FDF4 0%, #BBF7D0 100%); }
+  .s6 .step-num  { color: #16A34A; }
+  .s6 .phrase-ru::before { color: #16A34A; }
+  .s6 .example-block { background: rgba(22,163,74,0.08); }
+  .s6 .example-line { color: #14532D; }
+
+  /* 7 amber */
+  .s7 .step-icon { background: #D97706; }
+  .s7 .step-body { background: linear-gradient(135deg, #FFFBEB 0%, #FDE68A 100%); }
+  .s7 .step-num  { color: #D97706; }
+  .s7 .phrase-ru::before { color: #D97706; }
+  .s7 .example-block { background: rgba(217,119,6,0.08); }
+  .s7 .example-line { color: #78350F; }
+
+  /* ── TEMPLATE SECTION ── */
+  .template {
+    margin-top: 8px;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 18px rgba(13,148,136,0.2);
+  }
+
+  .template-header {
+    background: linear-gradient(135deg, #0D9488 0%, #14B8A6 60%, #2DD4BF 100%);
+    padding: 9px 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .template-header-text {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 11pt;
+    color: #fff;
+    letter-spacing: 0.3px;
+  }
+  .template-header-en {
+    font-size: 8.5pt;
+    color: #CCFBF1;
+    font-style: italic;
+    margin-left: 6px;
+  }
+
+  .template-body {
+    background: linear-gradient(160deg, #F0FDFA 0%, #fff 100%);
+    padding: 10px 18px 12px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .template-line {
+    display: flex;
+    align-items: baseline;
+    gap: 7px;
+  }
+  .tl-icon { font-size: 11pt; width: 22px; text-align: center; flex-shrink: 0; }
+  .tl-ru {
+    font-family: 'Nunito', sans-serif;
+    font-size: 9pt;
+    font-weight: 700;
+    color: #1E1B4B;
+    white-space: nowrap;
+  }
+  .tl-sep { font-size: 8.5pt; color: #9CA3AF; }
+  .tl-en {
+    font-size: 8pt;
+    color: #9CA3AF;
+    font-style: italic;
+    white-space: nowrap;
+  }
+  .tl-line {
+    flex: 1;
+    border-bottom: 2px dashed #CBD5E1;
+    min-width: 40px;
+    margin-bottom: 3px;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="inner">
+
+    <!-- HEADER -->
+    <div class="header">
+      <div class="header-main">📚 Как пересказывать текст</div>
+      <div class="header-en">How to Retell a Text</div>
+      <div class="header-sub">Читай шаг за шагом — и всё получится! &nbsp;•&nbsp; Follow the steps — you've got this! 🌟</div>
+    </div>
+
+    <!-- STEPS -->
+    <div class="steps-grid">
+
+      <!-- STEP 1 -->
+      <div class="step s1">
+        <div class="step-icon">📖</div>
+        <div class="step-body">
+          <div class="step-title-row">
+            <span class="step-num">Шаг 1</span>
+            <span class="step-ru">Прочитай текст</span>
+            <span class="step-en-title">/ Read the text</span>
+          </div>
+          <div class="phrases">
+            <div class="phrase-pair">
+              <div class="phrase-ru">Прочитай текст внимательно.</div>
+              <div class="phrase-en">Read the text carefully.</div>
+            </div>
+            <div class="phrase-pair">
+              <div class="phrase-ru">Если что-то непонятно — перечитай ещё раз.</div>
+              <div class="phrase-en">If you don't understand something — read it again.</div>
+            </div>
+            <div class="phrase-pair">
+              <div class="phrase-ru">Найди незнакомые слова.</div>
+              <div class="phrase-en">Find any words you don't know.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 2 -->
+      <div class="step s2">
+        <div class="step-icon">🧑‍🤝‍🧑</div>
+        <div class="step-body">
+          <div class="step-title-row">
+            <span class="step-num">Шаг 2</span>
+            <span class="step-ru">О ком / о чём текст?</span>
+            <span class="step-en-title">/ Who or what is the text about?</span>
+          </div>
+          <div class="phrases">
+            <div class="phrase-pair">
+              <div class="phrase-ru">Я прочитал(а) текст о …</div>
+              <div class="phrase-en">I read a text about …</div>
+            </div>
+            <div class="phrase-pair">
+              <div class="phrase-ru">Этот текст рассказывает о …</div>
+              <div class="phrase-en">This text is about …</div>
+            </div>
+            <div class="phrase-pair">
+              <div class="phrase-ru">В этом тексте говорится о …</div>
+              <div class="phrase-en">In this text we read about …</div>
+            </div>
+            <div class="phrase-pair">
+              <div class="phrase-ru">Главный герой текста — …</div>
+              <div class="phrase-en">The main character is …</div>
+            </div>
+            <div class="phrase-pair">
+              <div class="phrase-ru">В тексте рассказывается про …</div>
+              <div class="phrase-en">The text tells us about …</div>
+            </div>
+          </div>
+          <div class="example-block">
+            <div class="example-label">Пример / Example</div>
+            <div class="example-line"><span class="flag">🇷🇺</span> Я прочитала текст о маленьком лисёнке.</div>
+            <div class="example-line"><span class="flag">🇬🇧</span> I read a text about a little fox cub.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 3 -->
+      <div class="step s3">
+        <div class="step-icon">📍</div>
+        <div class="step-body">
+          <div class="step-title-row">
+            <span class="step-num">Шаг 3</span>
+            <span class="step-ru">Где и когда всё происходит?</span>
+            <span class="step-en-title">/ Where and when?</span>
+          </div>
+          <div class="phrases">
+            <div class="phrase-pair">
+              <div class="phrase-ru">Действие происходит …</div>
+              <div class="phrase-en">The story takes place …</div>
+            </div>
+            <div class="phrase-pair">
+              <div class="phrase-ru">События происходят …</div>
+              <div class="phrase-en">The events happen …</div>
+            </div>
+            <div class="phrase-pair">
+              <div class="phrase-ru">Всё это случилось …</div>
+              <div class="phrase-en">It all happened …</div>
+            </div>
+            <div class="phrase-pair">
+              <div class="phrase-ru">Дело было в … / Это было …</div>
+              <div class="phrase-en">It was in … / This happened …</div>
+            </div>
+            <div class="phrase-pair">
+              <div class="phrase-ru">В то утро / В тот день …</div>
+              <div class="phrase-en">That morning / That day …</div>
+            </div>
+          </div>
+          <div class="example-block">
+            <div class="example-label">Пример / Example</div>
+            <div class="example-line"><span class="flag">🇷🇺</span> Действие происходит в зимнем лесу.</div>
+            <div class="example-line"><span class="flag">🇬🇧</span> The story takes place in a winter forest.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 4 -->
+      <div class="step s4">
+        <div class="step-icon">▶️</div>
+        <div class="step-body">
+          <div class="step-title-row">
+            <span class="step-num">Шаг 4</span>
+            <span class="step-ru">Что произошло сначала?</span>
+            <span class="step-en-title">/ What happened first?</span>
+          </div>
+          <div class="phrases">
+            <div class="phrase-pair">
+              <div class="phrase-ru">Сначала …</div>
+              <div class="phrase-en">First, …</div>
+            </div>
+            <div class="phrase-pair">
+              <div class="phrase-ru">В начале текста …</div>
+              <div class="phrase-en">At the beginning of the text, …</div>
+            </div>
+            <div class="phrase-pair">
+              <div class="phrase-ru">Всё началось с того, что …</div>
+              <div class="phrase-en">It all started when …</div>
+            </div>
+            <div class="phrase-pair">
+              <div class="phrase-ru">Однажды … / В один из дней …</div>
+              <div class="phrase-en">One day, … / One fine day, …</div>
+            </div>
+          </div>
+          <div class="example-block">
+            <div class="example-label">Пример / Example</div>
+            <div class="example-line"><span class="flag">🇷🇺</span> Сначала мальчик отправился в лес за грибами.</div>
+            <div class="example-line"><span class="flag">🇬🇧</span> First, the boy went into the forest to pick mushrooms.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 5 -->
+      <div class="step s5">
+        <div class="step-icon">⏭️</div>
+        <div class="step-body">
+          <div class="step-title-row">
+            <span class="step-num">Шаг 5</span>
+            <span class="step-ru">Что было потом?</span>
+            <span class="step-en-title">/ What happened next?</span>
+          </div>
+          <div class="phrases">
+            <div class="phrase-pair">
+              <div class="phrase-ru">Потом … / После этого …</div>
+              <div class="phrase-en">Then, … / After that, …</div>
+            </div>
+            <div class="phrase-pair">
+              <div class="phrase-ru">Затем … / Следующим был(а) …</div>
+              <div class="phrase-en">Next, … / The next thing was …</div>
+            </div>
+            <div class="phrase-pair">
+              <div class="phrase-ru">Вдруг … / Неожиданно …</div>
+              <div class="phrase-en">Suddenly, … / Unexpectedly, …</div>
+            </div>
+            <div class="phrase-pair">
+              <div class="phrase-ru">Тогда он(а) решил(а) …</div>
+              <div class="phrase-en">Then he/she decided to …</div>
+            </div>
+            <div class="phrase-pair">
+              <div class="phrase-ru">В этот момент … / Тут …</div>
+              <div class="phrase-en">At that moment, … / Just then, …</div>
+            </div>
+          </div>
+          <div class="example-block">
+            <div class="example-label">Пример / Example</div>
+            <div class="example-line"><span class="flag">🇷🇺</span> Потом он встретил лисёнка, который потерялся.</div>
+            <div class="example-line"><span class="flag">🇬🇧</span> Then he met a fox cub that had gotten lost.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 6 -->
+      <div class="step s6">
+        <div class="step-icon">🏁</div>
+        <div class="step-body">
+          <div class="step-title-row">
+            <span class="step-num">Шаг 6</span>
+            <span class="step-ru">Чем всё закончилось?</span>
+            <span class="step-en-title">/ How did it end?</span>
+          </div>
+          <div class="phrases">
+            <div class="phrase-pair">
+              <div class="phrase-ru">В конце … / В конце текста …</div>
+              <div class="phrase-en">In the end, … / At the end of the text, …</div>
+            </div>
+            <div class="phrase-pair">
+              <div class="phrase-ru">В итоге … / В результате …</div>
+              <div class="phrase-en">As a result, … / Finally, …</div>
+            </div>
+            <div class="phrase-pair">
+              <div class="phrase-ru">Всё закончилось тем, что …</div>
+              <div class="phrase-en">It all ended with …</div>
+            </div>
+            <div class="phrase-pair">
+              <div class="phrase-ru">Наконец … / Под конец …</div>
+              <div class="phrase-en">At last, … / By the end, …</div>
+            </div>
+          </div>
+          <div class="example-block">
+            <div class="example-label">Пример / Example</div>
+            <div class="example-line"><span class="flag">🇷🇺</span> В конце мальчик помог лисёнку найти дорогу домой.</div>
+            <div class="example-line"><span class="flag">🇬🇧</span> In the end, the boy helped the fox cub find its way home.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 7 -->
+      <div class="step s7">
+        <div class="step-icon">💡</div>
+        <div class="step-body">
+          <div class="step-title-row">
+            <span class="step-num">Шаг 7</span>
+            <span class="step-ru">Чему учит текст?</span>
+            <span class="step-en-title">/ What does it teach us?</span>
+          </div>
+          <div class="phrases">
+            <div class="phrase-pair">
+              <div class="phrase-ru">Этот текст учит нас …</div>
+              <div class="phrase-en">This text teaches us to …</div>
+            </div>
+            <div class="phrase-pair">
+              <div class="phrase-ru">Мне кажется, этот текст о том, что …</div>
+              <div class="phrase-en">I think this text is about …</div>
+            </div>
+            <div class="phrase-pair">
+              <div class="phrase-ru">Автор хотел показать, что …</div>
+              <div class="phrase-en">The author wanted to show that …</div>
+            </div>
+            <div class="phrase-pair">
+              <div class="phrase-ru">Из этого текста я понял(а), что …</div>
+              <div class="phrase-en">From this text I learned that …</div>
+            </div>
+            <div class="phrase-pair">
+              <div class="phrase-ru">Мне понравился этот текст, потому что …</div>
+              <div class="phrase-en">I liked this text because …</div>
+            </div>
+          </div>
+          <div class="example-block">
+            <div class="example-label">Пример / Example</div>
+            <div class="example-line"><span class="flag">🇷🇺</span> Этот текст учит нас помогать тем, кто в беде.</div>
+            <div class="example-line"><span class="flag">🇬🇧</span> This text teaches us to help those who are in trouble.</div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /steps-grid -->
+
+    <!-- TEMPLATE SECTION -->
+    <div class="template">
+      <div class="template-header">
+        <div>
+          <span class="template-header-text">✏️ Мой пересказ</span>
+          <span class="template-header-en">/ My Retelling</span>
+        </div>
+      </div>
+      <div class="template-body">
+        <div class="template-line">
+          <span class="tl-icon">📖</span>
+          <span class="tl-ru">Я прочитал(а) текст о</span>
+          <span class="tl-sep">/</span>
+          <span class="tl-en">I read a text about</span>
+          <div class="tl-line"></div>
+        </div>
+        <div class="template-line">
+          <span class="tl-icon">🧑‍🤝‍🧑</span>
+          <span class="tl-ru">Главный герой —</span>
+          <span class="tl-sep">/</span>
+          <span class="tl-en">The main character is</span>
+          <div class="tl-line"></div>
+        </div>
+        <div class="template-line">
+          <span class="tl-icon">📍</span>
+          <span class="tl-ru">Действие происходит</span>
+          <span class="tl-sep">/</span>
+          <span class="tl-en">The story takes place</span>
+          <div class="tl-line"></div>
+        </div>
+        <div class="template-line">
+          <span class="tl-icon">▶️</span>
+          <span class="tl-ru">Сначала</span>
+          <span class="tl-sep">/</span>
+          <span class="tl-en">First</span>
+          <div class="tl-line"></div>
+        </div>
+        <div class="template-line">
+          <span class="tl-icon">⏭️</span>
+          <span class="tl-ru">Потом / После этого</span>
+          <span class="tl-sep">/</span>
+          <span class="tl-en">Then / After that</span>
+          <div class="tl-line"></div>
+        </div>
+        <div class="template-line">
+          <span class="tl-icon">⏭️</span>
+          <span class="tl-ru">Затем / Вдруг</span>
+          <span class="tl-sep">/</span>
+          <span class="tl-en">Next / Suddenly</span>
+          <div class="tl-line"></div>
+        </div>
+        <div class="template-line">
+          <span class="tl-icon">🏁</span>
+          <span class="tl-ru">В конце / В итоге</span>
+          <span class="tl-sep">/</span>
+          <span class="tl-en">In the end</span>
+          <div class="tl-line"></div>
+        </div>
+        <div class="template-line">
+          <span class="tl-icon">💡</span>
+          <span class="tl-ru">Этот текст учит нас</span>
+          <span class="tl-sep">/</span>
+          <span class="tl-en">This text teaches us to</span>
+          <div class="tl-line"></div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /inner -->
+</div><!-- /page -->
+</body>
+</html>
