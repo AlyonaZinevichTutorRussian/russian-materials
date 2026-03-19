@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Урок русского языка 🌟</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Baloo+2:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sky: #7EC8E3;
+    --sunshine: #FFD166;
+    --coral: #FF6B6B;
+    --mint: #06D6A0;
+    --lavender: #C77DFF;
+    --peach: #FFB347;
+    --bg: #F0F8FF;
+    --white: #FFFFFF;
+    --dark: #2D3561;
+    --card-shadow: 0 8px 32px rgba(45,53,97,0.13);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Floating clouds background */
+  body::before {
+    content: '☁️';
+    font-size: 120px;
+    position: fixed;
+    top: -20px; left: -30px;
+    opacity: 0.18;
+    pointer-events: none;
+    animation: floatCloud 12s ease-in-out infinite;
+  }
+  body::after {
+    content: '⭐';
+    font-size: 60px;
+    position: fixed;
+    bottom: 30px; right: 40px;
+    opacity: 0.22;
+    pointer-events: none;
+    animation: floatStar 8s ease-in-out infinite;
+  }
+
+  @keyframes floatCloud { 0%,100%{transform:translateY(0)} 50%{transform:translateY(18px)} }
+  @keyframes floatStar  { 0%,100%{transform:rotate(0deg) scale(1)} 50%{transform:rotate(20deg) scale(1.2)} }
+
+  /* HEADER */
+  .header {
+    background: linear-gradient(135deg, #7EC8E3 0%, #C77DFF 60%, #FF6B6B 100%);
+    padding: 28px 24px 22px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::after {
+    content: '';
+    position: absolute; bottom: -2px; left: 0; right: 0; height: 28px;
+    background: var(--bg);
+    clip-path: ellipse(55% 100% at 50% 100%);
+  }
+  .header h1 {
+    font-family: 'Baloo 2', cursive;
+    font-size: 2.1rem;
+    font-weight: 800;
+    color: white;
+    text-shadow: 0 3px 12px rgba(0,0,0,0.18);
+    letter-spacing: 0.5px;
+  }
+  .header .subtitle {
+    color: rgba(255,255,255,0.92);
+    font-size: 1rem;
+    font-weight: 600;
+    margin-top: 4px;
+  }
+  .stars-row { font-size: 1.5rem; margin-top: 6px; letter-spacing: 6px; }
+
+  /* PROGRESS BAR */
+  .progress-wrap {
+    padding: 18px 24px 0;
+    max-width: 680px; margin: 0 auto;
+  }
+  .progress-label {
+    display: flex; justify-content: space-between;
+    font-size: 0.85rem; font-weight: 700; color: var(--dark);
+    margin-bottom: 6px;
+  }
+  .progress-bar {
+    height: 14px;
+    background: #e0e7ff;
+    border-radius: 99px;
+    overflow: hidden;
+    box-shadow: inset 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--mint), var(--sky));
+    border-radius: 99px;
+    transition: width 0.6s cubic-bezier(.4,2,.55,.95);
+    width: 0%;
+  }
+
+  /* SECTION NAV */
+  .section-nav {
+    display: flex; gap: 10px; flex-wrap: wrap;
+    justify-content: center;
+    padding: 20px 16px 4px;
+  }
+  .nav-btn {
+    padding: 8px 16px;
+    border-radius: 99px;
+    border: 2.5px solid transparent;
+    background: white;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700; font-size: 0.82rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--dark);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  }
+  .nav-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 16px rgba(0,0,0,0.13); }
+  .nav-btn.active { color: white; border-color: transparent; }
+  .nav-btn[data-sec="0"].active { background: var(--coral); }
+  .nav-btn[data-sec="1"].active { background: var(--lavender); }
+  .nav-btn[data-sec="2"].active { background: var(--mint); color: var(--dark); }
+
+  /* MAIN */
+  .main { max-width: 680px; margin: 0 auto; padding: 16px 16px 60px; }
+
+  /* SECTION */
+  .section { display: none; animation: fadeIn 0.4s ease; }
+  .section.active { display: block; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+
+  /* SECTION HEADER */
+  .sec-header {
+    border-radius: 24px;
+    padding: 20px 24px 16px;
+    margin-bottom: 20px;
+    color: white;
+    position: relative;
+    overflow: hidden;
+  }
+  .sec-header.coral  { background: linear-gradient(135deg, #FF6B6B, #FFB347); }
+  .sec-header.purple { background: linear-gradient(135deg, #C77DFF, #7EC8E3); }
+  .sec-header.green  { background: linear-gradient(135deg, #06D6A0, #FFD166); }
+
+  .sec-header .emoji { font-size: 2.5rem; }
+  .sec-header h2 { font-family: 'Baloo 2', cursive; font-size: 1.45rem; font-weight: 800; margin: 4px 0 2px; }
+  .sec-header .en { font-size: 0.85rem; opacity: 0.88; font-weight: 600; }
+
+  /* THEORY CARD */
+  .theory-card {
+    background: white;
+    border-radius: 20px;
+    padding: 20px 22px;
+    margin-bottom: 16px;
+    box-shadow: var(--card-shadow);
+    border-left: 5px solid var(--sunshine);
+  }
+  .theory-card h3 { font-size: 1rem; font-weight: 800; color: var(--dark); margin-bottom: 8px; }
+  .theory-card p  { font-size: 0.92rem; color: #444; line-height: 1.6; margin-bottom: 6px; }
+  .theory-card .en-hint { font-size: 0.82rem; color: #888; font-style: italic; margin-top: 2px; }
+
+  .rule-box {
+    background: #FFF9E6;
+    border: 2.5px dashed var(--sunshine);
+    border-radius: 14px;
+    padding: 12px 16px;
+    margin: 10px 0;
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: var(--dark);
+  }
+  .rule-box .en { font-weight: 400; font-size: 0.82rem; color: #888; display: block; margin-top: 3px; }
+
+  /* EXAMPLE WORDS */
+  .examples {
+    display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0;
+  }
+  .ex-word {
+    background: #f0f4ff;
+    border-radius: 12px;
+    padding: 6px 14px;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--dark);
+    border: 2px solid #dde4ff;
+  }
+  .ex-word .highlight { color: var(--coral); }
+  .ex-word .highlight2 { color: var(--mint); }
+
+  /* TASK CARD */
+  .task-card {
+    background: white;
+    border-radius: 20px;
+    padding: 20px 22px;
+    margin-bottom: 16px;
+    box-shadow: var(--card-shadow);
+    position: relative;
+  }
+  .task-num {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 30px; height: 30px;
+    background: var(--sunshine);
+    border-radius: 50%;
+    font-size: 0.85rem; font-weight: 900; color: var(--dark);
+    margin-bottom: 8px;
+  }
+  .task-card h4 { font-size: 0.97rem; font-weight: 800; color: var(--dark); margin-bottom: 3px; }
+  .task-card .task-en { font-size: 0.8rem; color: #888; font-style: italic; margin-bottom: 12px; }
+
+  /* CHOOSE BUTTONS */
+  .choices { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+  .choice-btn {
+    padding: 10px 20px;
+    border-radius: 14px;
+    border: 2.5px solid #e0e7ff;
+    background: white;
+    font-family: 'Nunito', sans-serif;
+    font-size: 1rem; font-weight: 700; color: var(--dark);
+    cursor: pointer; transition: all 0.18s;
+  }
+  .choice-btn:hover { border-color: var(--sky); background: #f0f8ff; transform: scale(1.04); }
+  .choice-btn.correct { background: #e0fff5; border-color: var(--mint); color: #059669; }
+  .choice-btn.wrong   { background: #fff0f0; border-color: var(--coral); color: var(--coral); }
+
+  /* FEEDBACK */
+  .feedback {
+    margin-top: 10px;
+    padding: 10px 14px;
+    border-radius: 12px;
+    font-size: 0.88rem;
+    font-weight: 700;
+    display: none;
+  }
+  .feedback.show { display: block; animation: popIn 0.3s ease; }
+  @keyframes popIn { from{transform:scale(0.9)} to{transform:scale(1)} }
+  .feedback.ok  { background: #e0fff5; color: #059669; }
+  .feedback.err { background: #fff0f0; color: #e53e3e; }
+
+  /* DRAG TASK */
+  .word-bank {
+    display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0;
+    padding: 14px; background: #f8f9ff; border-radius: 14px;
+    min-height: 50px;
+  }
+  .drag-word {
+    padding: 8px 16px;
+    background: white;
+    border: 2.5px solid #c7d2fe;
+    border-radius: 12px;
+    font-size: 1rem; font-weight: 700; color: var(--dark);
+    cursor: grab; user-select: none;
+    transition: all 0.15s;
+  }
+  .drag-word:active { cursor: grabbing; }
+  .drag-word:hover { border-color: var(--lavender); transform: scale(1.05); }
+  .drag-word.used { opacity: 0.3; pointer-events: none; }
+
+  .drop-zone {
+    min-height: 44px; min-width: 80px;
+    border: 2.5px dashed #c7d2fe;
+    border-radius: 12px;
+    display: inline-flex; align-items: center; justify-content: center;
+    padding: 4px 12px;
+    font-size: 1rem; font-weight: 700;
+    color: #999;
+    background: #f8f9ff;
+    transition: all 0.15s;
+    vertical-align: middle;
+    margin: 0 4px;
+  }
+  .drop-zone.over { border-color: var(--lavender); background: #f3e8ff; }
+  .drop-zone.filled { border-color: var(--mint); background: #e0fff5; color: var(--dark); }
+  .drop-zone.wrong-drop { border-color: var(--coral); background: #fff0f0; }
+
+  /* SYLLABLE TASK */
+  .syllable-word {
+    display: flex; align-items: center; gap: 4px;
+    font-size: 1.4rem; font-weight: 800; color: var(--dark);
+    flex-wrap: wrap;
+  }
+  .syl { cursor: pointer; padding: 4px 8px; border-radius: 8px; transition: all 0.15s; }
+  .syl:hover { background: #e0e7ff; }
+  .syl.selected { background: var(--lavender); color: white; border-radius: 8px; }
+  .syl-divider { width: 3px; height: 28px; background: #FF6B6B; border-radius: 2px; opacity: 0; transition: opacity 0.2s; }
+  .syl-divider.show { opacity: 1; }
+
+  /* INPUT TASK */
+  .text-input {
+    border: 2.5px solid #c7d2fe;
+    border-radius: 12px;
+    padding: 10px 14px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 1rem; font-weight: 700; color: var(--dark);
+    width: 100%; max-width: 300px;
+    outline: none; transition: border 0.2s;
+    margin-top: 8px;
+  }
+  .text-input:focus { border-color: var(--lavender); }
+  .text-input.correct { border-color: var(--mint); background: #e0fff5; }
+  .text-input.wrong   { border-color: var(--coral); background: #fff0f0; }
+
+  /* SORT TASK */
+  .sort-columns {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 12px; margin: 12px 0;
+  }
+  .sort-col {
+    border-radius: 16px;
+    padding: 12px;
+    min-height: 120px;
+  }
+  .sort-col.col-b  { background: #fff0f0; border: 2.5px dashed #FF6B6B; }
+  .sort-col.col-g  { background: #f0fff8; border: 2.5px dashed var(--mint); }
+  .sort-col h5 { font-size: 0.88rem; font-weight: 800; color: var(--dark); margin-bottom: 8px; }
+  .sort-col .drop-area { min-height: 60px; display: flex; flex-wrap: wrap; gap: 6px; }
+  .sort-col .drop-area.over { background: rgba(0,0,0,0.03); border-radius: 10px; }
+
+  .sort-word {
+    padding: 7px 14px;
+    background: white;
+    border-radius: 10px;
+    font-size: 0.95rem; font-weight: 700; color: var(--dark);
+    cursor: grab; border: 2px solid #e0e7ff;
+    transition: transform 0.1s;
+  }
+  .sort-word:hover { transform: scale(1.05); }
+
+  /* CHECK BUTTON */
+  .check-btn {
+    margin-top: 12px;
+    padding: 10px 24px;
+    border-radius: 99px;
+    border: none;
+    background: linear-gradient(90deg, var(--sky), var(--lavender));
+    color: white; font-family: 'Nunito', sans-serif;
+    font-size: 0.92rem; font-weight: 800;
+    cursor: pointer; transition: all 0.18s;
+    box-shadow: 0 4px 16px rgba(126,200,227,0.35);
+  }
+  .check-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(126,200,227,0.4); }
+
+  /* SCORE */
+  .score-display {
+    text-align: center; padding: 20px;
+    background: white; border-radius: 20px;
+    box-shadow: var(--card-shadow); margin-bottom: 16px;
+  }
+  .score-display .big-score { font-size: 3rem; font-weight: 900; color: var(--coral); }
+  .score-display p { color: #888; font-size: 0.9rem; }
+
+  /* NEXT SECTION */
+  .next-sec-btn {
+    display: block; width: 100%;
+    padding: 14px;
+    border-radius: 16px;
+    border: none;
+    font-family: 'Nunito', sans-serif;
+    font-size: 1rem; font-weight: 800;
+    cursor: pointer; transition: all 0.2s;
+    color: white; margin-top: 8px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.13);
+  }
+  .next-sec-btn:hover { transform: translateY(-2px); }
+  .btn-purple { background: linear-gradient(90deg, var(--lavender), #9b5de5); }
+  .btn-green  { background: linear-gradient(90deg, var(--mint), #0ea5e9); color: var(--dark); }
+
+  /* CONFETTI stars animation */
+  .confetti-star {
+    position: fixed; pointer-events: none; font-size: 1.5rem;
+    animation: fall 1.2s ease-in forwards;
+    z-index: 9999;
+  }
+  @keyframes fall {
+    from { opacity: 1; transform: translateY(-40px) rotate(0deg); }
+    to   { opacity: 0; transform: translateY(80vh) rotate(360deg); }
+  }
+
+  /* MOBILE */
+  @media (max-width: 480px) {
+    .header h1 { font-size: 1.5rem; }
+    .sort-columns { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="stars-row">🌟 ✨ 🌟</div>
+  <h1>Урок русского языка</h1>
+  <div class="subtitle">Russian Language Lesson &nbsp;🦄</div>
+</div>
+
+<div class="progress-wrap">
+  <div class="progress-label">
+    <span id="prog-text">Часть 1 / Part 1</span>
+    <span id="prog-pts">0 ⭐</span>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+</div>
+
+<div class="section-nav">
+  <button class="nav-btn active" data-sec="0" onclick="goSection(0)">❤️ Ъ и Ь знаки</button>
+  <button class="nav-btn" data-sec="1" onclick="goSection(1)">💜 Звонкие/Глухие</button>
+  <button class="nav-btn" data-sec="2" onclick="goSection(2)">💚 Слоги и перенос</button>
+</div>
+
+<div class="main">
+
+<!-- =============================== SECTION 0 =============================== -->
+<div class="section active" id="sec-0">
+
+  <div class="sec-header coral">
+    <div class="emoji">✍️</div>
+    <h2>Разделительный Ъ и Ь</h2>
+    <div class="en">Separating Hard Sign (Ъ) and Soft Sign (Ь)</div>
+  </div>
+
+  <!-- THEORY -->
+  <div class="theory-card">
+    <h3>📖 Правило / The Rule</h3>
+    <p>В русском языке есть два особых знака:</p>
+    <p class="en-hint">In Russian there are two special letters:</p>
+    <div class="rule-box">
+      <b>Ь</b> (мягкий знак / soft sign) — разделяет согласный и гласные <b>Е, Ё, Ю, Я, И</b><br>
+      <span class="en">comes after a consonant, before Е, Ё, Ю, Я, И — inside a word</span>
+    </div>
+    <div class="rule-box">
+      <b>Ъ</b> (твёрдый знак / hard sign) — пишется после <b>приставок</b> перед теми же гласными<br>
+      <span class="en">comes after a PREFIX (like «под-», «съ-», «объ-»), before the same vowels</span>
+    </div>
+
+    <p style="margin-top:10px"><b>Примеры / Examples:</b></p>
+    <div class="examples">
+      <span class="ex-word">сем<span class="highlight">ь</span>я</span>
+      <span class="ex-word">вь<span class="highlight">ю</span>га</span>
+      <span class="ex-word">об<span class="highlight">ъ</span>езд</span>
+      <span class="ex-word">под<span class="highlight">ъ</span>ём</span>
+      <span class="ex-word">бур<span class="highlight">ь</span>ян</span>
+    </div>
+
+    <p style="margin-top:10px; font-size:0.88rem; color:#888">
+      💡 <i>Запомни / Remember: Ъ стоит ТОЛЬКО после приставки! / Ъ only after a prefix!</i>
+    </p>
+  </div>
+
+  <!-- TASK 1: Choose Ь or Ъ -->
+  <div class="task-card" id="t0-1">
+    <div class="task-num">1</div>
+    <h4>Выбери правильный знак</h4>
+    <p class="task-en">Choose the right sign — Ь or Ъ</p>
+
+    <div id="sign-game" style="margin-top:4px"></div>
+    <div class="feedback" id="fb-t0-1"></div>
+  </div>
+
+  <!-- TASK 2: Sort Ь / Ъ -->
+  <div class="task-card">
+    <div class="task-num">2</div>
+    <h4>Разложи слова в группы</h4>
+    <p class="task-en">Sort the words — drag them into the right group</p>
+
+    <div class="word-bank" id="bank-sort0">
+      <div class="sort-word" draggable="true" data-word="семья" data-ans="soft">семья</div>
+      <div class="sort-word" draggable="true" data-word="объём" data-ans="hard">объём</div>
+      <div class="sort-word" draggable="true" data-word="вьюга" data-ans="soft">вьюга</div>
+      <div class="sort-word" draggable="true" data-word="съезд" data-ans="hard">съезд</div>
+      <div class="sort-word" draggable="true" data-word="перья" data-ans="soft">перья</div>
+      <div class="sort-word" draggable="true" data-word="подъём" data-ans="hard">подъём</div>
+    </div>
+
+    <div class="sort-columns">
+      <div class="sort-col col-b">
+        <h5>Ь (мягкий / soft)</h5>
+        <div class="drop-area" id="drop-soft" data-target="soft"></div>
+      </div>
+      <div class="sort-col col-g">
+        <h5>Ъ (твёрдый / hard)</h5>
+        <div class="drop-area" id="drop-hard" data-target="hard"></div>
+      </div>
+    </div>
+    <button class="check-btn" onclick="checkSort0()">Проверить / Check ✓</button>
+    <div class="feedback" id="fb-sort0"></div>
+  </div>
+
+  <button class="next-sec-btn btn-purple" onclick="goSection(1)">
+    Дальше → Звонкие/Глухие / Next →
+  </button>
+</div>
+
+
+<!-- =============================== SECTION 1 =============================== -->
+<div class="section" id="sec-1">
+
+  <div class="sec-header purple">
+    <div class="emoji">🔊</div>
+    <h2>Парные звонкие и глухие</h2>
+    <div class="en">Voiced & Voiceless Consonant Pairs</div>
+  </div>
+
+  <div class="theory-card">
+    <h3>📖 Правило / The Rule</h3>
+    <p>Некоторые согласные образуют пары:</p>
+    <p class="en-hint">Some consonants come in voiced/voiceless pairs:</p>
+    <div class="rule-box">
+      🔊 Звонкие: <b>Б В Г Д Ж З</b><br>
+      🤫 Глухие:  <b>П Ф К Т Ш С</b>
+      <span class="en">Voiced (you can feel your throat vibrate) ↔ Voiceless (no vibration)</span>
+    </div>
+    <p style="margin-top:8px; font-size:0.9rem">⚠️ На конце слова и перед глухой согласной — звонкая становится <b>глухой</b>!</p>
+    <p class="en-hint">At the end of a word, a voiced consonant sounds like its voiceless pair → check by adding a vowel!</p>
+    <div class="examples">
+      <span class="ex-word">дуб → ду<span class="highlight">б</span>а ✓</span>
+      <span class="ex-word">гриб → гри<span class="highlight">б</span>ы ✓</span>
+      <span class="ex-word">нож → но<span class="highlight">ж</span>и ✓</span>
+      <span class="ex-word">снег → сне<span class="highlight">г</span>а ✓</span>
+    </div>
+  </div>
+
+  <!-- PAIR MATCHING -->
+  <div class="task-card">
+    <div class="task-num">1</div>
+    <h4>Найди пару / Find the pair</h4>
+    <p class="task-en">Click a voiced letter, then click its voiceless partner</p>
+    <div id="pair-game" style="margin-top:12px"></div>
+    <div class="feedback" id="fb-pairs"></div>
+  </div>
+
+  <!-- FILL MISSING LETTER -->
+  <div class="task-card">
+    <div class="task-num">2</div>
+    <h4>Вставь букву</h4>
+    <p class="task-en">Choose the correct letter for the end of each word</p>
+    <div id="fill-game"></div>
+    <div class="feedback" id="fb-fill"></div>
+  </div>
+
+  <!-- VOICED/VOICELESS SORT -->
+  <div class="task-card">
+    <div class="task-num">3</div>
+    <h4>Звонкий или глухой?</h4>
+    <p class="task-en">Is the underlined consonant voiced 🔊 or voiceless 🤫?</p>
+    <div id="vv-game"></div>
+    <div class="feedback" id="fb-vv"></div>
+  </div>
+
+  <button class="next-sec-btn btn-green" onclick="goSection(2)">
+    Дальше → Слоги и перенос / Next →
+  </button>
+</div>
+
+
+<!-- =============================== SECTION 2 =============================== -->
+<div class="section" id="sec-2">
+
+  <div class="sec-header green">
+    <div class="emoji">🔤</div>
+    <h2>Деление на слоги. Перенос</h2>
+    <div class="en">Syllables & Word Hyphenation</div>
+  </div>
+
+  <div class="theory-card">
+    <h3>📖 Правило / The Rule</h3>
+    <p>Слог = гласная + согласные рядом</p>
+    <p class="en-hint">A syllable = one vowel sound + consonants around it</p>
+    <div class="rule-box">
+      Сколько гласных — столько слогов!<br>
+      <span class="en">Count the vowels → that's the number of syllables!</span>
+    </div>
+    <p style="margin-top:8px; font-size:0.9rem">Гласные / Vowels: <b>А О У Э И Ы Е Ё Ю Я</b></p>
+
+    <div class="examples">
+      <span class="ex-word">мя<span class="highlight2">•</span>чик (2)</span>
+      <span class="ex-word">де<span class="highlight2">•</span>ре<span class="highlight2">•</span>во (3)</span>
+      <span class="ex-word">кот (1)</span>
+      <span class="ex-word">ка<span class="highlight2">•</span>ран<span class="highlight2">•</span>даш (3)</span>
+    </div>
+
+    <div class="rule-box" style="margin-top:12px">
+      ⚡ Правило переноса / Hyphenation rules:<br>
+      • Ь и Ъ остаются с предыдущим слогом / Ь and Ъ stay with the syllable before<br>
+      • Й остаётся с предыдущим слогом / Й stays before the hyphen<br>
+      • Нельзя переносить одну букву / Never move just 1 letter alone<br>
+      <span class="en">You can never leave or move just a single letter!</span>
+    </div>
+  </div>
+
+  <!-- COUNT SYLLABLES -->
+  <div class="task-card">
+    <div class="task-num">1</div>
+    <h4>Посчитай слоги</h4>
+    <p class="task-en">Tap/click the word to clap out the syllables, then choose the right number</p>
+    <div id="count-game"></div>
+    <div class="feedback" id="fb-count"></div>
+  </div>
+
+  <!-- SPLIT INTO SYLLABLES -->
+  <div class="task-card">
+    <div class="task-num">2</div>
+    <h4>Раздели на слоги</h4>
+    <p class="task-en">Click between syllables to split the word (then press Check)</p>
+    <div id="split-game"></div>
+    <div class="feedback" id="fb-split"></div>
+  </div>
+
+  <!-- HYPHEN TASK -->
+  <div class="task-card">
+    <div class="task-num">3</div>
+    <h4>Как перенести слово?</h4>
+    <p class="task-en">Choose the correct way to hyphenate (split to next line)</p>
+    <div id="hyphen-game"></div>
+    <div class="feedback" id="fb-hyphen"></div>
+  </div>
+
+  <!-- FINAL SCORE -->
+  <div class="score-display" id="final-score" style="display:none">
+    <div style="font-size:2rem">🎉</div>
+    <div class="big-score" id="final-pts">0</div>
+    <p>звёздочек собрано / stars collected!</p>
+    <p id="final-msg" style="margin-top:8px; font-weight:700; color: var(--dark)"></p>
+  </div>
+
+</div><!-- /sec-2 -->
+
+</div><!-- /main -->
+
+<script>
+// ============================================================
+// STATE
+// ============================================================
+let points = 0;
+let currentSection = 0;
+const totalTasks = 8;
+let tasksDone = 0;
+
+function addPoints(n) {
+  points += n;
+  tasksDone++;
+  document.getElementById('prog-pts').textContent = points + ' ⭐';
+  const pct = Math.min(100, Math.round((tasksDone / totalTasks) * 100));
+  document.getElementById('progress-fill').style.width = pct + '%';
+  spawnStars();
+}
+
+function goSection(n) {
+  document.querySelectorAll('.section').forEach((s,i) => s.classList.toggle('active', i===n));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.toggle('active', +b.dataset.sec===n));
+  currentSection = n;
+  const labels = ['Часть 1 / Part 1','Часть 2 / Part 2','Часть 3 / Part 3'];
+  document.getElementById('prog-text').textContent = labels[n];
+  window.scrollTo({top:0, behavior:'smooth'});
+  if (n === 2) {
+    setTimeout(() => {
+      document.getElementById('final-score').style.display = 'block';
+      document.getElementById('final-pts').textContent = points + ' ⭐';
+      const msgs = ['Молодец! Well done!','Отлично! Excellent!','Умница! Brilliant!'];
+      document.getElementById('final-msg').textContent = msgs[Math.floor(Math.random()*msgs.length)];
+    }, 800);
+  }
+}
+
+function spawnStars() {
+  const emojis = ['⭐','🌟','✨','💫'];
+  for(let i=0;i<5;i++){
+    const el = document.createElement('div');
+    el.className = 'confetti-star';
+    el.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+    el.style.left = Math.random()*90+'vw';
+    el.style.top = '0px';
+    el.style.animationDelay = Math.random()*0.4+'s';
+    document.body.appendChild(el);
+    setTimeout(()=>el.remove(), 1500);
+  }
+}
+
+function showFb(id, ok, msg) {
+  const el = document.getElementById(id);
+  el.textContent = msg;
+  el.className = 'feedback show ' + (ok ? 'ok' : 'err');
+}
+
+// ============================================================
+// SECTION 0 — Ъ / Ь
+// ============================================================
+const signQuestions = [
+  { word:'сем_я',   ans:'Ь', hint:'семья — внутри слова / inside word' },
+  { word:'об_езд',  ans:'Ъ', hint:'объезд — после приставки об- / after prefix' },
+  { word:'пер_я',   ans:'Ь', hint:'перья — внутри слова / inside word' },
+  { word:'под_ём',  ans:'Ъ', hint:'подъём — после приставки под- / after prefix' },
+  { word:'вь_юга',  ans:'Ь', hint:'вьюга — внутри слова / inside word' },
+];
+let signIdx = 0;
+let signScore = 0;
+
+function renderSignGame() {
+  const q = signQuestions[signIdx];
+  const container = document.getElementById('sign-game');
+  container.innerHTML = `
+    <div style="font-size:1.5rem; font-weight:800; color:var(--dark); margin-bottom:12px">
+      ${q.word.replace('_','<span style="color:var(--coral);font-size:1.8rem">__</span>')}
+    </div>
+    <div class="choices">
+      <button class="choice-btn" onclick="answerSign('Ь')">Ь</button>
+      <button class="choice-btn" onclick="answerSign('Ъ')">Ъ</button>
+    </div>
+    <div style="font-size:0.8rem;color:#aaa;margin-top:6px">${signIdx+1} из / of ${signQuestions.length}</div>
+  `;
+}
+
+function answerSign(ans) {
+  const q = signQuestions[signIdx];
+  const ok = ans === q.ans;
+  if(ok) signScore++;
+  const btns = document.querySelectorAll('#sign-game .choice-btn');
+  btns.forEach(b => {
+    b.disabled = true;
+    if(b.textContent === q.ans) b.classList.add('correct');
+    else if(b.textContent !== q.ans && b.textContent === ans) b.classList.add('wrong');
+  });
+  showFb('fb-t0-1', ok,
+    ok ? `✅ Верно! Correct! ${q.hint}` : `❌ Это ${q.ans}. ${q.hint}`);
+  signIdx++;
+  if(signIdx < signQuestions.length) {
+    setTimeout(()=>{ document.getElementById('fb-t0-1').className='feedback'; renderSignGame(); }, 1400);
+  } else {
+    setTimeout(()=>{
+      addPoints(signScore);
+      showFb('fb-t0-1', true, `🌟 Задание окончено! Ты ответила верно ${signScore} из ${signQuestions.length}!`);
+    }, 1400);
+  }
+}
+renderSignGame();
+
+// SORT DRAG
+let draggedEl = null;
+document.querySelectorAll('.sort-word').forEach(w => {
+  w.addEventListener('dragstart', e => { draggedEl = w; w.style.opacity='0.5'; });
+  w.addEventListener('dragend',   e => { w.style.opacity='1'; });
+});
+document.querySelectorAll('.drop-area').forEach(area => {
+  area.addEventListener('dragover', e => { e.preventDefault(); area.classList.add('over'); });
+  area.addEventListener('dragleave',()=> area.classList.remove('over'));
+  area.addEventListener('drop', e => {
+    e.preventDefault(); area.classList.remove('over');
+    if(draggedEl) { area.appendChild(draggedEl); draggedEl.style.opacity='1'; draggedEl=null; }
+  });
+});
+
+function checkSort0() {
+  const softArea = document.getElementById('drop-soft');
+  const hardArea = document.getElementById('drop-hard');
+  let ok = true;
+  [...softArea.querySelectorAll('.sort-word')].forEach(w => { if(w.dataset.ans!=='soft') ok=false; });
+  [...hardArea.querySelectorAll('.sort-word')].forEach(w => { if(w.dataset.ans!=='hard') ok=false; });
+  // check nothing left in bank
+  const bankLeft = document.querySelectorAll('#bank-sort0 .sort-word').length;
+  if(bankLeft > 0) { showFb('fb-sort0',false,'Перетащи все слова! / Move all the words first!'); return; }
+  showFb('fb-sort0', ok,
+    ok ? '🌟 Отлично! Perfect sorting!' : '❌ Проверь ещё раз / Check again — вспомни: Ъ только после приставки!');
+  if(ok) addPoints(2);
+}
+
+// ============================================================
+// SECTION 1 — Voiced / Voiceless
+// ============================================================
+// Pair matching game
+const pairData = [
+  {v:'Б', g:'П'},{v:'В', g:'Ф'},{v:'Г', g:'К'},
+  {v:'Д', g:'Т'},{v:'Ж', g:'Ш'},{v:'З', g:'С'},
+];
+let pairFirst = null;
+let pairsDone = 0;
+
+function renderPairGame() {
+  const all = [];
+  pairData.forEach(p=>{ all.push({l:p.v,type:'v'}); all.push({l:p.g,type:'g'}); });
+  // shuffle
+  for(let i=all.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[all[i],all[j]]=[all[j],all[i]];}
+  const container = document.getElementById('pair-game');
+  container.innerHTML = '<div style="display:flex;flex-wrap:wrap;gap:8px;" id="pair-buttons"></div>';
+  const wrap = document.getElementById('pair-buttons');
+  all.forEach(item=>{
+    const btn = document.createElement('button');
+    btn.className = 'choice-btn';
+    btn.textContent = item.l;
+    btn.dataset.letter = item.l;
+    btn.dataset.type = item.type;
+    btn.onclick = () => selectPair(btn, item);
+    wrap.appendChild(btn);
+  });
+}
+
+function selectPair(btn, item) {
+  if(btn.classList.contains('correct') || btn.disabled) return;
+  if(!pairFirst) {
+    pairFirst = {btn, item};
+    btn.style.background = '#e0e7ff';
+    btn.style.borderColor = 'var(--lavender)';
+  } else {
+    const a = pairFirst.item, b = item;
+    const match = pairData.some(p => (p.v===a.l && p.g===b.l)||(p.v===b.l && p.g===a.l));
+    if(match) {
+      pairFirst.btn.classList.add('correct'); btn.classList.add('correct');
+      pairFirst.btn.disabled = true; btn.disabled = true;
+      pairsDone++;
+      if(pairsDone === pairData.length) {
+        showFb('fb-pairs',true,'🌟 Все пары найдены! All pairs matched!');
+        addPoints(2);
+      }
+    } else {
+      pairFirst.btn.style.background=''; pairFirst.btn.style.borderColor='';
+      btn.classList.add('wrong');
+      setTimeout(()=>btn.classList.remove('wrong'),700);
+    }
+    pairFirst = null;
+  }
+}
+renderPairGame();
+
+// FILL MISSING LETTER
+const fillQ = [
+  { before:'гри', after:'', ans:'б', alt:'п', full:'гриб', check:'гриба — значит Б!' },
+  { before:'сне', after:'', ans:'г', alt:'к', full:'снег', check:'снега — значит Г!' },
+  { before:'но', after:'', ans:'ж', alt:'ш', full:'нож',  check:'ножи — значит Ж!' },
+  { before:'ду', after:'', ans:'б', alt:'п', full:'дуб',  check:'дуба — значит Б!' },
+];
+let fillIdx = 0; let fillScore = 0;
+
+function renderFill() {
+  const q = fillQ[fillIdx];
+  const container = document.getElementById('fill-game');
+  container.innerHTML = `
+    <div style="font-size:1.5rem;font-weight:800;color:var(--dark);margin-bottom:12px">
+      ${q.before}<span style="color:var(--coral)">__</span>${q.after}
+    </div>
+    <div class="choices">
+      <button class="choice-btn" onclick="answerFill('${q.ans}')">${q.ans.toUpperCase()}</button>
+      <button class="choice-btn" onclick="answerFill('${q.alt}')">${q.alt.toUpperCase()}</button>
+    </div>
+    <div style="font-size:0.78rem;color:#bbb;margin-top:4px">
+      💡 Подставь гласную! / Add a vowel to check: ${q.full}а / ${q.full}ы
+    </div>
+    <div style="font-size:0.8rem;color:#aaa;margin-top:4px">${fillIdx+1} / ${fillQ.length}</div>
+  `;
+}
+
+function answerFill(ans) {
+  const q = fillQ[fillIdx];
+  const ok = ans === q.ans;
+  if(ok) fillScore++;
+  document.querySelectorAll('#fill-game .choice-btn').forEach(b=>{
+    b.disabled=true;
+    if(b.textContent.toLowerCase()===q.ans) b.classList.add('correct');
+    else b.classList.add('wrong');
+  });
+  showFb('fb-fill',ok, ok ? `✅ Правильно! ${q.check}` : `❌ Нет. ${q.check}`);
+  fillIdx++;
+  if(fillIdx < fillQ.length) setTimeout(()=>{ document.getElementById('fb-fill').className='feedback'; renderFill(); },1400);
+  else setTimeout(()=>{ addPoints(fillScore); showFb('fb-fill',true,`🌟 ${fillScore}/${fillQ.length} верно!`); },1400);
+}
+renderFill();
+
+// VOICED / VOICELESS classify
+const vvQ = [
+  { word:'зу_б_', mark:'б', voiced:true },
+  { word:'_ш_апка', mark:'ш', voiced:false },
+  { word:'_г_орох', mark:'г', voiced:true },
+  { word:'но_ж_', mark:'ж', voiced:true },
+  { word:'_с_обака', mark:'с', voiced:false },
+  { word:'_д_ом', mark:'д', voiced:true },
+];
+let vvIdx=0; let vvScore=0;
+
+function renderVV() {
+  const q = vvQ[vvIdx];
+  const display = q.word.replace(/_([а-яё]+)_/i, '<span style="color:var(--coral);font-size:1.4rem;font-weight:900;text-decoration:underline">$1</span>');
+  document.getElementById('vv-game').innerHTML = `
+    <div style="font-size:1.3rem;font-weight:800;color:var(--dark);margin-bottom:12px">${display}</div>
+    <div class="choices">
+      <button class="choice-btn" onclick="answerVV(true)">🔊 Звонкий / Voiced</button>
+      <button class="choice-btn" onclick="answerVV(false)">🤫 Глухой / Voiceless</button>
+    </div>
+    <div style="font-size:0.8rem;color:#aaa;margin-top:4px">${vvIdx+1} / ${vvQ.length}</div>
+  `;
+}
+
+function answerVV(ans) {
+  const q = vvQ[vvIdx];
+  const ok = ans === q.voiced;
+  if(ok) vvScore++;
+  document.querySelectorAll('#vv-game .choice-btn').forEach(b=>{ b.disabled=true; });
+  showFb('fb-vv', ok, ok ? `✅ Верно! Correct!` : `❌ Нет — буква ${q.mark.toUpperCase()} ${q.voiced?'звонкая/voiced':'глухая/voiceless'}`);
+  vvIdx++;
+  if(vvIdx < vvQ.length) setTimeout(()=>{ document.getElementById('fb-vv').className='feedback'; renderVV(); },1400);
+  else setTimeout(()=>{ addPoints(vvScore); showFb('fb-vv',true,`🌟 ${vvScore}/${vvQ.length} верно!`); },1400);
+}
+renderVV();
+
+// ============================================================
+// SECTION 2 — Syllables
+// ============================================================
+// COUNT SYLLABLES
+const countQ = [
+  { word:'мяч',       ans:1 },
+  { word:'кошка',     ans:2 },
+  { word:'дерево',    ans:3 },
+  { word:'карандаш',  ans:3 },
+  { word:'молоко',    ans:3 },
+  { word:'лук',       ans:1 },
+  { word:'радуга',    ans:3 },
+  { word:'рыба',      ans:2 },
+];
+let countIdx=0; let countScore=0;
+
+function renderCount() {
+  const q = countQ[countIdx];
+  document.getElementById('count-game').innerHTML = `
+    <div style="font-size:1.7rem;font-weight:900;color:var(--dark);text-align:center;cursor:pointer;margin-bottom:12px;padding:14px;background:#f8f9ff;border-radius:14px;user-select:none;"
+      onclick="clap(this, '${q.word}')" title="Click to 'clap'!">
+      ${q.word} 👏
+    </div>
+    <p style="font-size:0.82rem;color:#aaa;margin-bottom:10px;text-align:center">Нажми, чтобы «отхлопать» / Click to clap the syllables!</p>
+    <div class="choices" style="justify-content:center">
+      ${[1,2,3,4].map(n=>`<button class="choice-btn" onclick="answerCount(${n})">${n}</button>`).join('')}
+    </div>
+    <div style="font-size:0.8rem;color:#aaa;margin-top:6px">${countIdx+1} / ${countQ.length}</div>
+  `;
+}
+function clap(el, word){
+  el.style.transform='scale(0.95)'; setTimeout(()=>el.style.transform='',120);
+}
+function answerCount(ans) {
+  const q = countQ[countIdx];
+  const ok = ans === q.ans;
+  if(ok) countScore++;
+  document.querySelectorAll('#count-game .choice-btn').forEach(b=>{ b.disabled=true; if(+b.textContent===q.ans) b.classList.add('correct'); else if(+b.textContent===ans) b.classList.add('wrong'); });
+  showFb('fb-count', ok, ok ? `✅ Да! ${q.word} — ${q.ans} слог(а)!` : `❌ Нет. В слове «${q.word}» ${q.ans} слог(а)!`);
+  countIdx++;
+  if(countIdx < countQ.length) setTimeout(()=>{ document.getElementById('fb-count').className='feedback'; renderCount(); },1400);
+  else setTimeout(()=>{ addPoints(countScore); showFb('fb-count',true,`🌟 ${countScore}/${countQ.length} верно!`); },1400);
+}
+renderCount();
+
+// SPLIT INTO SYLLABLES — click-to-split
+const splitWords = [
+  { word:'кошка',   syls:['кош','ка'] },
+  { word:'дерево',  syls:['де','ре','во'] },
+  { word:'рыбка',   syls:['рыб','ка'] },
+];
+let splitIdx=0; let splitScore=0;
+let splitState = [];
+
+function renderSplit() {
+  const q = splitWords[splitIdx];
+  const chars = q.word.split('');
+  splitState = Array(chars.length-1).fill(false); // dividers between chars
+  let html = `<p style="font-size:0.85rem;color:#888;margin-bottom:10px">Нажми между буквами, чтобы поставить чёрточку / Click between letters to place dividers</p>`;
+  html += `<div class="syllable-word" id="split-display" style="font-size:1.8rem;cursor:pointer;user-select:none;flex-wrap:nowrap;gap:0">`;
+  chars.forEach((ch,i)=>{
+    html += `<span class="syl" onclick="toggleDiv(${i},${q.word.length})">${ch}</span>`;
+    if(i < chars.length-1) html += `<span class="syl-divider" id="div-${i}">|</span>`;
+  });
+  html += `</div>`;
+  html += `<br><button class="check-btn" onclick="checkSplit()">Проверить / Check ✓</button>`;
+  html += `<div style="font-size:0.8rem;color:#aaa;margin-top:8px">${splitIdx+1} / ${splitWords.length}</div>`;
+  document.getElementById('split-game').innerHTML = html;
+}
+
+function toggleDiv(idx) {
+  splitState[idx] = !splitState[idx];
+  const el = document.getElementById('div-'+idx);
+  if(el) el.classList.toggle('show', splitState[idx]);
+}
+
+function checkSplit() {
+  const q = splitWords[splitIdx];
+  // Build divider positions from syllables
+  let expected = [];
+  let pos = 0;
+  for(let i=0;i<q.syls.length-1;i++){
+    pos += q.syls[i].length;
+    expected.push(pos-1);
+  }
+  const ok = expected.every((p,i)=>splitState[p]) && splitState.filter(Boolean).length===expected.length;
+  if(ok) splitScore++;
+  showFb('fb-split', ok, ok ? `✅ Верно! ${q.syls.join('-')}` : `❌ Правильно: ${q.syls.join('-')}`);
+  splitIdx++;
+  if(splitIdx < splitWords.length) setTimeout(()=>{ document.getElementById('fb-split').className='feedback'; renderSplit(); },1600);
+  else setTimeout(()=>{ addPoints(splitScore); showFb('fb-split',true,`🌟 ${splitScore}/${splitWords.length} верно!`); },1600);
+}
+renderSplit();
+
+// HYPHEN TASK
+const hyphenQ = [
+  { word:'кошка',   options:['к-ошка','ко-шка','кош-ка'], ans:'кош-ка' },
+  { word:'семья',   options:['с-емья','се-мья','сем-ья'], ans:'сем-ья' },
+  { word:'дерево',  options:['д-ерево','де-ре-во','дер-ев-о'], ans:'де-ре-во' },
+  { word:'объезд',  options:['об-ъезд','о-бъезд','объ-езд'], ans:'объ-езд' },
+];
+let hyphenIdx=0; let hyphenScore=0;
+
+function renderHyphen() {
+  const q = hyphenQ[hyphenIdx];
+  document.getElementById('hyphen-game').innerHTML = `
+    <div style="font-size:1.4rem;font-weight:800;color:var(--dark);margin-bottom:12px">${q.word}</div>
+    <div class="choices" style="flex-direction:column;gap:8px">
+      ${q.options.map(o=>`<button class="choice-btn" onclick="answerHyphen('${o}')" style="text-align:left;width:fit-content">${o}</button>`).join('')}
+    </div>
+    <div style="font-size:0.8rem;color:#aaa;margin-top:6px">${hyphenIdx+1} / ${hyphenQ.length}</div>
+  `;
+}
+
+function answerHyphen(ans) {
+  const q = hyphenQ[hyphenIdx];
+  const ok = ans === q.ans;
+  if(ok) hyphenScore++;
+  document.querySelectorAll('#hyphen-game .choice-btn').forEach(b=>{
+    b.disabled=true;
+    if(b.textContent===q.ans) b.classList.add('correct');
+    else if(b.textContent===ans) b.classList.add('wrong');
+  });
+  showFb('fb-hyphen',ok, ok ? `✅ Верно! Correct!` : `❌ Правильно: ${q.ans}`);
+  hyphenIdx++;
+  if(hyphenIdx < hyphenQ.length) setTimeout(()=>{ document.getElementById('fb-hyphen').className='feedback'; renderHyphen(); },1400);
+  else setTimeout(()=>{ addPoints(hyphenScore); showFb('fb-hyphen',true,`🌟 ${hyphenScore}/${hyphenQ.length}! Урок окончен / Lesson complete! 🎉`); },1400);
+}
+renderHyphen();
+</script>
+</body>
+</html>
