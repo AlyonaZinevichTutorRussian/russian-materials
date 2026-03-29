@@ -1,0 +1,1237 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Причастие и причастный оборот</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Montserrat:wght@400;500;600&family=Source+Serif+4:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a2e;
+    --cream: #faf8f2;
+    --warm: #f5f0e8;
+    --gold: #c9973a;
+    --gold-light: #f0d080;
+    --red: #c0392b;
+    --green: #2d7a3a;
+    --blue: #1a4f7a;
+    --accent: #7b3fa0;
+    --border: #d4c9b0;
+    --shadow: rgba(26,26,46,0.12);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Montserrat', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    min-height: 100vh;
+  }
+
+  /* ---- HEADER ---- */
+  header {
+    background: var(--ink);
+    color: var(--cream);
+    padding: 48px 24px 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 18px,
+      rgba(201,151,58,0.07) 18px,
+      rgba(201,151,58,0.07) 19px
+    );
+  }
+  header .badge {
+    display: inline-block;
+    border: 1.5px solid var(--gold);
+    color: var(--gold);
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 4px 16px;
+    border-radius: 2px;
+    margin-bottom: 20px;
+    position: relative;
+  }
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 5vw, 3.4rem);
+    line-height: 1.15;
+    position: relative;
+  }
+  header h1 em {
+    color: var(--gold);
+    font-style: italic;
+  }
+  header p {
+    margin-top: 14px;
+    font-size: 14px;
+    opacity: 0.7;
+    letter-spacing: 0.5px;
+    position: relative;
+  }
+
+  /* ---- NAVIGATION ---- */
+  nav {
+    background: #fff;
+    border-bottom: 2px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  nav ul {
+    display: flex;
+    list-style: none;
+    overflow-x: auto;
+    padding: 0 12px;
+    scrollbar-width: none;
+  }
+  nav ul::-webkit-scrollbar { display: none; }
+  nav ul li a {
+    display: block;
+    padding: 14px 18px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: var(--ink);
+    text-decoration: none;
+    white-space: nowrap;
+    border-bottom: 3px solid transparent;
+    transition: color .2s, border-color .2s;
+  }
+  nav ul li a:hover, nav ul li a.active {
+    color: var(--gold);
+    border-bottom-color: var(--gold);
+  }
+
+  /* ---- MAIN LAYOUT ---- */
+  main { max-width: 900px; margin: 0 auto; padding: 40px 20px 80px; }
+
+  /* ---- SECTION ---- */
+  section {
+    margin-bottom: 64px;
+    scroll-margin-top: 60px;
+  }
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+  .section-num {
+    background: var(--ink);
+    color: var(--gold);
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .section-title h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.3rem, 3vw, 1.8rem);
+  }
+
+  /* ---- RULE CARD ---- */
+  .rule-card {
+    background: #fff;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    box-shadow: 0 3px 16px var(--shadow);
+  }
+  .rule-card-header {
+    background: var(--ink);
+    color: var(--cream);
+    padding: 12px 20px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .rule-card-header .icon { font-size: 18px; }
+  .rule-card-body { padding: 20px 22px; }
+
+  .rule-box {
+    background: var(--warm);
+    border-left: 4px solid var(--gold);
+    border-radius: 0 8px 8px 0;
+    padding: 16px 18px;
+    font-family: 'Source Serif 4', serif;
+    font-size: 15px;
+    line-height: 1.7;
+    margin-bottom: 14px;
+  }
+  .rule-box strong { color: var(--red); }
+
+  .example-block {
+    background: #f8f6ff;
+    border: 1px solid #d8ccee;
+    border-radius: 8px;
+    padding: 14px 18px;
+    font-family: 'Source Serif 4', serif;
+    font-size: 15px;
+    line-height: 1.8;
+    margin-top: 10px;
+  }
+  .example-block .label {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+  .co { color: var(--red); font-weight: 600; } /* comma */
+  .po { text-decoration: underline wavy var(--accent); text-decoration-thickness: 2px; text-underline-offset: 3px; } /* participial phrase */
+  .dep { color: var(--blue); font-weight: 600; } /* defined word */
+  .comm { font-family: 'Montserrat', sans-serif; font-size: 12px; color: #666; margin-top: 8px; font-style: italic; }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 600px) { .two-col { grid-template-columns: 1fr; } }
+
+  .case-card {
+    background: #fff;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 18px;
+    position: relative;
+  }
+  .case-card .case-label {
+    position: absolute;
+    top: -11px; left: 14px;
+    background: var(--ink);
+    color: var(--gold);
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 2px; text-transform: uppercase;
+    padding: 2px 10px; border-radius: 20px;
+  }
+  .case-card.yes { border-color: var(--green); }
+  .case-card.no { border-color: var(--red); }
+  .case-card.yes .case-label { background: var(--green); color: #fff; }
+  .case-card.no .case-label { background: var(--red); color: #fff; }
+  .case-card p { font-family: 'Source Serif 4', serif; font-size: 15px; line-height: 1.7; margin-top: 8px; }
+
+  /* SCHEME */
+  .scheme-wrap {
+    background: var(--ink);
+    border-radius: 10px;
+    padding: 22px 24px;
+    margin: 16px 0;
+    overflow-x: auto;
+  }
+  .scheme {
+    display: flex; align-items: center; gap: 6px;
+    white-space: nowrap;
+    font-family: 'Source Serif 4', serif;
+    font-size: 16px;
+    color: var(--cream);
+    justify-content: center;
+    flex-wrap: wrap;
+    row-gap: 10px;
+  }
+  .sch-box {
+    border: 1.5px solid var(--gold);
+    padding: 6px 14px; border-radius: 6px;
+    font-weight: 600;
+  }
+  .sch-box.po-box { background: rgba(201,151,58,0.15); border-color: var(--gold-light); }
+  .sch-box.def-box { background: rgba(26,79,122,0.4); border-color: #5fb3f0; color: #9dd4f7; }
+  .sch-box.comma-box { color: var(--red); border: none; font-size: 22px; font-weight: 700; padding: 0 2px; }
+  .sch-arrow { color: var(--gold); font-size: 20px; }
+
+  /* ---- TABS ---- */
+  .tabs { display: flex; gap: 0; border-bottom: 2px solid var(--border); margin-bottom: 20px; }
+  .tab-btn {
+    padding: 10px 20px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px; font-weight: 600;
+    letter-spacing: 0.5px;
+    background: none; border: none;
+    cursor: pointer; color: #888;
+    border-bottom: 3px solid transparent; margin-bottom: -2px;
+    transition: all .2s;
+  }
+  .tab-btn.active { color: var(--ink); border-bottom-color: var(--gold); }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* ---- TASKS ---- */
+  .task-card {
+    background: #fff;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 22px 24px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 12px var(--shadow);
+    position: relative;
+  }
+  .task-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; bottom: 0;
+    width: 5px;
+    border-radius: 12px 0 0 12px;
+    background: var(--gold);
+  }
+  .task-card.medium::before { background: var(--accent); }
+  .task-card.hard::before { background: var(--red); }
+
+  .task-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 14px;
+  }
+  .task-title {
+    font-weight: 700; font-size: 14px; letter-spacing: 0.3px;
+  }
+  .difficulty {
+    font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+    padding: 3px 10px; border-radius: 20px;
+  }
+  .diff-easy { background: #e8f5e9; color: var(--green); }
+  .diff-medium { background: #f3e5f5; color: var(--accent); }
+  .diff-hard { background: #fce4e4; color: var(--red); }
+
+  .task-body { font-family: 'Source Serif 4', serif; font-size: 15px; line-height: 1.8; }
+  .task-body ol, .task-body ul { padding-left: 20px; }
+  .task-body li { margin-bottom: 10px; }
+
+  .sentence-input {
+    display: inline;
+    background: none;
+    border: none;
+    border-bottom: 2px solid var(--accent);
+    width: 30px;
+    text-align: center;
+    font-family: 'Source Serif 4', serif;
+    font-size: 15px;
+    color: var(--accent);
+    outline: none;
+    padding: 0 2px;
+  }
+  .sentence-input:focus { border-bottom-color: var(--gold); }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 9px 20px;
+    border-radius: 6px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px; font-weight: 600;
+    letter-spacing: 0.5px;
+    cursor: pointer; border: none;
+    transition: all .2s;
+    margin-top: 14px;
+  }
+  .btn-primary { background: var(--ink); color: var(--gold); }
+  .btn-primary:hover { background: #2a2a4a; }
+  .btn-outline { background: none; border: 1.5px solid var(--border); color: var(--ink); }
+  .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+
+  .feedback {
+    display: none;
+    margin-top: 14px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .feedback.correct { background: #e8f5e9; color: var(--green); border: 1px solid #a5d6a7; display: block; }
+  .feedback.wrong { background: #fce4e4; color: var(--red); border: 1px solid #ef9a9a; display: block; }
+
+  /* word sort */
+  .word-bag {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    margin: 12px 0;
+    min-height: 44px;
+    padding: 8px;
+    background: var(--warm);
+    border: 2px dashed var(--border);
+    border-radius: 8px;
+  }
+  .word-chip {
+    background: var(--ink);
+    color: var(--cream);
+    padding: 5px 13px;
+    border-radius: 20px;
+    font-family: 'Source Serif 4', serif;
+    font-size: 14px;
+    cursor: pointer;
+    user-select: none;
+    transition: transform .15s, background .2s;
+  }
+  .word-chip:hover { transform: translateY(-2px); background: var(--blue); }
+  .word-chip.selected { background: var(--gold); color: var(--ink); }
+
+  .drop-zone {
+    min-height: 48px;
+    padding: 10px 14px;
+    background: #f8f6ff;
+    border: 2px dashed #c8b8e8;
+    border-radius: 8px;
+    font-family: 'Source Serif 4', serif;
+    font-size: 15px;
+    line-height: 1.8;
+    margin: 10px 0;
+    color: #666;
+  }
+  .drop-zone span.placed { color: var(--ink); font-weight: 600; }
+
+  /* creative writing */
+  .writing-area {
+    width: 100%;
+    min-height: 80px;
+    padding: 12px 16px;
+    font-family: 'Source Serif 4', serif;
+    font-size: 15px;
+    line-height: 1.8;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    background: var(--warm);
+    resize: vertical;
+    outline: none;
+    margin-top: 10px;
+    transition: border-color .2s;
+  }
+  .writing-area:focus { border-color: var(--gold); }
+
+  /* radio options */
+  .options { display: flex; flex-direction: column; gap: 10px; margin-top: 12px; }
+  .option-label {
+    display: flex; align-items: flex-start; gap: 12px;
+    background: var(--warm);
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 16px;
+    cursor: pointer;
+    transition: border-color .2s;
+    font-family: 'Source Serif 4', serif;
+    font-size: 15px;
+  }
+  .option-label:hover { border-color: var(--gold); }
+  .option-label input { accent-color: var(--gold); margin-top: 3px; }
+  .option-label.correct-opt { border-color: var(--green); background: #e8f5e9; }
+  .option-label.wrong-opt { border-color: var(--red); background: #fce4e4; }
+
+  /* punctuation slots */
+  .punc-sentence {
+    font-family: 'Source Serif 4', serif;
+    font-size: 17px;
+    line-height: 2.2;
+    margin: 12px 0;
+  }
+  .punc-slot {
+    display: inline-block;
+    width: 22px; height: 24px;
+    border-bottom: 2px solid var(--accent);
+    text-align: center;
+    vertical-align: middle;
+    margin: 0 1px;
+    cursor: pointer;
+    font-size: 18px;
+    color: var(--accent);
+    transition: border-color .2s;
+  }
+  .punc-slot:hover { border-color: var(--gold); }
+  .punc-slot.filled { color: var(--red); font-weight: 700; }
+  .punc-slot.correct-slot { color: var(--green); border-color: var(--green); }
+  .punc-slot.wrong-slot { color: var(--red); border-color: var(--red); }
+
+  /* progress bar */
+  .progress-bar {
+    background: var(--border);
+    border-radius: 4px;
+    height: 6px;
+    margin: 8px 0 18px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--gold), var(--accent));
+    border-radius: 4px;
+    transition: width .4s;
+  }
+
+  /* score badge */
+  .score-display {
+    text-align: center;
+    padding: 24px;
+    background: var(--ink);
+    border-radius: 12px;
+    color: var(--cream);
+    margin-top: 20px;
+    display: none;
+  }
+  .score-display .score-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 56px;
+    color: var(--gold);
+    line-height: 1;
+  }
+
+  /* ---- THEORY HIGHLIGHT ---- */
+  .highlight-box {
+    background: linear-gradient(135deg, #1a1a2e 0%, #2a1a4e 100%);
+    color: var(--cream);
+    border-radius: 12px;
+    padding: 22px 24px;
+    margin: 18px 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .highlight-box::after {
+    content: '§';
+    position: absolute; right: 20px; top: 10px;
+    font-family: 'Playfair Display', serif;
+    font-size: 80px; color: rgba(201,151,58,0.12);
+  }
+  .highlight-box h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px; color: var(--gold);
+    margin-bottom: 10px;
+  }
+  .highlight-box p, .highlight-box li {
+    font-family: 'Source Serif 4', serif;
+    font-size: 15px; line-height: 1.7; opacity: 0.92;
+  }
+  .highlight-box ul { padding-left: 18px; }
+  .highlight-box li { margin-bottom: 6px; }
+  .highlight-box strong { color: var(--gold-light); }
+
+  /* table */
+  .nice-table {
+    width: 100%; border-collapse: collapse;
+    font-size: 14px; margin: 16px 0;
+    border-radius: 10px; overflow: hidden;
+  }
+  .nice-table th {
+    background: var(--ink); color: var(--gold);
+    padding: 10px 14px; text-align: left;
+    font-size: 11px; letter-spacing: 1px; text-transform: uppercase;
+  }
+  .nice-table td { padding: 10px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .nice-table tr:last-child td { border-bottom: none; }
+  .nice-table tr:nth-child(even) td { background: var(--warm); }
+
+  /* footer */
+  footer {
+    text-align: center; padding: 30px;
+    font-size: 12px; color: #888;
+    border-top: 1px solid var(--border);
+    background: #fff;
+  }
+  footer span { color: var(--gold); }
+
+  /* scroll animation */
+  .fade-in { opacity: 0; transform: translateY(20px); transition: opacity .5s, transform .5s; }
+  .fade-in.visible { opacity: 1; transform: none; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="badge">Русский язык</div>
+  <h1>Причастие и <em>причастный оборот</em></h1>
+  <p>Теория · Пунктуация · Практика — от простого к сложному</p>
+</header>
+
+<nav>
+  <ul>
+    <li><a href="#theory" class="active">§ Теория</a></li>
+    <li><a href="#punctuation">§ Пунктуация</a></li>
+    <li><a href="#easy">✦ Лёгкий уровень</a></li>
+    <li><a href="#medium">★ Средний уровень</a></li>
+    <li><a href="#hard">❖ Сложный уровень</a></li>
+    <li><a href="#creative">✎ Творческий уровень</a></li>
+  </ul>
+</nav>
+
+<main>
+
+<!-- ==================== ТЕОРИЯ ==================== -->
+<section id="theory" class="fade-in">
+  <div class="section-title">
+    <div class="section-num">§</div>
+    <h2>Причастие: что это?</h2>
+  </div>
+
+  <div class="rule-card">
+    <div class="rule-card-header"><span class="icon">📖</span> Определение</div>
+    <div class="rule-card-body">
+      <div class="rule-box">
+        <strong>Причастие</strong> — это особая форма глагола, которая обозначает <strong>признак предмета по действию</strong> и отвечает на вопросы <strong>какой? какая? какое? какие?</strong><br><br>
+        Причастие совмещает признаки <strong>глагола</strong> (вид, время, залог) и <strong>прилагательного</strong> (род, число, падеж, согласование с существительным).
+      </div>
+      <div class="example-block">
+        <div class="label">Примеры</div>
+        <div><em>читающий</em> мальчик — мальчик, который читает</div>
+        <div><em>прочитанная</em> книга — книга, которую прочитали</div>
+        <div><em>темнеющее</em> небо — небо, которое темнеет</div>
+        <div><em>замёрзший</em> пруд — пруд, который замёрз</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="rule-card">
+    <div class="rule-card-header"><span class="icon">🔍</span> Виды причастий</div>
+    <div class="rule-card-body">
+      <table class="nice-table">
+        <thead>
+          <tr>
+            <th>Вид</th>
+            <th>Признак действия</th>
+            <th>Суффиксы</th>
+            <th>Пример</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Действительное настоящего времени</strong></td>
+            <td>сам производит действие сейчас</td>
+            <td>-ущ-/-ющ-; -ащ-/-ящ-</td>
+            <td>поющий, кричащий</td>
+          </tr>
+          <tr>
+            <td><strong>Действительное прошедшего времени</strong></td>
+            <td>сам производил действие</td>
+            <td>-вш-; -ш-</td>
+            <td>певший, принёсший</td>
+          </tr>
+          <tr>
+            <td><strong>Страдательное настоящего времени</strong></td>
+            <td>испытывает действие сейчас</td>
+            <td>-ем-/-ом-; -им-</td>
+            <td>читаемый, любимый</td>
+          </tr>
+          <tr>
+            <td><strong>Страдательное прошедшего времени</strong></td>
+            <td>испытывало действие</td>
+            <td>-нн-; -енн-/-ённ-; -т-</td>
+            <td>написанный, открытый</td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+
+  <div class="rule-card">
+    <div class="rule-card-header"><span class="icon">🔗</span> Причастный оборот</div>
+    <div class="rule-card-body">
+      <div class="rule-box">
+        <strong>Причастный оборот</strong> — это причастие вместе с зависимыми словами. В предложении является <strong>обособленным определением</strong> и выделяется запятыми по особым правилам.
+      </div>
+      <div class="scheme-wrap">
+        <div class="scheme">
+          <span>Пример:</span>
+          <div class="sch-box def-box">Книга</div>
+          <span class="sch-arrow">,</span>
+          <div class="sch-box po-box">прочитанная мной вчера</div>
+          <span class="sch-arrow">,</span>
+          <span style="color:#ccc">лежала на столе.</span>
+        </div>
+      </div>
+      <div class="example-block">
+        <div class="label">Разбор</div>
+        <p><span class="dep">Книга</span><span class="co">,</span> <span class="po">прочитанная мной вчера</span><span class="co">,</span> лежала на столе.</p>
+        <p class="comm">«Книга» — определяемое слово; «прочитанная мной вчера» — причастный оборот (причастие + завис. слова)</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== ПУНКТУАЦИЯ ==================== -->
+<section id="punctuation" class="fade-in">
+  <div class="section-title">
+    <div class="section-num">!</div>
+    <h2>Пунктуация при причастном обороте</h2>
+  </div>
+
+  <div class="highlight-box">
+    <h3>Главный принцип</h3>
+    <p>Причастный оборот выделяется запятыми, если он стоит <strong>после определяемого слова</strong>. Если оборот стоит <strong>до определяемого слова</strong> — запятые, как правило, не ставятся.</p>
+  </div>
+
+  <div class="two-col">
+    <div class="case-card yes">
+      <div class="case-label">✔ ЗАПЯТЫЕ СТАВЯТСЯ</div>
+      <p><strong>После определяемого слова:</strong><br><br>
+      Листья<span class="co">,</span> <span class="po">кружащиеся в воздухе</span><span class="co">,</span> медленно падали.<br><br>
+      Мальчик<span class="co">,</span> <span class="po">увлечённый чтением</span><span class="co">,</span> не слышал звонка.</p>
+    </div>
+    <div class="case-card no">
+      <div class="case-label">✘ ЗАПЯТЫЕ НЕ СТАВЯТСЯ</div>
+      <p><strong>До определяемого слова:</strong><br><br>
+      <span class="po">Кружащиеся в воздухе</span> листья медленно падали.<br><br>
+      <span class="po">Увлечённый чтением</span> мальчик не слышал звонка.</p>
+    </div>
+  </div>
+
+  <div class="rule-card" style="margin-top:20px">
+    <div class="rule-card-header"><span class="icon">⚡</span> Важные исключения и дополнения</div>
+    <div class="rule-card-body">
+      <div class="rule-box" style="margin-bottom:12px">
+        <strong>Исключение 1.</strong> Причастный оборот, стоящий до определяемого слова, <strong>всё равно выделяется запятыми</strong>, если определяемое слово — <strong>личное местоимение</strong>.
+      </div>
+      <div class="example-block">
+        <div class="label">Примеры с местоимением</div>
+        <p><span class="po">Увлечённый игрой</span><span class="co">,</span> <span class="dep">он</span> забыл об уроках.</p>
+        <p><span class="po">Уставшая после дороги</span><span class="co">,</span> <span class="dep">она</span> сразу легла спать.</p>
+        <p class="comm">Оборот стоит до местоимения → всё равно нужна запятая!</p>
+      </div>
+      <div class="rule-box" style="margin-top:16px; margin-bottom:12px">
+        <strong>Исключение 2.</strong> Причастный оборот с обстоятельственным значением (причины, уступки) выделяется запятыми независимо от позиции.
+      </div>
+      <div class="example-block">
+        <div class="label">Пример</div>
+        <p><span class="po">Разбуженный внезапным шумом</span><span class="co">,</span> кот вскочил на подоконник. <span class="comm">(= потому что был разбужен)</span></p>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="rule-card">
+    <div class="rule-card-header"><span class="icon">🗺</span> Схемы расстановки запятых</div>
+    <div class="rule-card-body">
+      <table class="nice-table">
+        <thead><tr><th>Ситуация</th><th>Схема</th><th>Запятые?</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>ПО после существительного</td>
+            <td><em>Сущ., [ ПО ], …</em></td>
+            <td style="color:var(--green); font-weight:700">Да</td>
+          </tr>
+          <tr>
+            <td>ПО до существительного</td>
+            <td><em>[ ПО ] Сущ. …</em></td>
+            <td style="color:var(--red); font-weight:700">Нет</td>
+          </tr>
+          <tr>
+            <td>ПО после местоимения</td>
+            <td><em>Мест., [ ПО ], …</em></td>
+            <td style="color:var(--green); font-weight:700">Да</td>
+          </tr>
+          <tr>
+            <td>ПО до местоимения</td>
+            <td><em>[ ПО ], Мест. …</em></td>
+            <td style="color:var(--green); font-weight:700">Да!</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== ЛЁГКИЙ УРОВЕНЬ ==================== -->
+<section id="easy" class="fade-in">
+  <div class="section-title">
+    <div class="section-num">1</div>
+    <h2>Лёгкий уровень — Узнаём и определяем</h2>
+  </div>
+
+  <!-- Задание 1 -->
+  <div class="task-card">
+    <div class="task-header">
+      <div class="task-title">📌 Задание 1. «Сыщик»: найди причастие</div>
+      <span class="difficulty diff-easy">Лёгкий</span>
+    </div>
+    <div class="task-body">
+      <p style="margin-bottom:12px">В каждом предложении найди причастие. Кликни на правильный вариант.</p>
+      <div id="q1">
+        <p style="margin-bottom:8px; font-family:'Source Serif 4',serif; font-size:16px;"><strong>1.</strong> На столе лежала <em>открытая</em> книга.</p>
+        <div class="options">
+          <label class="option-label"><input type="radio" name="q1a" value="wrong"> лежала</label>
+          <label class="option-label"><input type="radio" name="q1a" value="correct"> открытая</label>
+          <label class="option-label"><input type="radio" name="q1a" value="wrong"> книга</label>
+        </div>
+      </div>
+      <div id="q1b" style="margin-top:16px;">
+        <p style="margin-bottom:8px; font-family:'Source Serif 4',serif; font-size:16px;"><strong>2.</strong> <em>Бегущий</em> мальчик споткнулся о камень.</p>
+        <div class="options">
+          <label class="option-label"><input type="radio" name="q1b" value="wrong"> мальчик</label>
+          <label class="option-label"><input type="radio" name="q1b" value="wrong"> споткнулся</label>
+          <label class="option-label"><input type="radio" name="q1b" value="correct"> бегущий</label>
+        </div>
+      </div>
+      <button class="btn btn-primary" onclick="checkRadios()">Проверить ответы</button>
+      <div id="fb_task1" class="feedback"></div>
+    </div>
+  </div>
+
+  <!-- Задание 2 -->
+  <div class="task-card">
+    <div class="task-header">
+      <div class="task-title">📌 Задание 2. Вопрос к причастию</div>
+      <span class="difficulty diff-easy">Лёгкий</span>
+    </div>
+    <div class="task-body">
+      <p>Задай вопрос к выделенному причастию от определяемого слова. Выбери правильный вопрос.</p>
+      <div id="q2" style="margin-top:12px;">
+        <p style="font-family:'Source Serif 4',serif; font-size:16px; margin-bottom:10px;">Туча, <em>нависшая над городом</em>, обещала дождь.</p>
+        <div class="options">
+          <label class="option-label"><input type="radio" name="q2" value="wrong"> что делала?</label>
+          <label class="option-label"><input type="radio" name="q2" value="correct"> какая?</label>
+          <label class="option-label"><input type="radio" name="q2" value="wrong"> что?</label>
+        </div>
+      </div>
+      <button class="btn btn-primary" onclick="checkQ2()">Проверить</button>
+      <div id="fb_task2" class="feedback"></div>
+    </div>
+  </div>
+
+  <!-- Задание 3 -->
+  <div class="task-card">
+    <div class="task-header">
+      <div class="task-title">📌 Задание 3. Распредели по видам</div>
+      <span class="difficulty diff-easy">Лёгкий</span>
+    </div>
+    <div class="task-body">
+      <p>Нажми на слово, чтобы выбрать его, затем нажми «Действительное» или «Страдательное».</p>
+      <div class="word-bag" id="sort-bag">
+        <div class="word-chip" onclick="selectChip(this)">читающий</div>
+        <div class="word-chip" onclick="selectChip(this)">написанный</div>
+        <div class="word-chip" onclick="selectChip(this)">кричавший</div>
+        <div class="word-chip" onclick="selectChip(this)">любимый</div>
+        <div class="word-chip" onclick="selectChip(this)">унесённый</div>
+        <div class="word-chip" onclick="selectChip(this)">мчавшийся</div>
+      </div>
+      <div style="display:flex; gap:16px; margin-top:10px; flex-wrap:wrap;">
+        <div style="flex:1; min-width:160px;">
+          <div style="font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--blue);margin-bottom:6px;">Действительные</div>
+          <div class="drop-zone" id="drop-deistr" style="min-height:60px;"></div>
+        </div>
+        <div style="flex:1; min-width:160px;">
+          <div style="font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--accent);margin-bottom:6px;">Страдательные</div>
+          <div class="drop-zone" id="drop-strad" style="min-height:60px;"></div>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;">
+        <button class="btn btn-primary" onclick="sortTo('deistr')">→ Действительное</button>
+        <button class="btn btn-outline" onclick="sortTo('strad')">→ Страдательное</button>
+        <button class="btn btn-outline" onclick="checkSort()">Проверить</button>
+      </div>
+      <div id="fb_sort" class="feedback"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== СРЕДНИЙ УРОВЕНЬ ==================== -->
+<section id="medium" class="fade-in">
+  <div class="section-title">
+    <div class="section-num">2</div>
+    <h2>Средний уровень — Пунктуация</h2>
+  </div>
+
+  <!-- Задание 4 -->
+  <div class="task-card medium">
+    <div class="task-header">
+      <div class="task-title">★ Задание 4. Ставь или не ставь?</div>
+      <span class="difficulty diff-medium">Средний</span>
+    </div>
+    <div class="task-body">
+      <p>Прочитай предложение. Кликни на пропуск (<span style="color:var(--accent);font-weight:700">_</span>), чтобы поставить запятую. Кликни снова — чтобы убрать.</p>
+      <div id="punc-task">
+        <div class="punc-sentence">1. Солнце<span class="punc-slot" id="ps1" onclick="toggleSlot('ps1','correct')">_</span><span style="color:var(--accent)">выглянувшее из-за туч</span><span class="punc-slot" id="ps2" onclick="toggleSlot('ps2','correct')">_</span>осветило поляну.</div>
+        <div class="punc-sentence">2. <span style="color:var(--accent)">Блестящая на солнце</span><span class="punc-slot" id="ps3" onclick="toggleSlot('ps3','none')">_</span>роса покрывала траву.</div>
+        <div class="punc-sentence">3. Девочка<span class="punc-slot" id="ps4" onclick="toggleSlot('ps4','correct')">_</span><span style="color:var(--accent)">читавшая у окна</span><span class="punc-slot" id="ps5" onclick="toggleSlot('ps5','correct')">_</span>подняла голову.</div>
+        <div class="punc-sentence">4. Мы нашли<span class="punc-slot" id="ps6" onclick="toggleSlot('ps6','none')">_</span><span style="color:var(--accent)">потерявшегося в лесу</span> котёнка.</div>
+      </div>
+      <button class="btn btn-primary" onclick="checkPunc()">Проверить расстановку</button>
+      <div id="fb_punc" class="feedback"></div>
+    </div>
+  </div>
+
+  <!-- Задание 5 -->
+  <div class="task-card medium">
+    <div class="task-header">
+      <div class="task-title">★ Задание 5. Выбери верный вариант</div>
+      <span class="difficulty diff-medium">Средний</span>
+    </div>
+    <div class="task-body">
+      <p style="margin-bottom:14px">Какой вариант пунктуационно верен? Выбери и обоснуй.</p>
+      <div id="q5">
+        <p style="font-family:'Source Serif 4',serif; font-size:16px; font-weight:600; margin-bottom:8px;">Предложение А или Б?</p>
+        <div class="options">
+          <label class="option-label" id="q5a"><input type="radio" name="q5" value="wrong">
+            А) Принесённые из леса, грибы требовали тщательной обработки.
+          </label>
+          <label class="option-label" id="q5b"><input type="radio" name="q5" value="correct">
+            Б) Грибы, принесённые из леса, требовали тщательной обработки.
+          </label>
+          <label class="option-label" id="q5c"><input type="radio" name="q5" value="partial">
+            В) Оба варианта верны, но разные по смыслу.
+          </label>
+        </div>
+      </div>
+      <button class="btn btn-primary" onclick="checkQ5()">Проверить</button>
+      <div id="fb_task5" class="feedback"></div>
+    </div>
+  </div>
+
+  <!-- Задание 6 — расставь сам -->
+  <div class="task-card medium">
+    <div class="task-header">
+      <div class="task-title">★ Задание 6. Расставь запятые сам</div>
+      <span class="difficulty diff-medium">Средний</span>
+    </div>
+    <div class="task-body">
+      <p>Введи запятую (,) или оставь пробел. Нажми на каждый слот и введи знак или оставь пустым.</p>
+      <div style="margin-top:14px;">
+        <div style="font-family:'Source Serif 4',serif; font-size:16px; line-height:2.4; margin-bottom:8px;">
+          Ветер<input class="sentence-input" id="in1" maxlength="1" size="1">дувший с севера<input class="sentence-input" id="in2" maxlength="1" size="1">пронизывал насквозь.
+        </div>
+        <div style="font-family:'Source Serif 4',serif; font-size:16px; line-height:2.4; margin-bottom:8px;">
+          Покрытый инеем<input class="sentence-input" id="in3" maxlength="1" size="1">лес казался волшебным.
+        </div>
+        <div style="font-family:'Source Serif 4',serif; font-size:16px; line-height:2.4; margin-bottom:8px;">
+          Увлечённый разговором<input class="sentence-input" id="in4" maxlength="1" size="1">он не заметил времени.
+        </div>
+      </div>
+      <button class="btn btn-primary" onclick="checkInputs()">Проверить</button>
+      <div id="fb_inputs" class="feedback"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== СЛОЖНЫЙ УРОВЕНЬ ==================== -->
+<section id="hard" class="fade-in">
+  <div class="section-title">
+    <div class="section-num">3</div>
+    <h2>Сложный уровень — Анализ и конструкция</h2>
+  </div>
+
+  <!-- Задание 7 -->
+  <div class="task-card hard">
+    <div class="task-header">
+      <div class="task-title">❖ Задание 7. Преврати причастие в оборот</div>
+      <span class="difficulty diff-hard">Сложный</span>
+    </div>
+    <div class="task-body">
+      <p style="margin-bottom:14px">Замени придаточное определительное предложение на причастный оборот. Запиши ответ в поле. Не забудь о запятых!</p>
+      <ol>
+        <li>
+          <div style="font-family:'Source Serif 4',serif; font-size:15px; margin-bottom:8px;">Книга, <u>которую написал известный учёный</u>, стала бестселлером.</div>
+          <textarea class="writing-area" rows="2" placeholder="Книга, …"></textarea>
+        </li>
+        <li style="margin-top:14px;">
+          <div style="font-family:'Source Serif 4',serif; font-size:15px; margin-bottom:8px;">Мост, <u>который строят рабочие</u>, соединит два берега.</div>
+          <textarea class="writing-area" rows="2" placeholder="Мост, …"></textarea>
+        </li>
+      </ol>
+      <button class="btn btn-primary" onclick="showHint7()">Показать образцы ответов</button>
+      <div id="hint7" style="display:none; margin-top:12px; background:var(--warm); border-left:4px solid var(--gold); border-radius:0 8px 8px 0; padding:14px 18px;">
+        <div style="font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;">Образцы ответов</div>
+        <p style="font-family:'Source Serif 4',serif; font-size:15px; line-height:1.8;">
+          1. Книга, <strong>написанная известным учёным</strong>, стала бестселлером.<br>
+          2. Мост, <strong>строящийся рабочими</strong>, соединит два берега.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Задание 8 — найди ошибку -->
+  <div class="task-card hard">
+    <div class="task-header">
+      <div class="task-title">❖ Задание 8. «Корректор»: найди ошибку</div>
+      <span class="difficulty diff-hard">Сложный</span>
+    </div>
+    <div class="task-body">
+      <p style="margin-bottom:14px">В каждом предложении есть пунктуационная ошибка. Найди её и объясни в поле.</p>
+      <ol>
+        <li>
+          <div style="font-family:'Source Serif 4',serif; font-size:15px; margin:8px 0; background:#fff8f8; border:1px solid #ffaaaa; border-radius:6px; padding:10px 14px;">
+            Написанное, другом письмо лежало на столе.
+          </div>
+          <textarea class="writing-area" rows="2" placeholder="Ошибка в том, что…"></textarea>
+        </li>
+        <li style="margin-top:14px;">
+          <div style="font-family:'Source Serif 4',serif; font-size:15px; margin:8px 0; background:#fff8f8; border:1px solid #ffaaaa; border-radius:6px; padding:10px 14px;">
+            Ребята игравшие в футбол вернулись домой.
+          </div>
+          <textarea class="writing-area" rows="2" placeholder="Ошибка в том, что…"></textarea>
+        </li>
+      </ol>
+      <button class="btn btn-primary" onclick="showHint8()">Показать разбор ошибок</button>
+      <div id="hint8" style="display:none; margin-top:12px; background:var(--warm); border-left:4px solid var(--red); border-radius:0 8px 8px 0; padding:14px 18px;">
+        <div style="font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--red);margin-bottom:8px;">Разбор</div>
+        <p style="font-family:'Source Serif 4',serif; font-size:15px; line-height:1.8;">
+          1. <strong>Ошибка:</strong> запятая после «написанное» лишняя. ПО стоит <em>перед</em> определяемым словом «письмо» → запятые не нужны. Верно: <em>Написанное другом письмо лежало на столе.</em><br><br>
+          2. <strong>Ошибка:</strong> не выделен ПО «игравшие в футбол», который стоит <em>после</em> определяемого слова «ребята». Верно: <em>Ребята, игравшие в футбол, вернулись домой.</em>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Задание 9 — трансформация -->
+  <div class="task-card hard">
+    <div class="task-header">
+      <div class="task-title">❖ Задание 9. Переставь оборот — измени пунктуацию</div>
+      <span class="difficulty diff-hard">Сложный</span>
+    </div>
+    <div class="task-body">
+      <p>Переставь причастный оборот (подчёркнут) в другое место в предложении так, чтобы запятые стали/перестали нужны. Запиши оба варианта с нужными запятыми.</p>
+      <div style="font-family:'Source Serif 4',serif; font-size:15px; margin:14px 0; border-left:4px solid var(--accent); padding:10px 16px; background:#f8f6ff;">
+        Листья<span class="co">,</span> <span class="po">опавшие с деревьев</span><span class="co">,</span> шуршали под ногами.
+      </div>
+      <p style="font-size:14px; margin-bottom:8px;">Вариант с оборотом до определяемого слова:</p>
+      <textarea class="writing-area" rows="2" placeholder="Опавшие с деревьев листья…"></textarea>
+      <button class="btn btn-primary" style="margin-top:12px;" onclick="showHint9()">Образец</button>
+      <div id="hint9" style="display:none; margin-top:12px; background:var(--warm); border-left:4px solid var(--green); border-radius:0 8px 8px 0; padding:14px 18px;">
+        <p style="font-family:'Source Serif 4',serif; font-size:15px; line-height:1.8;">
+          <strong>Опавшие с деревьев</strong> листья шуршали под ногами.<br>
+          <em>(Запятых нет: оборот стоит до существительного «листья»)</em>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== ТВОРЧЕСКИЙ УРОВЕНЬ ==================== -->
+<section id="creative" class="fade-in">
+  <div class="section-title">
+    <div class="section-num">✎</div>
+    <h2>Творческий уровень — Создаём тексты</h2>
+  </div>
+
+  <div class="task-card" style="border-color: var(--gold);">
+    <div class="task-header">
+      <div class="task-title">✎ Задание 10. «Пейзаж в одном предложении»</div>
+      <span class="difficulty diff-hard">Творческое</span>
+    </div>
+    <div class="task-body">
+      <p>Опиши любой пейзаж: зимний лес, осенний парк, летний пруд. Используй <strong>не менее 2 причастных оборотов</strong>. Расставь знаки препинания и выдели причастные обороты маркером (подчеркни / оберни в скобки).</p>
+      <textarea class="writing-area" rows="4" placeholder="Пример: Лес, покрытый первым снегом, тихо дремал в ожидании метели. Ели, согнувшиеся под тяжестью снега, выглядели как сказочные великаны…"></textarea>
+      <p style="font-size:12px; color:#888; margin-top:8px;">Помни: причастный оборот после определяемого слова выделяется запятыми с обеих сторон!</p>
+    </div>
+  </div>
+
+  <div class="task-card" style="border-color: var(--accent);">
+    <div class="task-header">
+      <div class="task-title">✎ Задание 11. Загадка-описание</div>
+      <span class="difficulty diff-hard">Творческое</span>
+    </div>
+    <div class="task-body">
+      <p>Напиши загадку (3–5 предложений), описывая предмет или животное через причастные обороты, <strong>не называя его</strong>. Используй как минимум 1 действительное и 1 страдательное причастие.</p>
+      <textarea class="writing-area" rows="5" placeholder="Пример: Покрытый снежной шапкой, он стоит посреди двора. Окружённый детьми, он улыбается морковным носом. Слепленный из трёх шаров, он живёт только зимой. Кто это?"></textarea>
+    </div>
+  </div>
+
+  <div class="task-card" style="border-color: var(--blue);">
+    <div class="task-header">
+      <div class="task-title">✎ Задание 12. Синтаксический конструктор</div>
+      <span class="difficulty diff-hard">Творческое</span>
+    </div>
+    <div class="task-body">
+      <p style="margin-bottom:14px">Из данных элементов собери <strong>3 разных предложения</strong> с причастными оборотами. Запятые расставь самостоятельно. Каждый раз меняй положение оборота (перед/после определяемого слова).</p>
+      <div class="word-bag" style="margin-bottom:12px;">
+        <div class="word-chip">старый дом</div>
+        <div class="word-chip">стоящий на холме</div>
+        <div class="word-chip">был виден издалека</div>
+        <div class="word-chip">заброшенный жильцами</div>
+        <div class="word-chip">зарос бурьяном</div>
+        <div class="word-chip">окружённый садом</div>
+      </div>
+      <textarea class="writing-area" rows="5" placeholder="1) Старый дом, стоящий на холме, был виден издалека.&#10;2) Стоящий на холме старый дом был виден издалека.&#10;3) …"></textarea>
+    </div>
+  </div>
+</section>
+
+<!-- ИТОГ -->
+<div style="text-align:center; margin-top:40px; padding:30px; background:var(--ink); border-radius:16px; color:var(--cream);">
+  <div style="font-family:'Playfair Display',serif; font-size:28px; color:var(--gold); margin-bottom:12px;">Молодец!</div>
+  <p style="font-family:'Source Serif 4',serif; font-size:16px; opacity:0.85; max-width:500px; margin:0 auto; line-height:1.7;">
+    Причастный оборот — инструмент точного и образного языка. 
+    Теперь ты умеешь не только находить его, но и грамотно расставлять знаки препинания.
+  </p>
+
+</div>
+
+</main>
+
+
+
+<script>
+// NAV HIGHLIGHTING
+const sections = document.querySelectorAll('section[id], div[id="easy"],div[id="medium"]');
+const navLinks = document.querySelectorAll('nav a');
+window.addEventListener('scroll', () => {
+  let cur = '';
+  document.querySelectorAll('section').forEach(s => {
+    if (window.scrollY >= s.offsetTop - 80) cur = s.id;
+  });
+  navLinks.forEach(a => {
+    a.classList.toggle('active', a.getAttribute('href') === '#' + cur);
+  });
+});
+
+// FADE IN
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.08 });
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+// TASK 1 — radio check
+function checkRadios() {
+  const r1 = document.querySelector('input[name="q1a"]:checked');
+  const r2 = document.querySelector('input[name="q1b"]:checked');
+  const fb = document.getElementById('fb_task1');
+  if (!r1 || !r2) { fb.className='feedback wrong'; fb.textContent='Выбери ответ для обоих предложений!'; return; }
+  if (r1.value === 'correct' && r2.value === 'correct') {
+    fb.className='feedback correct'; fb.textContent='✔ Верно! «Открытая» и «бегущий» — оба причастия, отвечают на вопрос «какой?/какая?»';
+  } else {
+    fb.className='feedback wrong'; fb.textContent='✘ Не совсем. Причастие отвечает на вопрос «какой? какая?» и образовано от глагола.';
+  }
+}
+
+function checkQ2() {
+  const r = document.querySelector('input[name="q2"]:checked');
+  const fb = document.getElementById('fb_task2');
+  if (!r) { fb.className='feedback wrong'; fb.textContent='Выбери ответ!'; return; }
+  if (r.value === 'correct') {
+    fb.className='feedback correct'; fb.textContent='✔ Правильно! Причастие в роли определения отвечает на вопрос «какая?». Туча (какая?) нависшая.';
+  } else {
+    fb.className='feedback wrong'; fb.textContent='✘ Неверно. Причастие согласуется с существительным и отвечает на вопрос «какой?/какая?».';
+  }
+}
+
+// SORT TASK
+let selectedChip = null;
+const deistr_correct = ['читающий','кричавший','мчавшийся'];
+const strad_correct = ['написанный','любимый','унесённый'];
+const sortResults = { deistr: [], strad: [] };
+
+function selectChip(el) {
+  if (selectedChip) selectedChip.classList.remove('selected');
+  selectedChip = el;
+  el.classList.add('selected');
+}
+
+function sortTo(type) {
+  if (!selectedChip) return;
+  const word = selectedChip.textContent.trim();
+  if (!sortResults[type].includes(word)) {
+    sortResults[type].push(word);
+    const zone = document.getElementById('drop-' + type);
+    const span = document.createElement('span');
+    span.className = 'word-chip';
+    span.style.background = type === 'deistr' ? 'var(--blue)' : 'var(--accent)';
+    span.textContent = word;
+    zone.appendChild(span);
+    selectedChip.style.opacity = '0.3';
+    selectedChip.style.pointerEvents = 'none';
+    selectedChip = null;
+  }
+}
+
+function checkSort() {
+  const fb = document.getElementById('fb_sort');
+  let correct = true;
+  for (const w of deistr_correct) if (!sortResults.deistr.includes(w)) correct = false;
+  for (const w of strad_correct) if (!sortResults.strad.includes(w)) correct = false;
+  if (sortResults.deistr.some(w => strad_correct.includes(w))) correct = false;
+  if (sortResults.strad.some(w => deistr_correct.includes(w))) correct = false;
+  if (correct && sortResults.deistr.length === 3 && sortResults.strad.length === 3) {
+    fb.className='feedback correct'; fb.textContent='✔ Отлично! Действительные: читающий, кричавший, мчавшийся. Страдательные: написанный, любимый, унесённый.';
+  } else {
+    fb.className='feedback wrong'; fb.textContent='✘ Есть ошибки. Подсказка: действительные обозначают действие, которое предмет производит сам (-ущ-/-ющ-, -вш-/-ш-). Страдательные — испытывает (-нн-, -т-, -ем-/-им-).';
+  }
+}
+
+// PUNCTUATION SLOTS
+const slotState = {};
+function toggleSlot(id, expected) {
+  const el = document.getElementById(id);
+  if (!slotState[id]) {
+    slotState[id] = true;
+    el.textContent = ',';
+    el.classList.add('filled');
+  } else {
+    slotState[id] = false;
+    el.textContent = '_';
+    el.classList.remove('filled');
+  }
+}
+
+function checkPunc() {
+  const fb = document.getElementById('fb_punc');
+  // Correct: ps1=comma, ps2=comma, ps3=none, ps4=comma, ps5=comma, ps6=none
+  const expected = { ps1: true, ps2: true, ps3: false, ps4: true, ps5: true, ps6: false };
+  let score = 0;
+  for (const [k, v] of Object.entries(expected)) {
+    const correct = (slotState[k] || false) === v;
+    const el = document.getElementById(k);
+    el.classList.remove('correct-slot','wrong-slot');
+    if (correct) { el.classList.add('correct-slot'); score++; }
+    else { el.classList.add('wrong-slot'); }
+  }
+  if (score === 6) {
+    fb.className='feedback correct'; fb.textContent='✔ Все знаки расставлены верно!';
+  } else {
+    fb.className='feedback wrong'; fb.textContent=`✘ ${score} из 6. Красным отмечены ошибки. Вспомни правило: ПО после существительного — запятые нужны; ПО до существительного — запятые не нужны.`;
+  }
+}
+
+// Q5
+function checkQ5() {
+  const r = document.querySelector('input[name="q5"]:checked');
+  const fb = document.getElementById('fb_task5');
+  if (!r) { fb.className='feedback wrong'; fb.textContent='Выбери ответ!'; return; }
+  if (r.value === 'correct') {
+    fb.className='feedback correct'; fb.textContent='✔ Верно! В варианте Б причастный оборот стоит после определяемого слова «грибы» и выделен запятыми с обеих сторон. Вариант А — оборот до существительного, тогда запятые не нужны (и стоит убрать первую запятую).';
+  } else if (r.value === 'partial') {
+    fb.className='feedback wrong'; fb.textContent='✘ Оба варианта грамматически возможны, но пунктуация в варианте А неверна: если ПО стоит ДО определяемого слова, запятая после оборота не нужна.';
+  } else {
+    fb.className='feedback wrong'; fb.textContent='✘ Вариант А содержит лишнюю запятую: ПО перед существительным не требует запятой.';
+  }
+}
+
+// Input check
+function checkInputs() {
+  const v1 = document.getElementById('in1').value.trim();
+  const v2 = document.getElementById('in2').value.trim();
+  const v3 = document.getElementById('in3').value.trim();
+  const v4 = document.getElementById('in4').value.trim();
+  const fb = document.getElementById('fb_inputs');
+  // Correct: in1=',', in2=',', in3='' (no comma), in4=','
+  const results = [v1===','||v1===',', v2===','||v2===',', v3===''||v3===' ', v4===','||v4===','];
+  const score = results.filter(Boolean).length;
+  const fields = ['in1','in2','in3','in4'];
+  fields.forEach((id,i) => {
+    document.getElementById(id).style.borderBottomColor = results[i] ? 'var(--green)' : 'var(--red)';
+  });
+  if (score === 4) {
+    fb.className='feedback correct'; fb.textContent='✔ Всё верно! Ветер, [дувший с севера], пронизывал — ПО после сущ. → запятые. «Покрытый инеем» — ПО до сущ. → нет запятой. «Увлечённый разговором» → ПО до местоимения → запятая!';
+  } else {
+    fb.className='feedback wrong'; fb.textContent=`✘ ${score} из 4. Зелёным — верно, красным — ошибка. Обрати внимание: перед местоимением ПО всегда выделяется!`;
+  }
+}
+
+// Hints
+function showHint7() {
+  const h = document.getElementById('hint7');
+  h.style.display = h.style.display === 'none' ? 'block' : 'none';
+}
+function showHint8() {
+  const h = document.getElementById('hint8');
+  h.style.display = h.style.display === 'none' ? 'block' : 'none';
+}
+function showHint9() {
+  const h = document.getElementById('hint9');
+  h.style.display = h.style.display === 'none' ? 'block' : 'none';
+}
+</script>
+</body>
+</html>
