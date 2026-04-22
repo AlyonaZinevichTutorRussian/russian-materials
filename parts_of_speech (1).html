@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Части речи / Parts of Speech</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Baloo+2:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --noun-color: #FF6B6B;
+    --noun-light: #FFE8E8;
+    --verb-color: #4ECDC4;
+    --verb-light: #E0FAF8;
+    --adj-color: #FFD93D;
+    --adj-light: #FFFBE0;
+    --bg: #F7F3FF;
+    --card: #FFFFFF;
+    --text: #2D2D2D;
+    --purple: #7C5CBF;
+    --purple-light: #EDE8FF;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* STARS BACKGROUND */
+  body::before {
+    content: '⭐✨🌟💫⭐✨🌟💫⭐✨🌟💫⭐✨🌟💫⭐✨🌟💫⭐✨🌟💫⭐✨🌟💫⭐✨🌟💫';
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    font-size: 20px;
+    opacity: 0.06;
+    word-break: break-all;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px 16px 60px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* HEADER */
+  .header {
+    text-align: center;
+    padding: 32px 0 24px;
+  }
+  .header .emoji-row {
+    font-size: 48px;
+    margin-bottom: 8px;
+    animation: bounce 2s infinite;
+  }
+  @keyframes bounce {
+    0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)}
+  }
+  .header h1 {
+    font-family: 'Baloo 2', cursive;
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--purple);
+    line-height: 1.2;
+  }
+  .header .subtitle {
+    font-size: 1rem;
+    color: #888;
+    margin-top: 4px;
+  }
+
+  /* PROGRESS */
+  .progress-bar {
+    background: #E0D8F5;
+    border-radius: 20px;
+    height: 12px;
+    margin: 16px 0 28px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    background: linear-gradient(90deg, var(--purple), #B094E8);
+    height: 100%;
+    border-radius: 20px;
+    transition: width 0.5s ease;
+  }
+  .progress-label {
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--purple);
+    font-weight: 700;
+    margin-bottom: 20px;
+  }
+
+  /* SCREENS */
+  .screen { display: none; }
+  .screen.active { display: block; animation: fadeIn 0.4s ease; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+
+  /* CARD */
+  .card {
+    background: var(--card);
+    border-radius: 24px;
+    padding: 28px 24px;
+    box-shadow: 0 4px 20px rgba(124,92,191,0.10);
+    margin-bottom: 18px;
+    border: 2px solid transparent;
+  }
+
+  /* INTRO */
+  .intro-big {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--purple);
+    text-align: center;
+    margin-bottom: 6px;
+  }
+  .intro-en {
+    text-align: center;
+    color: #888;
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+  }
+  .word-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin: 20px 0;
+  }
+  .wc-word {
+    padding: 8px 14px;
+    border-radius: 30px;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: default;
+    transition: transform 0.2s;
+  }
+  .wc-word:hover { transform: scale(1.08); }
+  .wc-noun { background: var(--noun-light); color: var(--noun-color); border: 2px solid var(--noun-color); }
+  .wc-verb { background: var(--verb-light); color: #2A9D8F; border: 2px solid var(--verb-color); }
+  .wc-adj  { background: var(--adj-light);  color: #C89B00; border: 2px solid var(--adj-color); }
+
+  .speech-bubble {
+    background: var(--purple-light);
+    border-radius: 18px;
+    padding: 16px 20px;
+    position: relative;
+    margin: 16px 0;
+  }
+  .speech-bubble p { font-size: 0.95rem; line-height: 1.6; }
+  .speech-bubble .en { color: #888; font-size: 0.85rem; display: block; margin-top: 4px; }
+
+  /* PART OF SPEECH CARDS */
+  .pos-card {
+    border-radius: 20px;
+    padding: 22px 20px;
+    margin-bottom: 16px;
+    border: 3px solid transparent;
+  }
+  .pos-card.noun { background: var(--noun-light); border-color: var(--noun-color); }
+  .pos-card.verb { background: var(--verb-light); border-color: var(--verb-color); }
+  .pos-card.adj  { background: var(--adj-light);  border-color: var(--adj-color); }
+
+  .pos-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  .pos-icon { font-size: 2.2rem; }
+  .pos-title-block {}
+  .pos-ru { font-family: 'Baloo 2', cursive; font-size: 1.3rem; font-weight: 800; }
+  .noun .pos-ru { color: var(--noun-color); }
+  .verb .pos-ru { color: #2A9D8F; }
+  .adj  .pos-ru { color: #C89B00; }
+  .pos-en { font-size: 0.85rem; color: #666; }
+
+  .pos-row { display: flex; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
+  .pos-label {
+    font-size: 0.8rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    background: white;
+    opacity: 0.9;
+  }
+  .noun .pos-label { color: var(--noun-color); }
+  .verb .pos-label { color: #2A9D8F; }
+  .adj  .pos-label { color: #C89B00; }
+
+  .pos-question {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .pos-question-en { font-size: 0.82rem; color: #666; margin-bottom: 10px; }
+
+  .pos-meaning { font-size: 0.9rem; margin-bottom: 4px; }
+  .pos-meaning-en { font-size: 0.82rem; color: #666; margin-bottom: 12px; }
+
+  .examples { display: flex; flex-wrap: wrap; gap: 8px; }
+  .ex-chip {
+    background: white;
+    border-radius: 30px;
+    padding: 6px 14px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  }
+  .ex-chip span { font-weight: 400; font-size: 0.78rem; color: #888; display: block; }
+
+  /* TABLE SUMMARY */
+  .summary-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 8px;
+    margin: 12px 0;
+  }
+  .summary-table th {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--purple);
+    text-align: left;
+    padding: 6px 10px;
+  }
+  .summary-table td {
+    padding: 10px 12px;
+    background: white;
+    font-size: 0.9rem;
+  }
+  .summary-table td:first-child { border-radius: 12px 0 0 12px; font-weight: 700; }
+  .summary-table td:last-child  { border-radius: 0 12px 12px 0; }
+  .summary-table tr.noun-row td { border-left: 4px solid var(--noun-color); }
+  .summary-table tr.verb-row td { border-left: 4px solid var(--verb-color); }
+  .summary-table tr.adj-row  td { border-left: 4px solid var(--adj-color); }
+
+  /* QUIZ */
+  .quiz-question {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--purple);
+    text-align: center;
+    margin-bottom: 4px;
+  }
+  .quiz-question-en { text-align: center; color: #888; font-size: 0.85rem; margin-bottom: 18px; }
+
+  .quiz-sentence {
+    text-align: center;
+    font-size: 1.6rem;
+    font-weight: 800;
+    background: var(--purple-light);
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  .quiz-word {
+    display: inline-block;
+    background: white;
+    border-radius: 10px;
+    padding: 2px 10px;
+    margin: 0 3px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    color: var(--purple);
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .option-btn {
+    border: 3px solid transparent;
+    border-radius: 16px;
+    padding: 14px 8px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+  }
+  .option-btn:active { transform: scale(0.95); }
+  .option-btn.noun-btn { background: var(--noun-light); color: var(--noun-color); border-color: var(--noun-color); }
+  .option-btn.verb-btn { background: var(--verb-light); color: #2A9D8F; border-color: var(--verb-color); }
+  .option-btn.adj-btn  { background: var(--adj-light);  color: #C89B00; border-color: var(--adj-color); }
+  .option-btn:hover { transform: translateY(-3px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+  .option-btn .btn-en { font-size: 0.72rem; font-weight: 600; opacity: 0.7; display: block; margin-top: 2px; }
+
+  .feedback {
+    text-align: center;
+    border-radius: 16px;
+    padding: 14px;
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 14px;
+    display: none;
+  }
+  .feedback.correct { background: #D4FAE8; color: #1B7A4A; display: block; }
+  .feedback.wrong   { background: #FFE8E8; color: #C0392B; display: block; }
+
+  .quiz-counter {
+    text-align: center;
+    font-size: 0.85rem;
+    color: #999;
+    margin-bottom: 10px;
+  }
+  .score-stars { font-size: 1.5rem; margin-bottom: 4px; }
+
+  /* SORT GAME */
+  .sort-intro { text-align:center; font-size:0.95rem; color:#666; margin-bottom:16px; }
+  .sort-intro em { color: var(--purple); font-style:normal; font-weight:700; }
+  .word-pool {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    min-height: 60px;
+    background: var(--purple-light);
+    border-radius: 16px;
+    padding: 14px;
+    margin-bottom: 18px;
+  }
+  .drag-word {
+    background: white;
+    border: 2px solid #DDD;
+    border-radius: 30px;
+    padding: 8px 16px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: grab;
+    transition: all 0.2s;
+    user-select: none;
+  }
+  .drag-word:hover { transform: scale(1.05); box-shadow: 0 3px 10px rgba(0,0,0,0.12); }
+  .drag-word.placed { opacity: 0.3; pointer-events: none; }
+
+  .sort-bins {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .sort-bin {
+    border-radius: 16px;
+    padding: 12px 8px;
+    min-height: 100px;
+    border: 3px dashed transparent;
+    transition: all 0.2s;
+  }
+  .sort-bin.noun-bin { background: var(--noun-light); border-color: var(--noun-color); }
+  .sort-bin.verb-bin { background: var(--verb-light); border-color: var(--verb-color); }
+  .sort-bin.adj-bin  { background: var(--adj-light);  border-color: var(--adj-color); }
+  .sort-bin.drag-over { transform: scale(1.03); box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
+  .bin-title {
+    text-align: center;
+    font-weight: 800;
+    font-size: 0.95rem;
+    margin-bottom: 4px;
+  }
+  .noun-bin .bin-title { color: var(--noun-color); }
+  .verb-bin .bin-title { color: #2A9D8F; }
+  .adj-bin  .bin-title { color: #C89B00; }
+  .bin-subtitle { text-align:center; font-size:0.72rem; color:#888; margin-bottom:8px; }
+  .bin-words { display:flex; flex-wrap:wrap; gap:6px; justify-content:center; min-height:40px; }
+  .bin-chip {
+    padding: 5px 12px;
+    border-radius: 30px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .noun-bin .bin-chip { background: white; color: var(--noun-color); }
+  .verb-bin .bin-chip { background: white; color: #2A9D8F; }
+  .adj-bin  .bin-chip { background: white; color: #C89B00; }
+  .bin-chip.wrong-chip { background: #FFE8E8 !important; color: #C0392B !important; animation: shake 0.3s; }
+  @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-4px)} 75%{transform:translateX(4px)} }
+
+  /* BUTTONS */
+  .btn {
+    display: inline-block;
+    padding: 14px 28px;
+    border-radius: 50px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 1rem;
+    font-weight: 800;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+  }
+  .btn:active { transform: scale(0.96); }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--purple), #9B7ADE);
+    color: white;
+    box-shadow: 0 4px 15px rgba(124,92,191,0.35);
+    width: 100%;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(124,92,191,0.4); }
+  .btn-secondary {
+    background: white;
+    color: var(--purple);
+    border: 2px solid var(--purple);
+    width: 100%;
+  }
+  .btn-check {
+    background: linear-gradient(135deg, #4ECDC4, #2BAE9E);
+    color: white;
+    box-shadow: 0 4px 15px rgba(78,205,196,0.35);
+    width: 100%;
+    margin-top: 6px;
+  }
+
+  /* FINAL */
+  .final-emoji { font-size: 5rem; text-align: center; margin: 20px 0 10px; animation: pop 0.5s ease; }
+  @keyframes pop { 0%{transform:scale(0)} 70%{transform:scale(1.2)} 100%{transform:scale(1)} }
+  .final-title { font-family:'Baloo 2',cursive; font-size:2rem; font-weight:800; text-align:center; color:var(--purple); margin-bottom:6px; }
+  .final-score { text-align:center; font-size:1.1rem; color:#666; margin-bottom:20px; }
+  .badge-row { display:flex; justify-content:center; gap:16px; margin:20px 0; flex-wrap:wrap; }
+  .badge {
+    background: white;
+    border-radius: 20px;
+    padding: 16px 20px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    min-width: 90px;
+  }
+  .badge .badge-icon { font-size: 2rem; }
+  .badge .badge-name { font-weight: 800; font-size: 0.85rem; color: #333; margin-top: 4px; }
+  .badge .badge-en { font-size: 0.72rem; color: #999; }
+
+  /* NAV */
+  .nav { display: flex; gap: 10px; margin-top: 6px; }
+  .nav .btn { flex: 1; }
+
+  /* STEP DOTS */
+  .step-dots { display:flex; justify-content:center; gap:8px; margin-bottom:16px; }
+  .dot { width:10px; height:10px; border-radius:50%; background:#E0D8F5; transition:all 0.3s; }
+  .dot.active { background:var(--purple); transform:scale(1.3); }
+  .dot.done { background:#B094E8; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div class="emoji-row">📚</div>
+    <h1>Части речи<br><span style="font-size:1.3rem;color:#888">Parts of Speech</span></h1>
+    <div style="font-size:1.1rem;color:var(--purple);font-weight:700;margin-top:6px;">Привет, Марьяна! 👋 Hi, Maryana!</div>
+  </div>
+
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+  <div class="progress-label" id="progressLabel">Начинаем! / Let's start!</div>
+
+  <div class="step-dots" id="stepDots">
+    <div class="dot active" data-step="0"></div>
+    <div class="dot" data-step="1"></div>
+    <div class="dot" data-step="2"></div>
+    <div class="dot" data-step="3"></div>
+    <div class="dot" data-step="4"></div>
+    <div class="dot" data-step="5"></div>
+  </div>
+
+  <!-- SCREEN 0: INTRO -->
+  <div class="screen active" id="screen-0">
+    <div class="card">
+      <div class="intro-big">Марьяна, зачем нужны части речи?</div>
+      <div class="intro-en">Maryana, why do we need parts of speech?</div>
+      <div class="speech-bubble">
+        <p>Марьяна, все слова в русском языке делятся на группы — <strong>части речи</strong>. Каждая группа отвечает на разные вопросы и выполняет свою работу.</p>
+        <span class="en">Maryana, all words in Russian are divided into groups — <strong>parts of speech</strong>. Each group answers different questions and has its own job.</span>
+      </div>
+      <div class="word-cloud">
+        <span class="wc-word wc-noun">кошка 🐱</span>
+        <span class="wc-word wc-verb">бежит 🏃</span>
+        <span class="wc-word wc-adj">красивый ✨</span>
+        <span class="wc-word wc-noun">дом 🏠</span>
+        <span class="wc-word wc-verb">читает 📖</span>
+        <span class="wc-word wc-adj">большой 🐘</span>
+        <span class="wc-word wc-noun">солнце ☀️</span>
+        <span class="wc-word wc-verb">играет 🎮</span>
+        <span class="wc-word wc-adj">синий 💙</span>
+      </div>
+      <div class="speech-bubble">
+        <p>Сегодня мы узнаем про <strong>3 части речи</strong>: существительное, прилагательное и глагол. Ты справишься, Марьяна! 💪</p>
+        <span class="en">Today we'll learn about <strong>3 parts of speech</strong>: noun, adjective, and verb. You've got this, Maryana! 💪</span>
+      </div>
+    </div>
+    <button class="btn btn-primary" onclick="goToScreen(1)">Вперёд! Let's go! 🚀</button>
+  </div>
+
+  <!-- SCREEN 1: NOUN -->
+  <div class="screen" id="screen-1">
+    <div class="pos-card noun">
+      <div class="pos-header">
+        <div class="pos-icon">🏷️</div>
+        <div class="pos-title-block">
+          <div class="pos-ru">Имя существительное</div>
+          <div class="pos-en">Noun — имя существительное</div>
+        </div>
+      </div>
+      <div class="pos-row">
+        <span class="pos-label">вопросы / questions:</span>
+      </div>
+      <div class="pos-question">КТО? ЧТО?</div>
+      <div class="pos-question-en">WHO? WHAT?</div>
+      <div class="pos-meaning">🔴 Обозначает <strong>предмет или человека</strong></div>
+      <div class="pos-meaning-en">Names a <strong>person, animal, thing, or idea</strong></div>
+
+      <div style="background:white;border-radius:14px;padding:14px;margin:12px 0;">
+        <div style="font-weight:700;margin-bottom:8px;color:#FF6B6B;">Примеры / Examples:</div>
+        <div class="examples">
+          <div class="ex-chip">кошка 🐱<span>cat / КТО?</span></div>
+          <div class="ex-chip">дом 🏠<span>house / ЧТО?</span></div>
+          <div class="ex-chip">мама 👩<span>mum / КТО?</span></div>
+          <div class="ex-chip">книга 📕<span>book / ЧТО?</span></div>
+          <div class="ex-chip">собака 🐶<span>dog / КТО?</span></div>
+          <div class="ex-chip">солнце ☀️<span>sun / ЧТО?</span></div>
+        </div>
+      </div>
+
+      <div style="background:#FFE0E0;border-radius:12px;padding:12px;">
+        <strong>🔑 Подсказка / Tip:</strong> Можешь поставить слово "Это ___"?
+        <br><span style="font-size:0.82rem;color:#666">Can you say "This is a ___"? → It's probably a noun!</span><br>
+        <em>Это кошка ✓ Это дом ✓ Это красивый? ✗</em>
+      </div>
+    </div>
+    <div class="nav">
+      <button class="btn btn-secondary" onclick="goToScreen(0)">← Назад</button>
+      <button class="btn btn-primary" onclick="goToScreen(2)">Дальше →</button>
+    </div>
+  </div>
+
+  <!-- SCREEN 2: VERB -->
+  <div class="screen" id="screen-2">
+    <div class="pos-card verb">
+      <div class="pos-header">
+        <div class="pos-icon">⚡</div>
+        <div class="pos-title-block">
+          <div class="pos-ru">Глагол</div>
+          <div class="pos-en">Verb — глагол</div>
+        </div>
+      </div>
+      <div class="pos-row">
+        <span class="pos-label">вопросы / questions:</span>
+      </div>
+      <div class="pos-question">ЧТО ДЕЛАЕТ? ЧТО ДЕЛАТЬ?</div>
+      <div class="pos-question-en">WHAT IS IT DOING? WHAT TO DO?</div>
+      <div class="pos-meaning">🟢 Обозначает <strong>действие</strong></div>
+      <div class="pos-meaning-en">Shows an <strong>action or state</strong></div>
+
+      <div style="background:white;border-radius:14px;padding:14px;margin:12px 0;">
+        <div style="font-weight:700;margin-bottom:8px;color:#2A9D8F;">Примеры / Examples:</div>
+        <div class="examples">
+          <div class="ex-chip">бежит 🏃<span>is running</span></div>
+          <div class="ex-chip">читает 📖<span>is reading</span></div>
+          <div class="ex-chip">играет 🎮<span>is playing</span></div>
+          <div class="ex-chip">спит 😴<span>is sleeping</span></div>
+          <div class="ex-chip">ест 🍕<span>is eating</span></div>
+          <div class="ex-chip">прыгает 🐸<span>is jumping</span></div>
+        </div>
+      </div>
+
+      <div style="background:#D6F5F3;border-radius:12px;padding:12px;">
+        <strong>🔑 Подсказка / Tip:</strong> Слово обозначает действие? Можно показать руками?
+        <br><span style="font-size:0.82rem;color:#666">Does the word show an action you can do or act out? → It's probably a verb!</span><br>
+        <em>бежать ✓ читать ✓ красивый? ✗</em>
+      </div>
+    </div>
+    <div class="nav">
+      <button class="btn btn-secondary" onclick="goToScreen(1)">← Назад</button>
+      <button class="btn btn-primary" onclick="goToScreen(3)">Дальше →</button>
+    </div>
+  </div>
+
+  <!-- SCREEN 3: ADJECTIVE -->
+  <div class="screen" id="screen-3">
+    <div class="pos-card adj">
+      <div class="pos-header">
+        <div class="pos-icon">🎨</div>
+        <div class="pos-title-block">
+          <div class="pos-ru">Имя прилагательное</div>
+          <div class="pos-en">Adjective — имя прилагательное</div>
+        </div>
+      </div>
+      <div class="pos-row">
+        <span class="pos-label">вопросы / questions:</span>
+      </div>
+      <div class="pos-question">КАКОЙ? КАКАЯ? КАКОЕ? КАКИЕ?</div>
+      <div class="pos-question-en">WHAT KIND? WHAT LIKE? (describes something)</div>
+      <div class="pos-meaning">🟡 Обозначает <strong>признак предмета</strong></div>
+      <div class="pos-meaning-en">Describes a quality or feature of a noun</div>
+
+      <div style="background:white;border-radius:14px;padding:14px;margin:12px 0;">
+        <div style="font-weight:700;margin-bottom:8px;color:#C89B00;">Примеры / Examples:</div>
+        <div class="examples">
+          <div class="ex-chip">красивый ✨<span>beautiful (m)</span></div>
+          <div class="ex-chip">большой 🐘<span>big (m)</span></div>
+          <div class="ex-chip">синий 💙<span>blue (m)</span></div>
+          <div class="ex-chip">маленькая 🐭<span>small (f)</span></div>
+          <div class="ex-chip">вкусное 🍰<span>tasty (n)</span></div>
+          <div class="ex-chip">быстрый 🚀<span>fast (m)</span></div>
+        </div>
+      </div>
+
+      <div style="background:#FFF3C0;border-radius:12px;padding:12px;">
+        <strong>🔑 Подсказка / Tip:</strong> Слово описывает предмет? Можно сказать "какой?"
+        <br><span style="font-size:0.82rem;color:#666">Does the word describe what something is like? → It's probably an adjective!</span><br>
+        <em>кошка какая? — красивая ✓</em>
+      </div>
+    </div>
+    <div class="nav">
+      <button class="btn btn-secondary" onclick="goToScreen(2)">← Назад</button>
+      <button class="btn btn-primary" onclick="goToScreen(4)">Дальше →</button>
+    </div>
+  </div>
+
+  <!-- SCREEN 4: QUIZ -->
+  <div class="screen" id="screen-4">
+    <div class="card">
+      <div class="quiz-question">Марьяна, угадай часть речи!</div>
+      <div class="quiz-question-en">Maryana, guess the part of speech!</div>
+      <div class="quiz-counter" id="quizCounter">Вопрос 1 из 8 / Question 1 of 8</div>
+      <div class="quiz-sentence" id="quizSentence"></div>
+      <div class="feedback" id="feedback"></div>
+      <div class="options">
+        <button class="option-btn noun-btn" onclick="checkAnswer('noun')">🏷️ Существительное<span class="btn-en">Noun</span></button>
+        <button class="option-btn verb-btn" onclick="checkAnswer('verb')">⚡ Глагол<span class="btn-en">Verb</span></button>
+        <button class="option-btn adj-btn" onclick="checkAnswer('adj')">🎨 Прилагательное<span class="btn-en">Adjective</span></button>
+      </div>
+      <button class="btn btn-secondary" id="nextQuizBtn" onclick="nextQuiz()" style="display:none">Следующий / Next →</button>
+    </div>
+    <div class="nav">
+      <button class="btn btn-secondary" onclick="goToScreen(3)">← Назад</button>
+    </div>
+  </div>
+
+  <!-- SCREEN 5: SORT GAME -->
+  <div class="screen" id="screen-5">
+    <div class="card">
+      <div class="quiz-question">Марьяна, разложи слова по группам!</div>
+      <div class="quiz-question-en">Maryana, sort the words into groups!</div>
+      <div class="sort-intro">Нажми на слово, потом нажми на нужную группу / <em>Click a word, then click the right group</em></div>
+      <div class="word-pool" id="wordPool"></div>
+      <div class="sort-bins">
+        <div class="sort-bin noun-bin" id="bin-noun" onclick="dropTobin('noun')">
+          <div class="bin-title">🏷️ Существительное</div>
+          <div class="bin-subtitle">Noun</div>
+          <div class="bin-words" id="bin-noun-words"></div>
+        </div>
+        <div class="sort-bin verb-bin" id="bin-verb" onclick="dropTobin('verb')">
+          <div class="bin-title">⚡ Глагол</div>
+          <div class="bin-subtitle">Verb</div>
+          <div class="bin-words" id="bin-verb-words"></div>
+        </div>
+        <div class="sort-bin adj-bin" id="bin-adj" onclick="dropTobin('adj')">
+          <div class="bin-title">🎨 Прилагательное</div>
+          <div class="bin-subtitle">Adjective</div>
+          <div class="bin-words" id="bin-adj-words"></div>
+        </div>
+      </div>
+      <div class="feedback" id="sortFeedback"></div>
+      <button class="btn btn-check" id="checkSortBtn" onclick="checkSort()">Проверить / Check ✓</button>
+    </div>
+    <div class="nav">
+      <button class="btn btn-secondary" onclick="goToScreen(4)">← Назад</button>
+    </div>
+  </div>
+
+  <!-- SCREEN 6: FINAL -->
+  <div class="screen" id="screen-6">
+    <div class="card">
+      <div class="final-emoji">🏆</div>
+      <div class="final-title">Молодец, Марьяна! Well done!</div>
+      <div class="final-score" id="finalScore"></div>
+      <div class="speech-bubble">
+        <p>Марьяна, ты научилась различать <strong>3 части речи</strong>! Теперь ты знаешь:</p>
+        <span class="en">Maryana, you've learned to tell apart <strong>3 parts of speech</strong>! Now you know:</span>
+      </div>
+      <table class="summary-table">
+        <tr>
+          <th>Часть речи</th><th>Вопрос</th><th>Что обозначает</th>
+        </tr>
+        <tr class="noun-row">
+          <td>🏷️ Существительное<br><small style="color:#888">Noun</small></td>
+          <td>КТО? ЧТО?<br><small style="color:#888">who? what?</small></td>
+          <td>предмет<br><small style="color:#888">thing/person</small></td>
+        </tr>
+        <tr class="verb-row">
+          <td>⚡ Глагол<br><small style="color:#888">Verb</small></td>
+          <td>ЧТО ДЕЛАЕТ?<br><small style="color:#888">what does?</small></td>
+          <td>действие<br><small style="color:#888">action</small></td>
+        </tr>
+        <tr class="adj-row">
+          <td>🎨 Прилагательное<br><small style="color:#888">Adjective</small></td>
+          <td>КАКОЙ?<br><small style="color:#888">what like?</small></td>
+          <td>признак<br><small style="color:#888">description</small></td>
+        </tr>
+      </table>
+      <div class="badge-row">
+        <div class="badge"><div class="badge-icon">🏷️</div><div class="badge-name">Существительное</div><div class="badge-en">Noun Expert</div></div>
+        <div class="badge"><div class="badge-icon">⚡</div><div class="badge-name">Глагол</div><div class="badge-en">Verb Star</div></div>
+        <div class="badge"><div class="badge-icon">🎨</div><div class="badge-name">Прилагательное</div><div class="badge-en">Adjective Pro</div></div>
+      </div>
+    </div>
+    <button class="btn btn-primary" onclick="restart()">🔄 Ещё раз / Try again</button>
+  </div>
+
+</div>
+
+<script>
+  // State
+  let currentScreen = 0;
+  let quizIndex = 0;
+  let quizScore = 0;
+  let selectedWord = null;
+
+  const totalScreens = 7;
+  const progressSteps = [0, 16, 33, 50, 66, 83, 100];
+  const progressLabels = [
+    'Начинаем! / Let\'s start!',
+    'Существительное / Noun 🏷️',
+    'Глагол / Verb ⚡',
+    'Прилагательное / Adjective 🎨',
+    'Викторина / Quiz 🎯',
+    'Игра / Game 🎮',
+    'Готово! / Done! 🏆'
+  ];
+
+  const quizData = [
+    { word: 'кошка', answer: 'noun', context: 'Кошка сидит на диване.', highlight: 'кошка', en: 'The cat is sitting on the sofa.' },
+    { word: 'прыгает', answer: 'verb', context: 'Лягушка прыгает в воду.', highlight: 'прыгает', en: 'The frog jumps into the water.' },
+    { word: 'красивая', answer: 'adj', context: 'Красивая бабочка летит.', highlight: 'красивая', en: 'A beautiful butterfly is flying.' },
+    { word: 'собака', answer: 'noun', context: 'Собака бежит быстро.', highlight: 'собака', en: 'The dog is running fast.' },
+    { word: 'читает', answer: 'verb', context: 'Девочка читает книгу.', highlight: 'читает', en: 'The girl is reading a book.' },
+    { word: 'большой', answer: 'adj', context: 'Большой слон пьёт воду.', highlight: 'большой', en: 'The big elephant is drinking water.' },
+    { word: 'солнце', answer: 'noun', context: 'Солнце светит ярко.', highlight: 'солнце', en: 'The sun is shining brightly.' },
+    { word: 'синий', answer: 'adj', context: 'Синий шар летит вверх.', highlight: 'синий', en: 'The blue balloon is flying up.' },
+  ];
+
+  const sortWords = [
+    { word: 'мяч', type: 'noun', en: 'ball' },
+    { word: 'летит', type: 'verb', en: 'is flying' },
+    { word: 'мягкий', type: 'adj', en: 'soft' },
+    { word: 'мама', type: 'noun', en: 'mum' },
+    { word: 'рисует', type: 'verb', en: 'is drawing' },
+    { word: 'маленький', type: 'adj', en: 'small' },
+    { word: 'дерево', type: 'noun', en: 'tree' },
+    { word: 'поёт', type: 'verb', en: 'is singing' },
+    { word: 'вкусный', type: 'adj', en: 'tasty' },
+  ];
+
+  let sortState = {}; // word => { type, placed }
+
+  function goToScreen(n) {
+    document.getElementById('screen-' + currentScreen).classList.remove('active');
+    currentScreen = n;
+    document.getElementById('screen-' + n).classList.add('active');
+    updateProgress(n);
+    updateDots(n);
+    if (n === 4) initQuiz();
+    if (n === 5) initSort();
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  }
+
+  function updateProgress(n) {
+    document.getElementById('progressFill').style.width = progressSteps[n] + '%';
+    document.getElementById('progressLabel').textContent = progressLabels[n] || '';
+  }
+
+  function updateDots(n) {
+    document.querySelectorAll('.dot').forEach((d, i) => {
+      d.classList.remove('active','done');
+      if (i < n) d.classList.add('done');
+      if (i === n) d.classList.add('active');
+    });
+  }
+
+  // QUIZ
+  function initQuiz() {
+    quizIndex = 0;
+    quizScore = 0;
+    showQuizQuestion();
+  }
+
+  function showQuizQuestion() {
+    const q = quizData[quizIndex];
+    const counter = document.getElementById('quizCounter');
+    counter.textContent = `Вопрос ${quizIndex+1} из ${quizData.length} / Question ${quizIndex+1} of ${quizData.length}`;
+    const parts = q.context.split(q.highlight);
+    document.getElementById('quizSentence').innerHTML =
+      parts[0] + `<span class="quiz-word">${q.highlight}</span>` + (parts[1]||'')
+      + `<br><small style="color:#888;font-size:0.65rem;font-weight:400">${q.en}</small>`;
+    document.getElementById('feedback').style.display = 'none';
+    document.getElementById('feedback').className = 'feedback';
+    document.getElementById('nextQuizBtn').style.display = 'none';
+    document.querySelectorAll('.option-btn').forEach(b => b.disabled = false);
+  }
+
+  function checkAnswer(choice) {
+    const q = quizData[quizIndex];
+    const fb = document.getElementById('feedback');
+    document.querySelectorAll('.option-btn').forEach(b => b.disabled = true);
+    if (choice === q.answer) {
+      quizScore++;
+      const msgs = {
+        noun: ['Это существительное! Отвечает на вопрос КТО? или ЧТО? ✅', 'It\'s a noun! Answers WHO? or WHAT? ✅'],
+        verb: ['Это глагол! Обозначает действие ✅', 'It\'s a verb! Shows an action ✅'],
+        adj:  ['Это прилагательное! Описывает предмет ✅', 'It\'s an adjective! Describes a thing ✅']
+      };
+      fb.className = 'feedback correct';
+      fb.innerHTML = `🎉 ${msgs[choice][0]}<br><span style="font-size:0.82rem">${msgs[choice][1]}</span>`;
+    } else {
+      const labels = { noun: 'существительное (noun)', verb: 'глагол (verb)', adj: 'прилагательное (adjective)' };
+      fb.className = 'feedback wrong';
+      fb.innerHTML = `❌ Не совсем. Это <strong>${labels[q.answer]}</strong>!<br><span style="font-size:0.82rem">Not quite. It's a <strong>${labels[q.answer]}</strong>!</span>`;
+    }
+    fb.style.display = 'block';
+    document.getElementById('nextQuizBtn').style.display = 'block';
+  }
+
+  function nextQuiz() {
+    quizIndex++;
+    if (quizIndex >= quizData.length) {
+      goToScreen(5);
+    } else {
+      showQuizQuestion();
+    }
+  }
+
+  // SORT GAME
+  function initSort() {
+    sortState = {};
+    sortWords.forEach(w => { sortState[w.word] = { type: w.type, placed: null }; });
+    renderWordPool();
+    ['noun','verb','adj'].forEach(bin => { document.getElementById('bin-'+bin+'-words').innerHTML = ''; });
+    document.getElementById('sortFeedback').style.display = 'none';
+    selectedWord = null;
+  }
+
+  function renderWordPool() {
+    const pool = document.getElementById('wordPool');
+    pool.innerHTML = '';
+    sortWords.forEach(w => {
+      const el = document.createElement('div');
+      el.className = 'drag-word' + (sortState[w.word].placed ? ' placed' : '');
+      el.textContent = w.word;
+      el.title = w.en;
+      el.dataset.word = w.word;
+      if (!sortState[w.word].placed) {
+        el.addEventListener('click', () => selectWord(w.word, el));
+      }
+      pool.appendChild(el);
+    });
+  }
+
+  function selectWord(word, el) {
+    document.querySelectorAll('.drag-word').forEach(e => e.style.outline = 'none');
+    if (selectedWord === word) { selectedWord = null; return; }
+    selectedWord = word;
+    el.style.outline = '3px solid var(--purple)';
+  }
+
+  function dropTobin(binType) {
+    if (!selectedWord) return;
+    sortState[selectedWord].placed = binType;
+    renderWordPool();
+    selectedWord = null;
+    renderBins();
+  }
+
+  function renderBins() {
+    ['noun','verb','adj'].forEach(bin => {
+      const container = document.getElementById('bin-'+bin+'-words');
+      container.innerHTML = '';
+      Object.entries(sortState).forEach(([word, state]) => {
+        if (state.placed === bin) {
+          const chip = document.createElement('div');
+          chip.className = 'bin-chip';
+          chip.textContent = word;
+          chip.title = 'Click to remove / нажми чтобы убрать';
+          chip.onclick = () => { sortState[word].placed = null; renderWordPool(); renderBins(); };
+          container.appendChild(chip);
+        }
+      });
+    });
+  }
+
+  function checkSort() {
+    const allPlaced = Object.values(sortState).every(s => s.placed !== null);
+    if (!allPlaced) {
+      const fb = document.getElementById('sortFeedback');
+      fb.className = 'feedback wrong';
+      fb.innerHTML = '⚠️ Разложи все слова! / Place all the words first!';
+      fb.style.display = 'block';
+      return;
+    }
+    let correct = 0;
+    Object.entries(sortState).forEach(([word, state]) => {
+      const wordData = sortWords.find(w => w.word === word);
+      if (state.placed === wordData.type) correct++;
+    });
+    const fb = document.getElementById('sortFeedback');
+    if (correct === sortWords.length) {
+      fb.className = 'feedback correct';
+      fb.innerHTML = `🎉 Всё правильно! Perfect! ${correct}/${sortWords.length}`;
+      fb.style.display = 'block';
+      setTimeout(() => {
+        document.getElementById('finalScore').textContent =
+          `Викторина: ${quizScore}/${quizData.length} | Игра: ${correct}/${sortWords.length}`;
+        goToScreen(6);
+      }, 1800);
+    } else {
+      fb.className = 'feedback wrong';
+      fb.innerHTML = `❌ ${correct} из ${sortWords.length} правильно. Попробуй ещё! / ${correct} of ${sortWords.length} correct. Try again!`;
+      fb.style.display = 'block';
+      // Highlight wrong ones
+      Object.entries(sortState).forEach(([word, state]) => {
+        const wordData = sortWords.find(w => w.word === word);
+        if (state.placed !== wordData.type) {
+          const binWords = document.getElementById('bin-' + state.placed + '-words');
+          binWords.querySelectorAll('.bin-chip').forEach(chip => {
+            if (chip.textContent === word) chip.classList.add('wrong-chip');
+          });
+        }
+      });
+    }
+  }
+
+  function restart() {
+    goToScreen(0);
+  }
+</script>
+</body>
+</html>
