@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ГИА — Блок 5 (вопросы 166–205)</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@700;900&family=Mulish:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f0ede6;
+  --card: #ffffff;
+  --ink: #111018;
+  --muted: #888;
+  --border: #e2ddd4;
+  --accent: #0f766e;
+  --ok: #16a34a;
+  --ok-bg: #f0fdf4;
+  --ok-border: #86efac;
+  --fail: #dc2626;
+  --fail-bg: #fff1f2;
+  --fail-border: #fca5a5;
+  --r: 14px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); font-family: 'Mulish', sans-serif; color: var(--ink); min-height: 100vh; }
+
+#intro { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 20px; gap: 28px; }
+.intro-badge { background: var(--accent); color: #fff; font-family: 'Unbounded', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: .1em; padding: 6px 16px; border-radius: 100px; text-transform: uppercase; }
+.intro-title { font-family: 'Unbounded', sans-serif; font-size: clamp(32px, 7vw, 64px); font-weight: 900; text-align: center; line-height: 1.05; }
+.intro-title span { color: var(--accent); }
+.intro-sub { font-size: 16px; color: var(--muted); text-align: center; max-width: 440px; line-height: 1.6; }
+.btn-start { background: var(--ink); color: #fff; border: none; border-radius: var(--r); padding: 18px 44px; font-family: 'Unbounded', sans-serif; font-size: 15px; font-weight: 700; cursor: pointer; transition: background .15s, transform .15s; }
+.btn-start:hover { background: var(--accent); transform: translateY(-2px); }
+
+#quiz { display: none; padding: 24px 20px 48px; max-width: 760px; margin: 0 auto; }
+.top-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+.q-counter { font-family: 'Unbounded', sans-serif; font-size: 13px; font-weight: 700; color: var(--muted); }
+.q-counter b { color: var(--ink); font-size: 16px; }
+.score-live { font-size: 13px; color: var(--muted); }
+.score-live b { color: var(--ok); font-weight: 700; }
+.pbar-wrap { height: 5px; background: var(--border); border-radius: 3px; margin-bottom: 28px; overflow: hidden; }
+.pbar { height: 100%; background: linear-gradient(90deg, var(--accent), #0369a1); border-radius: 3px; transition: width .4s ease; }
+
+.q-card { background: var(--card); border-radius: 20px; padding: clamp(24px, 4vw, 40px); box-shadow: 0 2px 32px rgba(0,0,0,.07); margin-bottom: 14px; }
+.q-label { font-size: 11px; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); font-weight: 700; margin-bottom: 12px; }
+.q-text { font-size: clamp(15px, 2.2vw, 18px); font-weight: 700; line-height: 1.55; margin-bottom: 26px; }
+.multi-note { display: inline-block; background: #f0fdfa; color: var(--accent); font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 6px; margin-bottom: 16px; }
+
+.opts { display: flex; flex-direction: column; gap: 10px; }
+.opt { display: flex; align-items: flex-start; gap: 14px; border: 2px solid var(--border); border-radius: 12px; padding: 14px 18px; background: #fafaf8; cursor: pointer; font-size: 14px; line-height: 1.55; font-weight: 400; text-align: left; font-family: 'Mulish', sans-serif; color: var(--ink); transition: border-color .12s, background .12s, transform .1s; width: 100%; }
+.opt:hover:not(:disabled) { border-color: var(--accent); background: #f0fdfa; transform: translateX(3px); }
+.opt:disabled { cursor: default; }
+.opt-letter { min-width: 28px; height: 28px; border-radius: 8px; background: var(--border); display: flex; align-items: center; justify-content: center; font-family: 'Unbounded', sans-serif; font-size: 11px; font-weight: 700; color: var(--muted); flex-shrink: 0; transition: background .12s, color .12s; }
+
+.opt.correct { border-color: var(--ok); background: var(--ok-bg); }
+.opt.correct .opt-letter { background: var(--ok); color: #fff; }
+.opt.wrong { border-color: var(--fail); background: var(--fail-bg); }
+.opt.wrong .opt-letter { background: var(--fail); color: #fff; }
+.opt.reveal { border-color: var(--ok); background: var(--ok-bg); opacity: .7; }
+.opt.reveal .opt-letter { background: var(--ok); color: #fff; }
+.opt.selected { border-color: var(--accent); background: #f0fdfa; }
+.opt.selected .opt-letter { background: var(--accent); color: #fff; }
+
+.feedback { border-radius: 12px; padding: 14px 18px; font-size: 14px; line-height: 1.55; margin-top: 12px; animation: fadeUp .22s ease; display: none; }
+.feedback.ok { background: var(--ok-bg); border: 1.5px solid var(--ok-border); color: #15803d; }
+.feedback.fail { background: var(--fail-bg); border: 1.5px solid var(--fail-border); color: #b91c1c; }
+.feedback .fb-title { font-family: 'Unbounded', sans-serif; font-size: 12px; font-weight: 700; margin-bottom: 4px; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+.btn-check { margin-top: 14px; background: var(--accent); color: #fff; border: none; border-radius: 10px; padding: 12px 26px; font-family: 'Unbounded', sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; display: none; }
+.btn-check:hover { opacity: .85; }
+.btn-next { width: 100%; max-width: 760px; margin: 0 auto; display: none; background: var(--ink); color: #fff; border: none; border-radius: var(--r); padding: 16px; font-family: 'Unbounded', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; transition: background .15s, transform .12s; }
+.btn-next:hover { background: var(--accent); transform: translateY(-1px); }
+
+#results { display: none; flex-direction: column; align-items: center; min-height: 100vh; padding: 48px 20px; gap: 24px; }
+.res-pct { font-family: 'Unbounded', sans-serif; font-size: clamp(64px, 15vw, 108px); font-weight: 900; line-height: 1; background: linear-gradient(135deg, var(--accent), #0369a1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.res-verdict { font-size: 20px; font-weight: 700; }
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; width: 100%; max-width: 480px; }
+.stat { background: var(--card); border-radius: var(--r); padding: 20px; text-align: center; box-shadow: 0 2px 12px rgba(0,0,0,.05); }
+.stat .sv { font-family: 'Unbounded', sans-serif; font-size: 30px; font-weight: 900; }
+.stat .sl { font-size: 11px; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); margin-top: 4px; }
+.sv.g { color: var(--ok); } .sv.r { color: var(--fail); } .sv.b { color: var(--accent); }
+.res-btns { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+.btn-redo { background: var(--accent); color: #fff; border: none; border-radius: var(--r); padding: 14px 28px; font-family: 'Unbounded', sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; }
+.btn-retry { background: transparent; color: var(--ink); border: 2px solid var(--border); border-radius: var(--r); padding: 12px 26px; font-family: 'Unbounded', sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; }
+.btn-retry:hover { border-color: var(--accent); color: var(--accent); }
+.wrong-block { width: 100%; max-width: 680px; background: var(--card); border-radius: var(--r); padding: 24px; box-shadow: 0 2px 16px rgba(0,0,0,.05); }
+.wrong-block h3 { font-family: 'Unbounded', sans-serif; font-size: 14px; margin-bottom: 16px; }
+.wi { border-bottom: 1px solid var(--border); padding: 12px 0; font-size: 13px; line-height: 1.6; }
+.wi:last-child { border-bottom: none; }
+.wi .wq { font-weight: 700; margin-bottom: 5px; }
+.wi .wy { color: var(--fail); } .wi .wc { color: var(--ok); }
+</style>
+</head>
+<body>
+
+<div id="intro">
+  <div class="intro-badge">Допуск к ГИА · Магистратура</div>
+  <div class="intro-title">Блок <span>5</span><br>Вопросы 166–205</div>
+  <div class="intro-sub">Семейное консультирование, тренинг, копинг-стратегии, лидерство, методология психологии.</div>
+  <button class="btn-start" onclick="startQuiz()">Начать тест →</button>
+</div>
+
+<div id="quiz">
+  <div class="top-bar">
+    <div class="q-counter">Вопрос <b id="qNum">1</b> из <span id="qTot">40</span></div>
+    <div class="score-live">Верно: <b id="scoreLive">0</b></div>
+  </div>
+  <div class="pbar-wrap"><div class="pbar" id="pbar" style="width:0%"></div></div>
+  <div class="q-card">
+    <div class="q-label" id="qLabel">Вопрос 166</div>
+    <div class="q-text" id="qText"></div>
+    <div id="multiNote" class="multi-note" style="display:none">⚡ Несколько правильных ответов — выбери все, затем нажми «Проверить»</div>
+    <div class="opts" id="opts"></div>
+    <div class="feedback" id="feedback">
+      <div class="fb-title" id="fbTitle"></div>
+      <div id="fbBody"></div>
+    </div>
+    <button class="btn-check" id="btnCheck" onclick="submitMulti()">Проверить</button>
+  </div>
+  <button class="btn-next" id="btnNext" onclick="nextQ()"></button>
+</div>
+
+<div id="results">
+  <div class="res-pct" id="resPct">0%</div>
+  <div class="res-verdict" id="resVerdict"></div>
+  <div class="stats">
+    <div class="stat"><div class="sv g" id="resOk">0</div><div class="sl">Верно</div></div>
+    <div class="stat"><div class="sv r" id="resFail">0</div><div class="sl">Ошибки</div></div>
+    <div class="stat"><div class="sv b" id="resTotal">0</div><div class="sl">Всего</div></div>
+  </div>
+  <div class="res-btns">
+    <button class="btn-redo" onclick="startQuiz()">Пройти заново</button>
+    <button class="btn-retry" id="btnRetry" onclick="retryWrong()" style="display:none">Повторить ошибки</button>
+  </div>
+  <div class="wrong-block" id="wrongBlock" style="display:none">
+    <h3>❌ Разбор ошибок</h3>
+    <div id="wrongItems"></div>
+  </div>
+</div>
+
+<script>
+const LETTERS = ['А','Б','В','Г','Д','Е'];
+
+const ALL_Q = [
+  {n:166, q:"Какие из перечисленных действий психолога-консультанта в семейном консультировании являются обычными для него:", opts:["консультант вместе с семьёй переживает события, обстоятельства и изменения в жизни клиентов","консультант может лишь создать условия для изменений и исправлений семейного неблагополучия","консультант вместе с семьёй вырабатывает стратегию выхода из сложившейся ситуации","все варианты верные"], correct:[3]},
+  {n:167, q:"Задачи консультирования в случае развода:", opts:["Проблемы подготовки детей к распаду семьи","Оптимизация детско-родительских отношений","Сопровождение эмоционального развода","Формирование нового образа семьи","Помощь в ограничении отношений ребёнка с отцом при наличии отчима"], correct:[0,2,3]},
+  {n:168, q:"Одна из ведущих задач консультирования по вопросам вступления в брак:", opts:["Согласованность семейных ценностей","Сепарация от родительской семьи","Достижение личностной автономии"], correct:[0]},
+  {n:169, q:"Какое действие из ниже перечисленных является лишним в заключительном этапе?", opts:["подведение итогов","контроль и оценка реализации принятого решения","завершение совместной работы с консультантом обсуждение форм и сроков дальнейших контактов","воздействие на менее осознанные процессы, используются методы, разработанные в психоанализе, гештальтерапии и психодраме"], correct:[3]},
+  {n:170, q:"Многофункциональный метод преднамеренных изменений психологических феноменов человека, группы и организации с целью гармонизации профессионального и личностного бытия человека – это:", opts:["тренинг","группа встреч","проективный тест","психокоррекция"], correct:[0]},
+  {n:171, q:"Тренинг, направленный на обучение проведения тренинга стрессоустойчивости, относится к:", opts:["методическому тренингу","обучающему тренингу","психокоррекционному тренингу","организационному тренингу"], correct:[0]},
+  {n:172, q:"Тренинг, направленный на изменение психической сферы человека, его поведения и совершенствование самосознания, относится к:", opts:["методическому тренингу","обучающему тренингу","психокоррекционному тренингу","организационному тренингу"], correct:[2]},
+  {n:173, q:"Тренинг, направленный на приобретение участниками новых знаний, умений, навыков в определённых областях социальной активности человека, относится к:", opts:["методическому тренингу","обучающему тренингу","психокоррекционному тренингу","организационному тренингу"], correct:[1]},
+  {n:174, q:"Тренинг, направленный на совершенствование личностных качеств участников, относится к:", opts:["методическому тренингу","тренингу личностного развития","психотерапевтическому тренингу","организационному тренингу"], correct:[1]},
+  {n:175, q:"Тренинг, направленный на совершенствование совместной деятельности коллектива, на получение организационного эффекта и увеличение эффективности деятельности коллектива, относится к:", opts:["методическому тренингу","тренингу личностного развития","психотерапевтическому тренингу","организационному тренингу"], correct:[3]},
+  {n:176, q:"Что не относится к факторам, определяющим содержание тренинга на стрессоустойчивость?", opts:["цели заказчика и участников","состав тренинговой группы","профессионализм тренера","место проведение тренинга"], correct:[3]},
+  {n:177, q:"Для какой формы поведения в стрессе характерна ориентация на продумывание плана выхода из сложной жизненной ситуации, просчёт вариантов действия и анализ эффективного выхода из схожей ситуации других людей?", opts:["эмоциональная компетентность","отстранение, избегание, подавление, проекция, вытеснение","рациональная компетентность","рационализация"], correct:[2]},
+  {n:178, q:"Для какой формы поведения в стрессе характерна ориентация на мобилизацию своих сил, поиск позитивного опыта и возможность проверить себя?", opts:["эмоциональная компетентность","отстранение, избегание, подавление, проекция, вытеснение","рациональная компетентность","рационализация"], correct:[0]},
+  {n:179, q:"Для какой формы поведения в стрессе характерна ориентация на забывание негативного переживания, концентрация на приятных воспоминаниях и обращение за помощью к другим людям?", opts:["эмоциональная компетентность","отстранение, избегание, подавление, проекция, вытеснение","рациональная компетентность","рационализация"], correct:[1]},
+  {n:180, q:"Для какой формы поведения в стрессе характерна ориентация на пассивное ожидание разрешения трудной жизненной ситуации, уход в другой вид деятельности, обращение за эмоциональной поддержкой к родным и близким друзьям?", opts:["эмоциональная компетентность","отстранение, избегание, подавление, проекция, вытеснение","рациональная компетентность","рационализация"], correct:[3]},
+  {n:181, q:"К какой группе копинг-стратегий относит Л.И. Анцыферова практические действия и вербальные формы реагирования, перестройка содержательно смысловой и энергетикодинамической сферы сознания, коррекция ожиданий и надежд, восстановление позитивной самооценки, «идущее вверх сравнение», «антиципирующее совладание» и «предвосхищающая печаль»?", opts:["группе преобразующих стратегий","приспособления к трудным ситуациям","группе приёмов самосохранения","группе метастратегических техник"], correct:[0]},
+  {n:182, q:"К какой группе копинг-стратегий относит Л.И. Анцыферова умение предвидеть и предотвращать трудные ситуации, способность своевременно распознавать неразрешимость определённых жизненных проблем?", opts:["группе преобразующих стратегий","приспособления к трудным ситуациям","группе приёмов самосохранения","группе метастратегических техник"], correct:[3]},
+  {n:183, q:"К какой группе копинг-стратегий относит Л.И. Анцыферова бегство из трудной ситуации, психологическую борьбу с негативными эмоциями и болезненными ощущениями, отрицание факта травмирующего события, саморазрушающие действия?", opts:["группе преобразующих стратегий","приспособления к трудным ситуациям","группе приёмов самосохранения","группе метастратегических техник"], correct:[2]},
+  {n:184, q:"К какой группе копинг-стратегий относит Л.И. Анцыферова осознанное изменение отношения к ситуации; переосмысление неприятного и морально тяжёлого переживания, ролевое поведение для совладания с нежелательными чертами личности, идентификацию себя с более успешными людьми?", opts:["группе преобразующих стратегий","приспособления к трудным ситуациям","группе приёмов самосохранения","группе метастратегических техник"], correct:[1]},
+  {n:185, q:"Какой вид влияния является формой разрядки эмоционального напряжения и нарушает эмоциональное равновесие собеседника («Ты, как всегда, опаздываешь», «Ты соображаешь, что говоришь?», «Когда ты злишься, то очень похожа на свою мамочку», «Посмотри, на кого ты похожа! Я так и не научила тебя красиво одеваться», «Тебе всё равно, что я здесь жду и волнуюсь, все мужчины эгоисты!»)?", opts:["заражение","принуждение","требование","нападение"], correct:[3]},
+  {n:186, q:"Высказывание и обсуждение доводов в пользу определённого решения/позиции с целью формирования или изменения отношения собеседника к данному решению или позиции – это:", opts:["внушение","побуждение импульса к подражанию","аргументация или убеждение","игнорирование"], correct:[2]},
+  {n:187, q:"Определите вид психологического влияния. Собеседник предлагает чашку кофе, высказывает одобрение и восхищение, поднимает предмет, который мы уронили, интересуется нашим здоровьем и т.п.", opts:["самопродвижение","манипулирование","формирование благосклонности","внушение"], correct:[2]},
+  {n:188, q:"Определите стиль лидерства. Жёсткий постоянный контроль за выполнением всех решений с угрозой наказания, единоличное принятие всех решений, отсутствие интереса к другим как к личности.", opts:["попустительский стиль","демократический стиль","авторитарный стиль","либеральный стиль"], correct:[2]},
+  {n:189, q:"В какой группе либеральный стиль руководства может быть эффективным?", opts:["в группе, где участники не умеют и не хотят работать","в группе, где участники не умеют, но хотят работать","в группе, где участники умеют и хотят работать","в группе высококлассных специалистов, мастеров"], correct:[3]},
+  {n:190, q:"Каково наиболее оптимальное количество участников тренинга лидерства, который проводится в русле социально-психологического тренинга, Т-групп?", opts:["5-8 человек","10-15 человек","20-30 человек","неограниченное число участников"], correct:[1]},
+  {n:191, q:"Какой вид тренинга возможно проводить с каким угодно числом участников (до нескольких десятков человек)?", opts:["тренинг умений","Т-группа","социально-психологический тренинг","личностно-ориентированный тренинг (тренинг личностного роста)"], correct:[0]},
+  {n:192, q:"Нарушением какого правила группы является следующее высказывание члена группы: «Ольга совершила большую ошибку, когда она…»?", opts:["«Я не пользуюсь общими фразами и «клише»","«Я не говорю о других участниках в третьем лице, но обращаюсь непосредственно к ним»","«Я стараюсь максимально быть в настоящем, придерживаться принципа «здесь и теперь»","Я говорю «Я», а не «Мы» или «Все»"], correct:[1]},
+  {n:193, q:"Какие задачи в тренинге развития лидерских качеств и поведения востребованы в наименьшей степени?", opts:["диагностические","обучающие","развивающие","психокоррекционные, психотерапевтические"], correct:[3]},
+  {n:194, q:"Какой вид тренинга лидерства наиболее уместен для повышения эффективности менеджмента, руководства?", opts:["тренинг личностного роста","тренинг умений","тренинг харизмы","тренинг уверенности в себе"], correct:[1]},
+  {n:195, q:"Какой тип лидера, скорее всего, выявляется в лабораторном эксперименте (например, при выполнении задания «Потерпевшие кораблекрушение», «На воздушном шаре»)?", opts:["харизматический лидер","ситуационный лидер","креативный лидер","универсальный лидер"], correct:[1]},
+  {n:196, q:"Чем характеризуется стиль делового лидерства?", opts:["ориентацией на взаимоотношения","ориентацией на себя","ориентацией на задачу","ориентацией на задачу и взаимоотношения"], correct:[2]},
+  {n:197, q:"Попустительский стиль в лидерстве характеризуется:", opts:["стремлением делегировать полномочия и разделять ответственность","склонностью перекладывать ответственность в принятии решений","демократичностью в принятии решения","единоличным принятием решений"], correct:[1]},
+  {n:198, q:"Нормативный кризис семейной системы – это:", opts:["перестройка семейной системы в период перехода с одной стадии жизненного цикла на другую","типичный кризис отношений, который переживают семьи с определённым стажем совместной жизни","кризис, при котором семейные конфликты протекают по стандартному сценарию","кризис, связанный с совместным пересмотром членами семьи принятых в их социальном окружении общих принципов организации семейной жизни"], correct:[0]},
+  {n:199, q:"Основное методологическое отличие системного подхода к семейному консультированию от других психотерапевтических подходов заключается в том, что:", opts:["исследуется роль симптома в семейной системе, перестраивается взаимодействие членов семьи таким образом, чтобы симптом не поддерживался","выявляется причина возникновения симптома в истории семьи, перестраивается отношение к событиям семейной истории таким образом, чтобы симптом стал неактуальным","семейных проблемы, предъявленные клиентами, рассматриваются с учётом мнения каждого члена семьи, выбор цели психотерапии определяется с учётом интересов всех членов семьи","симптоматическое поведение ребёнка рассматривается с точки зрения воспитательных стратегий родителей"], correct:[0]},
+  {n:200, q:"Метод циркулярного интервью – это:", opts:["Метод диагностики и воздействия на семейную систему, заключающийся в системе непрямых вопросов, задаваемых в определённой последовательности всем членам семьи и проясняющих взаимовлияние их поведенческих реакций","Диагностическое средство для выявления симптоматических поведенческих последовательностей каждого из членов семьи, участвующих в терапии","Метод воздействия на семейную систему, направленный на реорганизацию системы семейного взаимодействия посредством усиления взаимопонимания и взаимопомощи","Один из видов структурированного интервью, направленный на оценку основных параметров семейной системы, где один и тот же вопрос задаётся по кругу всем членам семьи, затем их ответы сопоставляются друг с другом и обсуждаются"], correct:[0]},
+  {n:201, q:"Понимание семейного взаимодействия как циркулярного помогает:", opts:["использовать больше альтернатив для воздействия на семейную систему","выявить основную причину семейной дисфункции и то, как она влияет на все остальные сферы семейной жизни","понять, кто из членов семьи в большей степени ответственен за нарушение отношений; точнее определить иерархию в семье, выявить паттерны принятия решений и оптимизировать их"], correct:[0]},
+  {n:202, q:"Предписания в системной семейном консультировании – это:", opts:["Инструкции, которые психолог даёт семье, предназначенные для выполнения во время сессии или в промежутке между сессиями, описывающие чёткую последовательность действий, направленные на приобретение членами семьи нового опыта","Рекомендации членам семьи о том, как какие конкретные шаги должен предпринять каждый член семьи, чтобы улучшилось общее семейное функционирование","Общие рекомендации психолога по поводу того, как следует изменить семейной взаимодействие для того, чтобы устранить симптом","Домашние задания членам семьи – носителям симптома, которые требуется выполнять до полного исчезновения или существенного снижения интенсивности симптома, а также другим членам семьи для оказания содействия носителю симптома в выполнении его заданий"], correct:[0]},
+  {n:203, q:"Наиболее общие и фундаментальные понятия, отражающие существенные, всеобщие свойства и отношения явлений действительности и познания называются:", opts:["категориями","терминами","дефинициями","определениями"], correct:[0]},
+  {n:204, q:"Форма мышления, отражающая существенные свойства, связи и отношения предметов и явлений называется:", opts:["категорией","определением","дефинициями","понятием"], correct:[3]},
+  {n:205, q:"Система принципов и способов организации и построения теории и практики отдельных направлений психологической науки, их отраслей и всех их в целом называется:", opts:["методологией","теорией","практикой","методикой"], correct:[0]}
+];
+
+let session = [], cur = 0, score = 0, wrongs = [], answered = false, multiSelected = [];
+
+function startQuiz() {
+  session = [...ALL_Q];
+  cur = 0; score = 0; wrongs = []; answered = false; multiSelected = [];
+  document.getElementById('intro').style.display = 'none';
+  document.getElementById('results').style.display = 'none';
+  document.getElementById('quiz').style.display = 'block';
+  document.getElementById('qTot').textContent = session.length;
+  document.getElementById('resTotal').textContent = session.length;
+  render();
+}
+
+function render() {
+  const q = session[cur];
+  answered = false; multiSelected = [];
+  document.getElementById('qNum').textContent = cur + 1;
+  document.getElementById('scoreLive').textContent = score;
+  document.getElementById('qLabel').textContent = `Вопрос ${q.n}`;
+  document.getElementById('qText').textContent = q.q;
+  document.getElementById('pbar').style.width = `${(cur / session.length) * 100}%`;
+  document.getElementById('feedback').style.display = 'none';
+  document.getElementById('btnNext').style.display = 'none';
+  const isMulti = q.correct.length > 1;
+  document.getElementById('multiNote').style.display = isMulti ? 'inline-block' : 'none';
+  document.getElementById('btnCheck').style.display = isMulti ? 'block' : 'none';
+  const container = document.getElementById('opts');
+  container.innerHTML = '';
+  q.opts.forEach((text, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'opt';
+    btn.innerHTML = `<span class="opt-letter">${LETTERS[i]}</span><span>${text}</span>`;
+    btn.onclick = isMulti ? () => toggleMulti(i, btn) : () => selectSingle(i);
+    container.appendChild(btn);
+  });
+  document.getElementById('btnNext').textContent = cur < session.length - 1 ? 'Следующий вопрос →' : 'Завершить тест →';
+}
+
+function selectSingle(chosen) {
+  if (answered) return;
+  answered = true;
+  const q = session[cur];
+  const btns = document.querySelectorAll('.opt');
+  btns.forEach(b => b.disabled = true);
+  const isCorrect = q.correct.includes(chosen);
+  btns[chosen].classList.add(isCorrect ? 'correct' : 'wrong');
+  if (!isCorrect) {
+    q.correct.forEach(ci => btns[ci].classList.add('reveal'));
+    wrongs.push({ q: q.q, your: q.opts[chosen], correct: q.correct.map(ci => q.opts[ci]).join('; ') });
+  } else { score++; document.getElementById('scoreLive').textContent = score; }
+  const fb = document.getElementById('feedback');
+  fb.className = 'feedback ' + (isCorrect ? 'ok' : 'fail');
+  document.getElementById('fbTitle').textContent = isCorrect ? '✓ Верно!' : '✗ Неверно';
+  document.getElementById('fbBody').textContent = isCorrect ? '' : `Правильный ответ: ${q.correct.map(ci => q.opts[ci]).join('; ')}`;
+  fb.style.display = 'block';
+  document.getElementById('btnNext').style.display = 'block';
+}
+
+function toggleMulti(i, btn) {
+  if (answered) return;
+  const idx = multiSelected.indexOf(i);
+  if (idx === -1) { multiSelected.push(i); btn.classList.add('selected'); btn.querySelector('.opt-letter').style.cssText = 'background:var(--accent);color:#fff'; }
+  else { multiSelected.splice(idx,1); btn.classList.remove('selected'); btn.querySelector('.opt-letter').style.cssText = ''; }
+}
+
+function submitMulti() {
+  if (answered || !multiSelected.length) return;
+  answered = true;
+  const q = session[cur];
+  const btns = document.querySelectorAll('.opt');
+  btns.forEach(b => b.disabled = true);
+  document.getElementById('btnCheck').style.display = 'none';
+  const correctSet = new Set(q.correct), selectedSet = new Set(multiSelected);
+  const isCorrect = q.correct.every(c => selectedSet.has(c)) && multiSelected.every(s => correctSet.has(s));
+  btns.forEach((btn, i) => {
+    btn.classList.remove('selected'); btn.querySelector('.opt-letter').style.cssText = '';
+    if (correctSet.has(i) && selectedSet.has(i)) btn.classList.add('correct');
+    else if (!correctSet.has(i) && selectedSet.has(i)) btn.classList.add('wrong');
+    else if (correctSet.has(i) && !selectedSet.has(i)) btn.classList.add('reveal');
+  });
+  if (isCorrect) { score++; document.getElementById('scoreLive').textContent = score; }
+  else wrongs.push({ q: q.q, your: multiSelected.map(i => q.opts[i]).join('; '), correct: q.correct.map(ci => q.opts[ci]).join('; ') });
+  const fb = document.getElementById('feedback');
+  fb.className = 'feedback ' + (isCorrect ? 'ok' : 'fail');
+  document.getElementById('fbTitle').textContent = isCorrect ? '✓ Верно!' : '✗ Неверно';
+  document.getElementById('fbBody').textContent = isCorrect ? '' : `Правильные ответы: ${q.correct.map(ci => q.opts[ci]).join('; ')}`;
+  fb.style.display = 'block';
+  document.getElementById('btnNext').style.display = 'block';
+}
+
+function nextQ() {
+  cur++;
+  if (cur >= session.length) showResults();
+  else { render(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+}
+
+function showResults() {
+  document.getElementById('quiz').style.display = 'none';
+  const res = document.getElementById('results');
+  res.style.display = 'flex';
+  const pct = Math.round(score / session.length * 100);
+  document.getElementById('resPct').textContent = pct + '%';
+  document.getElementById('resOk').textContent = score;
+  document.getElementById('resFail').textContent = session.length - score;
+  const v = [[90,'🏆 Отлично! Блок освоен.'],[75,'👍 Хорошо! Почти готов.'],[60,'📚 Неплохо, есть над чем работать.'],[0,'💪 Нужно повторить материал.']];
+  document.getElementById('resVerdict').textContent = v.find(([t]) => pct >= t)[1];
+  if (wrongs.length) {
+    document.getElementById('btnRetry').style.display = '';
+    document.getElementById('wrongBlock').style.display = 'block';
+    document.getElementById('wrongItems').innerHTML = wrongs.map(w => `<div class="wi"><div class="wq">${w.q}</div><div class="wy">✗ Ваш ответ: ${w.your}</div><div class="wc">✓ Правильно: ${w.correct}</div></div>`).join('');
+  }
+}
+
+function retryWrong() {
+  const wrongQs = wrongs.map(w => ALL_Q.find(q => q.q === w.q)).filter(Boolean);
+  if (!wrongQs.length) return;
+  session = wrongQs;
+  cur = 0; score = 0; wrongs = []; answered = false; multiSelected = [];
+  document.getElementById('results').style.display = 'none';
+  document.getElementById('wrongBlock').style.display = 'none';
+  document.getElementById('btnRetry').style.display = 'none';
+  document.getElementById('quiz').style.display = 'block';
+  document.getElementById('qTot').textContent = session.length;
+  render();
+}
+</script>
+</body>
+</html>
