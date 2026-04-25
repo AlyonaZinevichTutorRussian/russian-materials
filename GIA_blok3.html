@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ГИА — Блок 3 (вопросы 81–124)</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@700;900&family=Mulish:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f0ede6;
+  --card: #ffffff;
+  --ink: #111018;
+  --muted: #888;
+  --border: #e2ddd4;
+  --accent: #7c3aed;
+  --ok: #16a34a;
+  --ok-bg: #f0fdf4;
+  --ok-border: #86efac;
+  --fail: #dc2626;
+  --fail-bg: #fff1f2;
+  --fail-border: #fca5a5;
+  --r: 14px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); font-family: 'Mulish', sans-serif; color: var(--ink); min-height: 100vh; }
+
+#intro { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 20px; gap: 28px; }
+.intro-badge { background: var(--accent); color: #fff; font-family: 'Unbounded', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: .1em; padding: 6px 16px; border-radius: 100px; text-transform: uppercase; }
+.intro-title { font-family: 'Unbounded', sans-serif; font-size: clamp(32px, 7vw, 64px); font-weight: 900; text-align: center; line-height: 1.05; }
+.intro-title span { color: var(--accent); }
+.intro-sub { font-size: 16px; color: var(--muted); text-align: center; max-width: 440px; line-height: 1.6; }
+.btn-start { background: var(--ink); color: #fff; border: none; border-radius: var(--r); padding: 18px 44px; font-family: 'Unbounded', sans-serif; font-size: 15px; font-weight: 700; cursor: pointer; transition: background .15s, transform .15s; }
+.btn-start:hover { background: var(--accent); transform: translateY(-2px); }
+
+#quiz { display: none; padding: 24px 20px 48px; max-width: 760px; margin: 0 auto; }
+.top-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+.q-counter { font-family: 'Unbounded', sans-serif; font-size: 13px; font-weight: 700; color: var(--muted); }
+.q-counter b { color: var(--ink); font-size: 16px; }
+.score-live { font-size: 13px; color: var(--muted); }
+.score-live b { color: var(--ok); font-weight: 700; }
+.pbar-wrap { height: 5px; background: var(--border); border-radius: 3px; margin-bottom: 28px; overflow: hidden; }
+.pbar { height: 100%; background: linear-gradient(90deg, var(--accent), #db2777); border-radius: 3px; transition: width .4s ease; }
+
+.q-card { background: var(--card); border-radius: 20px; padding: clamp(24px, 4vw, 40px); box-shadow: 0 2px 32px rgba(0,0,0,.07); margin-bottom: 14px; }
+.q-label { font-size: 11px; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); font-weight: 700; margin-bottom: 12px; }
+.q-text { font-size: clamp(15px, 2.2vw, 18px); font-weight: 700; line-height: 1.55; margin-bottom: 26px; }
+.multi-note { display: inline-block; background: #f5f3ff; color: var(--accent); font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 6px; margin-bottom: 16px; }
+
+.opts { display: flex; flex-direction: column; gap: 10px; }
+.opt { display: flex; align-items: flex-start; gap: 14px; border: 2px solid var(--border); border-radius: 12px; padding: 14px 18px; background: #fafaf8; cursor: pointer; font-size: 14px; line-height: 1.55; font-weight: 400; text-align: left; font-family: 'Mulish', sans-serif; color: var(--ink); transition: border-color .12s, background .12s, transform .1s; width: 100%; }
+.opt:hover:not(:disabled) { border-color: var(--accent); background: #f5f3ff; transform: translateX(3px); }
+.opt:disabled { cursor: default; }
+.opt-letter { min-width: 28px; height: 28px; border-radius: 8px; background: var(--border); display: flex; align-items: center; justify-content: center; font-family: 'Unbounded', sans-serif; font-size: 11px; font-weight: 700; color: var(--muted); flex-shrink: 0; transition: background .12s, color .12s; }
+
+.opt.correct { border-color: var(--ok); background: var(--ok-bg); }
+.opt.correct .opt-letter { background: var(--ok); color: #fff; }
+.opt.wrong { border-color: var(--fail); background: var(--fail-bg); }
+.opt.wrong .opt-letter { background: var(--fail); color: #fff; }
+.opt.reveal { border-color: var(--ok); background: var(--ok-bg); opacity: .7; }
+.opt.reveal .opt-letter { background: var(--ok); color: #fff; }
+.opt.selected { border-color: var(--accent); background: #f5f3ff; }
+.opt.selected .opt-letter { background: var(--accent); color: #fff; }
+
+.feedback { border-radius: 12px; padding: 14px 18px; font-size: 14px; line-height: 1.55; margin-top: 12px; animation: fadeUp .22s ease; display: none; }
+.feedback.ok { background: var(--ok-bg); border: 1.5px solid var(--ok-border); color: #15803d; }
+.feedback.fail { background: var(--fail-bg); border: 1.5px solid var(--fail-border); color: #b91c1c; }
+.feedback .fb-title { font-family: 'Unbounded', sans-serif; font-size: 12px; font-weight: 700; margin-bottom: 4px; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+.btn-check { margin-top: 14px; background: var(--accent); color: #fff; border: none; border-radius: 10px; padding: 12px 26px; font-family: 'Unbounded', sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; display: none; }
+.btn-check:hover { opacity: .85; }
+.btn-next { width: 100%; max-width: 760px; margin: 0 auto; display: none; background: var(--ink); color: #fff; border: none; border-radius: var(--r); padding: 16px; font-family: 'Unbounded', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; transition: background .15s, transform .12s; }
+.btn-next:hover { background: var(--accent); transform: translateY(-1px); }
+
+#results { display: none; flex-direction: column; align-items: center; min-height: 100vh; padding: 48px 20px; gap: 24px; }
+.res-pct { font-family: 'Unbounded', sans-serif; font-size: clamp(64px, 15vw, 108px); font-weight: 900; line-height: 1; background: linear-gradient(135deg, var(--accent), #db2777); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.res-verdict { font-size: 20px; font-weight: 700; }
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; width: 100%; max-width: 480px; }
+.stat { background: var(--card); border-radius: var(--r); padding: 20px; text-align: center; box-shadow: 0 2px 12px rgba(0,0,0,.05); }
+.stat .sv { font-family: 'Unbounded', sans-serif; font-size: 30px; font-weight: 900; }
+.stat .sl { font-size: 11px; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); margin-top: 4px; }
+.sv.g { color: var(--ok); } .sv.r { color: var(--fail); } .sv.b { color: var(--accent); }
+.res-btns { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+.btn-redo { background: var(--accent); color: #fff; border: none; border-radius: var(--r); padding: 14px 28px; font-family: 'Unbounded', sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; }
+.btn-retry { background: transparent; color: var(--ink); border: 2px solid var(--border); border-radius: var(--r); padding: 12px 26px; font-family: 'Unbounded', sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; }
+.btn-retry:hover { border-color: var(--accent); color: var(--accent); }
+.wrong-block { width: 100%; max-width: 680px; background: var(--card); border-radius: var(--r); padding: 24px; box-shadow: 0 2px 16px rgba(0,0,0,.05); }
+.wrong-block h3 { font-family: 'Unbounded', sans-serif; font-size: 14px; margin-bottom: 16px; }
+.wi { border-bottom: 1px solid var(--border); padding: 12px 0; font-size: 13px; line-height: 1.6; }
+.wi:last-child { border-bottom: none; }
+.wi .wq { font-weight: 700; margin-bottom: 5px; }
+.wi .wy { color: var(--fail); } .wi .wc { color: var(--ok); }
+</style>
+</head>
+<body>
+
+<div id="intro">
+  <div class="intro-badge">Допуск к ГИА · Магистратура</div>
+  <div class="intro-title">Блок <span>3</span><br>Вопросы 81–124</div>
+  <div class="intro-sub">Гештальт, психоанализ, психодрама, кризисная психология, копинг-стратегии.</div>
+  <button class="btn-start" onclick="startQuiz()">Начать тест →</button>
+</div>
+
+<div id="quiz">
+  <div class="top-bar">
+    <div class="q-counter">Вопрос <b id="qNum">1</b> из <span id="qTot">44</span></div>
+    <div class="score-live">Верно: <b id="scoreLive">0</b></div>
+  </div>
+  <div class="pbar-wrap"><div class="pbar" id="pbar" style="width:0%"></div></div>
+  <div class="q-card">
+    <div class="q-label" id="qLabel">Вопрос 81</div>
+    <div class="q-text" id="qText"></div>
+    <div id="multiNote" class="multi-note" style="display:none">⚡ Несколько правильных ответов — выбери все, затем нажми «Проверить»</div>
+    <div class="opts" id="opts"></div>
+    <div class="feedback" id="feedback">
+      <div class="fb-title" id="fbTitle"></div>
+      <div id="fbBody"></div>
+    </div>
+    <button class="btn-check" id="btnCheck" onclick="submitMulti()">Проверить</button>
+  </div>
+  <button class="btn-next" id="btnNext" onclick="nextQ()"></button>
+</div>
+
+<div id="results">
+  <div class="res-pct" id="resPct">0%</div>
+  <div class="res-verdict" id="resVerdict"></div>
+  <div class="stats">
+    <div class="stat"><div class="sv g" id="resOk">0</div><div class="sl">Верно</div></div>
+    <div class="stat"><div class="sv r" id="resFail">0</div><div class="sl">Ошибки</div></div>
+    <div class="stat"><div class="sv b" id="resTotal">0</div><div class="sl">Всего</div></div>
+  </div>
+  <div class="res-btns">
+    <button class="btn-redo" onclick="startQuiz()">Пройти заново</button>
+    <button class="btn-retry" id="btnRetry" onclick="retryWrong()" style="display:none">Повторить ошибки</button>
+  </div>
+  <div class="wrong-block" id="wrongBlock" style="display:none">
+    <h3>❌ Разбор ошибок</h3>
+    <div id="wrongItems"></div>
+  </div>
+</div>
+
+<script>
+const LETTERS = ['А','Б','В','Г','Д','Е'];
+
+const ALL_Q = [
+  {n:81, q:"Ф. Перлз понимал процесс осознавания как:", opts:["«Маленький остров посреди великого океана возможностей человеческой психики» «Встать над полем»","«Луч фонарика в темноте»","«Осведомлённость о происходящем внутри организма и окружающей среде»"], correct:[2]},
+  {n:82, q:"Что в иерархии потребностей является гештальтом?", opts:["доминирующая потребность","потребность в защите, пище, воде","потребность в продолжении рода","потребность включённости в социум"], correct:[0]},
+  {n:83, q:"Роль речи в гештальт-терапии:", opts:["создание разрыва между чувствами и мыслями, человеком и средой","создаёт возможность словестно-логического мышления","объединяет психолога и клиента","объединяет чувства и мысли"], correct:[0]},
+  {n:84, q:"Гештальт-терапевт преимущественно работает с:", opts:["содержанием проблемы","способами препятствующими установлению контакта","содержанием контакта","когнитивными установками"], correct:[1]},
+  {n:85, q:"Какой термин описывается данным определением: «система взаимных зависимостей, взаимных обязанностей отдельных людей или их общностей, в которые они вступают в процессе осуществления управленческих функций»?", opts:["психология социальной активности","психология занятости","гуманизация управленческих отношений","нет верного варианта ответа"], correct:[2]},
+  {n:86, q:"Кем дано данное определение психологического пространства: «субъективно значимый фрагмент бытия, определяющий актуальную деятельность и стратегию жизни человека»:", opts:["С.К. Нартовой – Бочавер","А.В. Бурмистровой – Савенковой","Е.Н. Паниной","нет верного варианта ответа"], correct:[0]},
+  {n:87, q:"В качестве основных симптомов кризиса психологии указываются следующие:", opts:["отсутствие единой, общеразделяемой теории; кумулятивность знания","разобщённость на психологические «империи»","отсутствие универсальных критериев добывания, верификации и адекватности знания","все перечисленные"], correct:[0,1,2]},
+  {n:88, q:"Какой критерий не относится к психометрическим показателям зрелости:", opts:["самоуважение","здравый смысл","вытеснение","ассертивность"], correct:[2]},
+  {n:89, q:"Какие уровни (позиции) входят в модель личности З. Фрейда?", opts:["архетипы","Эго","Супер-Эго","Ид"], correct:[1,2,3]},
+  {n:90, q:"Учение З. Фрейда называется:", opts:["фрейдизм","психоанализ","психосинтез","психолаборатория"], correct:[0,1]},
+  {n:91, q:"Немедленную разрядку всей психической энергии выражает:", opts:["Супер-Эго","Эго","Ид","Анима и Анимус"], correct:[2]},
+  {n:92, q:"Бессознательное стремление клиента защитить свой внутренний мир от вторжения психотерапевта – это:", opts:["перенос","контрперенос","сопротивление","тревога"], correct:[2]},
+  {n:93, q:"Что использует Эго, по мнению З. Фрейда, для защиты личности от открытого выражения импульсов Ид?", opts:["эрос","танатос","защитные механизмы","инстинкты жизни"], correct:[2]},
+  {n:94, q:"Когда клиент подсознательно идентифицирует (отождествляет) психотерапевта со значимым для него лицом из раннего детства и переживает чувства схожие с чувствами – это:", opts:["перенос","контрперенос","регресс","манипуляция"], correct:[0]},
+  {n:95, q:"Какие подсистемы выделяют в Сверх-я:", opts:["Совесть","Эго-идеал","Ценностные ориентации","Чувство вины и стыда"], correct:[0,1]},
+  {n:96, q:"Психический образ объекта, сформированный Оно, первоначально связанного с удовлетворением основной потребности, являющийся иррациональной и фантазийной формой человеческих представлений, характеризующаяся неспособностью подавлять импульсы и различать реальное и нереальное, «себя» и «не-себя»:", opts:["Рефлекторное действие","Образ воображения","Вторичный процесс","Первичный процесс"], correct:[3]},
+  {n:97, q:"Топографическая модель психического аппарата разделяет психику на:", opts:["Оно, Я, Сверх-Я","Сознание, предсознание, бессознательное","Ребёнок, взрослый, родитель","Me, I, self"], correct:[1]},
+  {n:98, q:"Защитный механизм психики, при котором появляется ощущение собственного превосходства, вызванное скрытым чувством неполноценности:", opts:["Комплекс неполноценности","Перенос","Идеализация","Комплекс превосходства"], correct:[3]},
+  {n:99, q:"З. Фрейд связывал происхождение психических расстройств с подавленной:", opts:["Агрессивностью","Совестью","Сексуальностью","Самостью"], correct:[2]},
+  {n:100, q:"В качестве первопричины всех психических процессов Фрейд рассматривал:", opts:["Базовые установки","Влечения","Потребности","Чувства"], correct:[1]},
+  {n:101, q:"Оральная фаза в периодизации психосексуального развития З. Фрейда охватывает период:", opts:["От рождения до года","От зачатия до года","От рождения до месяца","От рождения до полутора лет"], correct:[3]},
+  {n:102, q:"Что не входит в структуру анализа социального атома?", opts:["знакомства, не имеющие личного значения для индивида (объём знакомств)","лица, с которыми хотелось бы иметь отношения (внешнее ядро)","лица, с которыми поддерживаются отношения (внутреннее ядро)","лица, обладающие положительной и наибольшей валентностью для личности"], correct:[0]},
+  {n:103, q:"Критерии здоровой личности по Я.Л. Морено:", opts:["спонтанность, креативность, адекватность реагирования, способность к выработке новых способов поведения и ролей, адекватность восприятия себя и других, взаимодействие на уровне теле и вчувствования","социальный интерес, просоциальная активность личности, стремление к превосходству, совершенству и цельности, рассмотрение 3-х жизненных задач любви, дружбы и работы как социальных","позитивное прохождение кризисов психосоциальных стадий развития и формирование определённого уровня психологической зрелости","способность поддерживать равновесие между собой и миром, функционирование организма по принципу саморегуляции"], correct:[0]},
+  {n:104, q:"Тенденция социального атома к взаимной регенерации структуры и поддержания равновесия называется по Я.Л. Морено:", opts:["Гомеостазом","Регенеративной способностью","Социостазом","Восстановительной функцией","Социальной смертью"], correct:[2]},
+  {n:105, q:"Какие основные техники используются в психодраме?", opts:["Анализ сновидений, переноса, ошибочных действий","Зеркало, дублирование, обмен ролями","Анализ когнитивной карты","Анализ линии жизни"], correct:[1]},
+  {n:106, q:"Как называется тип отношений, который характеризуется креативностью, реалистичной оценкой друг друга, адекватностью ожиданий, основанное на взаимном принятии ролей, ведущем к симпатии или антипатии:", opts:["эмпатия","контрперенос","теле","конгруэнтность"], correct:[2]},
+  {n:107, q:"С какой категорией клиентов психодрама не рекомендована?", opts:["лица, страдающие расстройством пищевого поведения, с зависимостями, ПТСР, психическими травмами, в кризисном состоянии","лица, имеющие физиологические нарушения сердечно-сосудистой и других систем, а также с неупорядоченным поведением, страдающие острым психозом, паранойей, маниями, социопатиями, депрессией","психотики, невротики, пациенты, страдающие аутизмом, психосоматическими заболеваниями","лица, страдающие нарциссизмом, истерией вне специально созданных условий и специально обученного персонала"], correct:[1]},
+  {n:108, q:"С какой категорией клиентов психодрама не эффективна?", opts:["лица, имеющие физиологические нарушения сердечно-сосудистой и других систем, что исключает активизацию эмоциональной сферы","лица, страдающие нарциссизмом, истерией вне специально созданных условий и специально обученного персонала","лица с зависимостями, ПТСР, психическими травмами, в кризисном состоянии, страдающие расстройством пищевого поведения","психотики, невротики, страдающие психосоматическими заболеваниями"], correct:[1]},
+  {n:109, q:"Психодрама – это:", opts:["метод терапии личностных расстройств, разрушающий и расширяющий традиционные представления о гуманистической психотерапии и использующий провокацию, как способ активации ресурсов клиента","одна из форм психотерапии, имеющая своей целью разрешение внутренних и межличностных конфликтов, коррекцию поведения человека, снятие эмоционального напряжения, избавление человека от психологических комплексов","метод групповой психотерапии, предполагающий использование театрализованной импровизации для исследования клиентом своего внутреннего мира, развития творческого потенциала и на этой основе продуктивного изменения отношения к бытию в различных его ипостасях и расширения возможностей адекватного поведения и взаимодействия","одна из форм психотерапии, направленная на достижение возможно более полного осознания себя, развитие целостного образа в пяти сферах жизни: физической, эмоциональной, интеллектуальной, социальной и духовной"], correct:[2]},
+  {n:110, q:"Многофункциональный метод преднамеренных изменений психологических феноменов человека, группы и организации с целью гармонизации профессионального и личностного бытия человека – это:", opts:["тренинг","группа встреч","проективный тест","нет верного варианта ответа"], correct:[0]},
+  {n:111, q:"Психокоррекция. Тренинг, направленный на обучение проведения тренинга поведения в стрессе, относится к:", opts:["методическому тренингу","обучающему тренингу","психокоррекционному тренингу","организационному тренингу"], correct:[0]},
+  {n:112, q:"Для какого типа работников по А. Фишеру характерны следующие особенности: низкое субъективное значение деятельности, низкая стрессоустойчивость, неумение расслабляться, тенденция к отказу в трудных ситуациях, постоянное чувство беспокойства и беспредметного страха, отсутствие дистанции по отношению к работе?", opts:["Тип S (нем. sparsam)","Тип B (англ. burnout)","Тип А","Тип G (нем. gesund)"], correct:[1]},
+  {n:113, q:"Какое состояние характеризуется: наличием субъективной оценки невозможности самому справиться с задачей, ощущением невозможности контролировать ситуацию, приписыванием причин неуспеха себе и своим личным качествам, наличием в речи таких выражений как «Не могу», «Не хочу», «Всегда», «Никогда», «Все бесполезно», «В нашей семье все такие»?", opts:["эмоциональное выгорание","мотивационный конфликт","выученная беспомощность","стресс"], correct:[2]},
+  {n:114, q:"Для какой формы поведения в стрессе характерна ориентация на мобилизацию своих сил, поиск позитивного опыта и возможность проверить себя?", opts:["эмоциональная компетентность","отстранение, избегание, подавление, проекция, вытеснение","рациональная компетентность","рационализация"], correct:[0]},
+  {n:115, q:"К какой группе копинг-стратегий относит Л.И. Анцыферова практические действия и вербальные формы реагирования, перестройка содержательно смысловой и энергетикодинамической сферы сознания, коррекция ожиданий и надежд, восстановление позитивной самооценки, «идущее вверх сравнение», «антиципирующее совладание» и «предвосхищающая печаль»?", opts:["группе преобразующих стратегий","приспособления к трудным ситуациям","группе приёмов самосохранения","группе метастратегических техник"], correct:[0]},
+  {n:116, q:"К какой группе копинг-стратегий относит Л.И. Анцыферова умение предвидеть и предотвращать трудные ситуации, способность своевременно распознавать неразрешимость определённых жизненных проблем?", opts:["группе преобразующих стратегий","приспособления к трудным ситуациям","группе приёмов самосохранения","группе метастратегических техник"], correct:[3]},
+  {n:117, q:"Как называется фаза психической реакции при катастрофе в первые несколько часов, для которой характерен альтруизм, активное поведение, вызванное желанием помочь людям, ложные представления о возможности преодолеть случившееся?", opts:["фаза «медового месяца»","героическая фаза","фаза разочарования","фаза восстановления"], correct:[1]},
+  {n:118, q:"Как называется фаза психической реакции при катастрофе, длящаяся от 3 до 6 месяцев, при которой выжившие испытывают сильное чувство гордости за то, что преодолели опасность, остались в живых, верят, что вскоре трудности будут разрешены?", opts:["фаза «медового месяца»","героическая фаза","фаза разочарования","фаза восстановления"], correct:[0]},
+  {n:119, q:"В чём заключается основной смысл стадии восстановления после психотравмирующей ситуации?", opts:["человек негодует и осознаёт крушение собственных надежд","человек выздоравливает соматически, становится дееспособным","человек осознаёт необходимость самостоятельно налаживать быт и брать на себя ответственность за решение возникающих задач","человек вновь начинает активно общаться со своими родственниками, друзьями и близкими людьми, не пережившими аналогичную ситуацию"], correct:[2]},
+  {n:120, q:"При оказании экстренной психологической помощи в ситуации нервной дрожи нельзя:", opts:["усиливать дрожь","обнимать пострадавшего, прижимать к себе","продолжать разговаривать с пострадавшим","после завершения дрожи укладывать пострадавшего спать"], correct:[1]},
+  {n:121, q:"Основными признаками апатии является:", opts:["расторможенность, повышенная скорость реакции","мышечное напряжение","чрезмерное возбуждение","медленная, с длинными паузами, речь"], correct:[3]},
+  {n:122, q:"Как называется свойство толпы, заключающееся в том, что если она образовалась, то способна сравнительно легко переходить из одного вида в другой?", opts:["свойство превращаемости толпы","свойство обратного действия толпы","свойство транзитивности толпы","свойство согласованности подвидов толпы"], correct:[0]},
+  {n:123, q:"Психологический дебрифинг не включает в себя:", opts:["фазу реадаптации","фазу сна","фазу описания симптомов","фазу описания мыслей"], correct:[1]},
+  {n:124, q:"Посттравматическое стрессовое расстройство, как правило, возникает:", opts:["во время критического инцидента и сразу после него (до 2 суток)","в течение месяца после критического инцидента","спустя более 4 недель после критического инцидента","спустя несколько лет после критического инцидента"], correct:[2]}
+];
+
+let session = [], cur = 0, score = 0, wrongs = [], answered = false, multiSelected = [];
+
+function startQuiz() {
+  session = [...ALL_Q];
+  cur = 0; score = 0; wrongs = []; answered = false; multiSelected = [];
+  document.getElementById('intro').style.display = 'none';
+  document.getElementById('results').style.display = 'none';
+  document.getElementById('quiz').style.display = 'block';
+  document.getElementById('qTot').textContent = session.length;
+  document.getElementById('resTotal').textContent = session.length;
+  render();
+}
+
+function render() {
+  const q = session[cur];
+  answered = false; multiSelected = [];
+  document.getElementById('qNum').textContent = cur + 1;
+  document.getElementById('scoreLive').textContent = score;
+  document.getElementById('qLabel').textContent = `Вопрос ${q.n}`;
+  document.getElementById('qText').textContent = q.q;
+  document.getElementById('pbar').style.width = `${(cur / session.length) * 100}%`;
+  document.getElementById('feedback').style.display = 'none';
+  document.getElementById('btnNext').style.display = 'none';
+  const isMulti = q.correct.length > 1;
+  document.getElementById('multiNote').style.display = isMulti ? 'inline-block' : 'none';
+  document.getElementById('btnCheck').style.display = isMulti ? 'block' : 'none';
+  const container = document.getElementById('opts');
+  container.innerHTML = '';
+  q.opts.forEach((text, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'opt';
+    btn.innerHTML = `<span class="opt-letter">${LETTERS[i]}</span><span>${text}</span>`;
+    btn.onclick = isMulti ? () => toggleMulti(i, btn) : () => selectSingle(i);
+    container.appendChild(btn);
+  });
+  document.getElementById('btnNext').textContent = cur < session.length - 1 ? 'Следующий вопрос →' : 'Завершить тест →';
+}
+
+function selectSingle(chosen) {
+  if (answered) return;
+  answered = true;
+  const q = session[cur];
+  const btns = document.querySelectorAll('.opt');
+  btns.forEach(b => b.disabled = true);
+  const isCorrect = q.correct.includes(chosen);
+  btns[chosen].classList.add(isCorrect ? 'correct' : 'wrong');
+  if (!isCorrect) {
+    q.correct.forEach(ci => btns[ci].classList.add('reveal'));
+    wrongs.push({ q: q.q, your: q.opts[chosen], correct: q.correct.map(ci => q.opts[ci]).join('; ') });
+  } else { score++; document.getElementById('scoreLive').textContent = score; }
+  const fb = document.getElementById('feedback');
+  fb.className = 'feedback ' + (isCorrect ? 'ok' : 'fail');
+  document.getElementById('fbTitle').textContent = isCorrect ? '✓ Верно!' : '✗ Неверно';
+  document.getElementById('fbBody').textContent = isCorrect ? '' : `Правильный ответ: ${q.correct.map(ci => q.opts[ci]).join('; ')}`;
+  fb.style.display = 'block';
+  document.getElementById('btnNext').style.display = 'block';
+}
+
+function toggleMulti(i, btn) {
+  if (answered) return;
+  const idx = multiSelected.indexOf(i);
+  if (idx === -1) { multiSelected.push(i); btn.classList.add('selected'); btn.querySelector('.opt-letter').style.cssText = 'background:var(--accent);color:#fff'; }
+  else { multiSelected.splice(idx,1); btn.classList.remove('selected'); btn.querySelector('.opt-letter').style.cssText = ''; }
+}
+
+function submitMulti() {
+  if (answered || !multiSelected.length) return;
+  answered = true;
+  const q = session[cur];
+  const btns = document.querySelectorAll('.opt');
+  btns.forEach(b => b.disabled = true);
+  document.getElementById('btnCheck').style.display = 'none';
+  const correctSet = new Set(q.correct), selectedSet = new Set(multiSelected);
+  const isCorrect = q.correct.every(c => selectedSet.has(c)) && multiSelected.every(s => correctSet.has(s));
+  btns.forEach((btn, i) => {
+    btn.classList.remove('selected'); btn.querySelector('.opt-letter').style.cssText = '';
+    if (correctSet.has(i) && selectedSet.has(i)) btn.classList.add('correct');
+    else if (!correctSet.has(i) && selectedSet.has(i)) btn.classList.add('wrong');
+    else if (correctSet.has(i) && !selectedSet.has(i)) btn.classList.add('reveal');
+  });
+  if (isCorrect) { score++; document.getElementById('scoreLive').textContent = score; }
+  else wrongs.push({ q: q.q, your: multiSelected.map(i => q.opts[i]).join('; '), correct: q.correct.map(ci => q.opts[ci]).join('; ') });
+  const fb = document.getElementById('feedback');
+  fb.className = 'feedback ' + (isCorrect ? 'ok' : 'fail');
+  document.getElementById('fbTitle').textContent = isCorrect ? '✓ Верно!' : '✗ Неверно';
+  document.getElementById('fbBody').textContent = isCorrect ? '' : `Правильные ответы: ${q.correct.map(ci => q.opts[ci]).join('; ')}`;
+  fb.style.display = 'block';
+  document.getElementById('btnNext').style.display = 'block';
+}
+
+function nextQ() {
+  cur++;
+  if (cur >= session.length) showResults();
+  else { render(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+}
+
+function showResults() {
+  document.getElementById('quiz').style.display = 'none';
+  const res = document.getElementById('results');
+  res.style.display = 'flex';
+  const pct = Math.round(score / session.length * 100);
+  document.getElementById('resPct').textContent = pct + '%';
+  document.getElementById('resOk').textContent = score;
+  document.getElementById('resFail').textContent = session.length - score;
+  const v = [[90,'🏆 Отлично! Блок освоен.'],[75,'👍 Хорошо! Почти готов.'],[60,'📚 Неплохо, есть над чем работать.'],[0,'💪 Нужно повторить материал.']];
+  document.getElementById('resVerdict').textContent = v.find(([t]) => pct >= t)[1];
+  if (wrongs.length) {
+    document.getElementById('btnRetry').style.display = '';
+    document.getElementById('wrongBlock').style.display = 'block';
+    document.getElementById('wrongItems').innerHTML = wrongs.map(w => `<div class="wi"><div class="wq">${w.q}</div><div class="wy">✗ Ваш ответ: ${w.your}</div><div class="wc">✓ Правильно: ${w.correct}</div></div>`).join('');
+  }
+}
+
+function retryWrong() {
+  const wrongQs = wrongs.map(w => ALL_Q.find(q => q.q === w.q)).filter(Boolean);
+  if (!wrongQs.length) return;
+  session = wrongQs;
+  cur = 0; score = 0; wrongs = []; answered = false; multiSelected = [];
+  document.getElementById('results').style.display = 'none';
+  document.getElementById('wrongBlock').style.display = 'none';
+  document.getElementById('btnRetry').style.display = 'none';
+  document.getElementById('quiz').style.display = 'block';
+  document.getElementById('qTot').textContent = session.length;
+  render();
+}
+</script>
+</body>
+</html>
