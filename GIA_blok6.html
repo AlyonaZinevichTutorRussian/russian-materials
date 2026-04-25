@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ГИА — Блок 6 (вопросы 206–245)</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@700;900&family=Mulish:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f0ede6;
+  --card: #ffffff;
+  --ink: #111018;
+  --muted: #888;
+  --border: #e2ddd4;
+  --accent: #1d4ed8;
+  --ok: #16a34a;
+  --ok-bg: #f0fdf4;
+  --ok-border: #86efac;
+  --fail: #dc2626;
+  --fail-bg: #fff1f2;
+  --fail-border: #fca5a5;
+  --r: 14px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); font-family: 'Mulish', sans-serif; color: var(--ink); min-height: 100vh; }
+
+#intro { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 20px; gap: 28px; }
+.intro-badge { background: var(--accent); color: #fff; font-family: 'Unbounded', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: .1em; padding: 6px 16px; border-radius: 100px; text-transform: uppercase; }
+.intro-title { font-family: 'Unbounded', sans-serif; font-size: clamp(32px, 7vw, 64px); font-weight: 900; text-align: center; line-height: 1.05; }
+.intro-title span { color: var(--accent); }
+.intro-sub { font-size: 16px; color: var(--muted); text-align: center; max-width: 440px; line-height: 1.6; }
+.btn-start { background: var(--ink); color: #fff; border: none; border-radius: var(--r); padding: 18px 44px; font-family: 'Unbounded', sans-serif; font-size: 15px; font-weight: 700; cursor: pointer; transition: background .15s, transform .15s; }
+.btn-start:hover { background: var(--accent); transform: translateY(-2px); }
+
+#quiz { display: none; padding: 24px 20px 48px; max-width: 760px; margin: 0 auto; }
+.top-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+.q-counter { font-family: 'Unbounded', sans-serif; font-size: 13px; font-weight: 700; color: var(--muted); }
+.q-counter b { color: var(--ink); font-size: 16px; }
+.score-live { font-size: 13px; color: var(--muted); }
+.score-live b { color: var(--ok); font-weight: 700; }
+.pbar-wrap { height: 5px; background: var(--border); border-radius: 3px; margin-bottom: 28px; overflow: hidden; }
+.pbar { height: 100%; background: linear-gradient(90deg, var(--accent), #7c3aed); border-radius: 3px; transition: width .4s ease; }
+
+.q-card { background: var(--card); border-radius: 20px; padding: clamp(24px, 4vw, 40px); box-shadow: 0 2px 32px rgba(0,0,0,.07); margin-bottom: 14px; }
+.q-label { font-size: 11px; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); font-weight: 700; margin-bottom: 12px; }
+.q-text { font-size: clamp(15px, 2.2vw, 18px); font-weight: 700; line-height: 1.55; margin-bottom: 26px; }
+.multi-note { display: inline-block; background: #eff6ff; color: var(--accent); font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 6px; margin-bottom: 16px; }
+
+.opts { display: flex; flex-direction: column; gap: 10px; }
+.opt { display: flex; align-items: flex-start; gap: 14px; border: 2px solid var(--border); border-radius: 12px; padding: 14px 18px; background: #fafaf8; cursor: pointer; font-size: 14px; line-height: 1.55; font-weight: 400; text-align: left; font-family: 'Mulish', sans-serif; color: var(--ink); transition: border-color .12s, background .12s, transform .1s; width: 100%; }
+.opt:hover:not(:disabled) { border-color: var(--accent); background: #eff6ff; transform: translateX(3px); }
+.opt:disabled { cursor: default; }
+.opt-letter { min-width: 28px; height: 28px; border-radius: 8px; background: var(--border); display: flex; align-items: center; justify-content: center; font-family: 'Unbounded', sans-serif; font-size: 11px; font-weight: 700; color: var(--muted); flex-shrink: 0; transition: background .12s, color .12s; }
+
+.opt.correct { border-color: var(--ok); background: var(--ok-bg); }
+.opt.correct .opt-letter { background: var(--ok); color: #fff; }
+.opt.wrong { border-color: var(--fail); background: var(--fail-bg); }
+.opt.wrong .opt-letter { background: var(--fail); color: #fff; }
+.opt.reveal { border-color: var(--ok); background: var(--ok-bg); opacity: .7; }
+.opt.reveal .opt-letter { background: var(--ok); color: #fff; }
+.opt.selected { border-color: var(--accent); background: #eff6ff; }
+.opt.selected .opt-letter { background: var(--accent); color: #fff; }
+
+.feedback { border-radius: 12px; padding: 14px 18px; font-size: 14px; line-height: 1.55; margin-top: 12px; animation: fadeUp .22s ease; display: none; }
+.feedback.ok { background: var(--ok-bg); border: 1.5px solid var(--ok-border); color: #15803d; }
+.feedback.fail { background: var(--fail-bg); border: 1.5px solid var(--fail-border); color: #b91c1c; }
+.feedback .fb-title { font-family: 'Unbounded', sans-serif; font-size: 12px; font-weight: 700; margin-bottom: 4px; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+.btn-check { margin-top: 14px; background: var(--accent); color: #fff; border: none; border-radius: 10px; padding: 12px 26px; font-family: 'Unbounded', sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; display: none; }
+.btn-check:hover { opacity: .85; }
+.btn-next { width: 100%; max-width: 760px; margin: 0 auto; display: none; background: var(--ink); color: #fff; border: none; border-radius: var(--r); padding: 16px; font-family: 'Unbounded', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; transition: background .15s, transform .12s; }
+.btn-next:hover { background: var(--accent); transform: translateY(-1px); }
+
+#results { display: none; flex-direction: column; align-items: center; min-height: 100vh; padding: 48px 20px; gap: 24px; }
+.res-pct { font-family: 'Unbounded', sans-serif; font-size: clamp(64px, 15vw, 108px); font-weight: 900; line-height: 1; background: linear-gradient(135deg, var(--accent), #7c3aed); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.res-verdict { font-size: 20px; font-weight: 700; text-align: center; }
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; width: 100%; max-width: 480px; }
+.stat { background: var(--card); border-radius: var(--r); padding: 20px; text-align: center; box-shadow: 0 2px 12px rgba(0,0,0,.05); }
+.stat .sv { font-family: 'Unbounded', sans-serif; font-size: 30px; font-weight: 900; }
+.stat .sl { font-size: 11px; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); margin-top: 4px; }
+.sv.g { color: var(--ok); } .sv.r { color: var(--fail); } .sv.b { color: var(--accent); }
+.res-btns { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+.btn-redo { background: var(--accent); color: #fff; border: none; border-radius: var(--r); padding: 14px 28px; font-family: 'Unbounded', sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; }
+.btn-retry { background: transparent; color: var(--ink); border: 2px solid var(--border); border-radius: var(--r); padding: 12px 26px; font-family: 'Unbounded', sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; }
+.btn-retry:hover { border-color: var(--accent); color: var(--accent); }
+.wrong-block { width: 100%; max-width: 680px; background: var(--card); border-radius: var(--r); padding: 24px; box-shadow: 0 2px 16px rgba(0,0,0,.05); }
+.wrong-block h3 { font-family: 'Unbounded', sans-serif; font-size: 14px; margin-bottom: 16px; }
+.wi { border-bottom: 1px solid var(--border); padding: 12px 0; font-size: 13px; line-height: 1.6; }
+.wi:last-child { border-bottom: none; }
+.wi .wq { font-weight: 700; margin-bottom: 5px; }
+.wi .wy { color: var(--fail); } .wi .wc { color: var(--ok); }
+</style>
+</head>
+<body>
+
+<div id="intro">
+  <div class="intro-badge">Допуск к ГИА · Магистратура</div>
+  <div class="intro-title">Блок <span>6</span><br>Вопросы 206–245</div>
+  <div class="intro-sub">Методология психологии, конфликтология, педагогика, консультирование. Финальный блок!</div>
+  <button class="btn-start" onclick="startQuiz()">Начать тест →</button>
+</div>
+
+<div id="quiz">
+  <div class="top-bar">
+    <div class="q-counter">Вопрос <b id="qNum">1</b> из <span id="qTot">38</span></div>
+    <div class="score-live">Верно: <b id="scoreLive">0</b></div>
+  </div>
+  <div class="pbar-wrap"><div class="pbar" id="pbar" style="width:0%"></div></div>
+  <div class="q-card">
+    <div class="q-label" id="qLabel">Вопрос 206</div>
+    <div class="q-text" id="qText"></div>
+    <div id="multiNote" class="multi-note" style="display:none">⚡ Несколько правильных ответов — выбери все, затем нажми «Проверить»</div>
+    <div class="opts" id="opts"></div>
+    <div class="feedback" id="feedback">
+      <div class="fb-title" id="fbTitle"></div>
+      <div id="fbBody"></div>
+    </div>
+    <button class="btn-check" id="btnCheck" onclick="submitMulti()">Проверить</button>
+  </div>
+  <button class="btn-next" id="btnNext" onclick="nextQ()"></button>
+</div>
+
+<div id="results">
+  <div class="res-pct" id="resPct">0%</div>
+  <div class="res-verdict" id="resVerdict"></div>
+  <div class="stats">
+    <div class="stat"><div class="sv g" id="resOk">0</div><div class="sl">Верно</div></div>
+    <div class="stat"><div class="sv r" id="resFail">0</div><div class="sl">Ошибки</div></div>
+    <div class="stat"><div class="sv b" id="resTotal">0</div><div class="sl">Всего</div></div>
+  </div>
+  <div class="res-btns">
+    <button class="btn-redo" onclick="startQuiz()">Пройти заново</button>
+    <button class="btn-retry" id="btnRetry" onclick="retryWrong()" style="display:none">Повторить ошибки</button>
+  </div>
+  <div class="wrong-block" id="wrongBlock" style="display:none">
+    <h3>❌ Разбор ошибок</h3>
+    <div id="wrongItems"></div>
+  </div>
+</div>
+
+<script>
+const LETTERS = ['А','Б','В','Г','Д','Е'];
+
+const ALL_Q = [
+  {n:206, q:"Этнические стереотипы – это:", opts:["раздел психологии, изучающий национальные особенности того или иного народа; направление психологии межэтнической напряжённости","сложившиеся в массовом сознании представления о поведении представителей того или иного этноса","неадекватные суждения об этнических особенностях того или иного народа"], correct:[1]},
+  {n:207, q:"Какая из перечисленных научных школ не относится к зарубежной научной школе?", opts:["научная школа бихевиоризма","научная школа гуманистической психологии","научная школа теории деятельности личности","научная школа психоанализа"], correct:[2]},
+  {n:208, q:"Кто из перечисленных учёных был основателем научной школы логотерапии?", opts:["С.Л. Рубинштейн","В. Франкл","А.Р. Лурия","А. Маслоу"], correct:[1]},
+  {n:209, q:"Гипотеза определяется как:", opts:["научное предположение, выдвигаемое для объяснения какого-либо явления, требующее дальнейшей проверки","решение проблемы методом экспериментального исследования","ответ на вопрос о сущности психологического явления","обобщение опыта на доказательном уровне; самонаблюдение"], correct:[0]},
+  {n:210, q:"Лонгитюдное исследование – это:", opts:["исследование выборки на протяжении определённого отрезка времени; сравнение двух и более возрастных групп","исследование одного испытуемого на протяжении нескольких лет и построение его индивидуальной кривой развития","исследование когорты испытуемых от рождения до смерти"], correct:[0]},
+  {n:211, q:"Корреляционное исследование строится с целью проверки:", opts:["гипотезы о связях между переменными","каузальной гипотезы","структурной гипотезы","комбинированной гипотезы"], correct:[0]},
+  {n:212, q:"Задача установления наличия или отсутствия изучаемого явления, измерения его количественных характеристик решается в психологической науке методом:", opts:["формирующего эксперимента","констатирующего эксперимента","наблюдения","близнецов"], correct:[1]},
+  {n:213, q:"Наблюдение, эксперимент, тестирование образуют группу методов:", opts:["обработки данных","организационных","интерпретационных","эмпирических"], correct:[3]},
+  {n:214, q:"Активное вмешательство исследователя в деятельность испытуемого с целью создания условий для установления психологического факта называется:", opts:["контент-анализом","анализом продуктов деятельности","беседой","экспериментом"], correct:[3]},
+  {n:215, q:"Краткое, стандартизированное психологическое испытание, в результате которого делается попытка оценить тот или иной психический процесс или личность в целом – это:", opts:["наблюдение","эксперимент","тестирование","самонаблюдение"], correct:[2]},
+  {n:216, q:"Преднамеренное, целенаправленное, систематическое восприятие внешнего поведения человека с целью его последующего анализа и объяснения — это:", opts:["эксперимент","наблюдение","тестирование","анкетирование"], correct:[1]},
+  {n:217, q:"Способ достижения какой-либо цели, решения конкретной задачи:", opts:["методикой","принципом","методом","средством"], correct:[2]},
+  {n:218, q:"Выберите неверный критерий среди факторов, которые показывают эффективность когнитивной психотерапии:", opts:["правильные психотерапевтические отношения","формирование сверхконтроля у клиента/терапевта","реальные проблемы — реальные эффекты","качественное применение методик"], correct:[1]},
+  {n:219, q:"Главная задача когнитивно-поведенческого психотерапевта заключается в…", opts:["выполнении трудовых обязательств перед пациентом","замене негативных стереотипов пациента на позитивные","установлении партнёрских отношений между терапевтом и пациентом","постановке верного диагноза"], correct:[2]},
+  {n:220, q:"Конфликтогены – это:", opts:["состояния личности, которые наступают после разрешения конфликта","причины конфликта, обусловленные социальным статусом личности","поведенческие реакции личности в конфликте","слова, действия (или бездействия), которые могут привести к конфликту; проявления конфликта"], correct:[3]},
+  {n:221, q:"Противоречия между равными по положению субъектами – это конфликт:", opts:["ролевой","вертикальный","позиционный","горизонтальный"], correct:[3]},
+  {n:222, q:"Как называется функция конфликта, благодаря которой повышается уровень взаимной осведомлённости сторон?", opts:["информационная","коммуникативная","сигнальная","профилактическая"], correct:[0]},
+  {n:223, q:"Семейный конфликт – это:", opts:["конфликт между любыми членами семьи","конфликт родственников","конфликт между родителями и детьми","конфликт между различными семьями","конфликт между супругами"], correct:[0]},
+  {n:224, q:"Субъектами межличностных конфликтов выступают:", opts:["две личности","личность и группа","малые социальные группы","большие социальные группы"], correct:[0]},
+  {n:225, q:"Вид деятельности психолога, основными задачами которого являются распространение психологических знаний и повышение психологической культуры населения, формирование потребности в психологических знаниях и желания использовать их в жизни и практической деятельности:", opts:["Психологическое просвещение","Психодиагностика","Психокоррекция","Психологическая реабилитация"], correct:[0]},
+  {n:226, q:"Недопущение предвзятого отношения к клиенту (испытуемому) и осуществления действий психологического характера (выбора методов работы, обработки и интерпретации результатов, формулирования выводов), противоречащих научным данным относится к:", opts:["принципу ненанесения ущерба","принципу конфиденциальности","принципу объективности","принципу уважения клиента"], correct:[2]},
+  {n:227, q:"Обязательный минимум содержания образовательных программ устанавливается:", opts:["учителем","федеральным государственным образовательным стандартом","педагогическим советом","органами управления образованием","образовательным учреждением"], correct:[1]},
+  {n:228, q:"Методика преподавания психологии – это:", opts:["частная дидактика","прикладная часть общей психологии","теория обучения психологии","это дисциплина, исследующая процесс преподавания психологии, её закономерности, связь с другими науками в целях повышения эффективности обучения"], correct:[3]},
+  {n:229, q:"Лекция в большей степени является проблемной тогда, когда:", opts:["она приближена к монологическому изложению","степень её диалогичности невысок","в ней реализуется индивидуальный подход к учащимся","процесс познания студентов приближается к поисковой, исследовательской деятельности"], correct:[3]},
+  {n:230, q:"Моделирование реальных ситуаций обсуждения теоретических и практических вопросов двумя специалистами происходит в:", opts:["лекции-визуализации","лекции с заранее запланированными ошибками","лекции вдвоём","проблемной лекции"], correct:[2]},
+  {n:231, q:"К критериям оценки качества лекции по психологии следует отнести:", opts:["Содержание и методику чтения лекции","Соответствие учебному плану подготовки специалиста-психолога","Формирование навыков деятельности практического психолога"], correct:[0]},
+  {n:232, q:"К активным методам в обучении психологии следует отнести:", opts:["Иллюстрацию и демонстрацию","Лабораторные работы и упражнения","Дискуссию и деловую игру"], correct:[2]},
+  {n:233, q:"К методам интерактивного обучения относится:", opts:["метод наблюдений","метод чтения вслух","метод «круглого стола»"], correct:[2]},
+  {n:234, q:"Основной целью семинарского занятия является:", opts:["контроль знаний студентов","развитие творческого, профессионального мышления","обеспечить студентам возможность овладеть навыками и умениями использования теоретического знания применительно к особенностям изучаемой отрасли"], correct:[2]},
+  {n:235, q:"В чём заключается педагогический смысл словесных методов обучения?", opts:["В словесном объяснении преподавателем учебного материала и восприятии его обучающимися путём слушания, запоминания, объяснения","В словесном изложении обучающимися усвоенного материала","В специальном использовании преподавателем ключевых слов"], correct:[0]},
+  {n:236, q:"Самостоятельная работа предполагает:", opts:["изучение литературы; подготовку к семинарским и практическим занятиям; подготовку доклада; написание реферата","проведение зачёта (экзамена) по дисциплине","только написание реферата","только изучение литературы"], correct:[0]},
+  {n:237, q:"Педагогическая деятельность — это:", opts:["деятельность взрослых членов общества, профессиональной целью которых является воспитание подрастающего поколения","формирование у учащихся знаний, умений и навыков","процесс и результат научения школьников"], correct:[0]},
+  {n:238, q:"Компоненты педагогической деятельности:", opts:["конструктивный, организаторский","конструктивный, организаторский, поведенческий","конструктивный, организаторский, коммуникативный"], correct:[2]},
+  {n:239, q:"Педагогические способности — это:", opts:["способности к обучению","качества личности, способствующие успеху в учении","определённые психологические особенности личности, которые являются условием достижения ею в роли учителя (преподавателя) высоких результатов в обучении и воспитании детей","правильный ответ не указан"], correct:[2]},
+  {n:241, q:"Какой из следующих факторов может негативно влиять на процесс консультирования?", opts:["Доверительные отношения между консультантом и клиентом","Неправильное понимание целей консультации","Эмпатия со стороны консультанта","Открытость клиента к изменениям"], correct:[1]},
+  {n:242, q:"Какова роль консультанта в процессе работы с группой сотрудников?", opts:["Указывать на ошибки каждого участника","Служить нейтральным посредником и фасилитатором процесса","Принять все решения за группу","Игнорировать конфликты и проблемы"], correct:[1]},
+  {n:243, q:"Какой из следующих факторов может способствовать успешному консультированию?", opts:["Высокая степень доверия между консультантом и клиентом","Непонимание целей консультации","Негативное отношение к изменениям","Игнорирование культурных различий"], correct:[0]},
+  {n:244, q:"К техникам активного слушания, используемым для создания атмосферы доверия в переговорах, НЕ относится:", opts:["Перефразирование (парафраз) сказанного","Резюмирование ключевых мыслей","Отзеркаливание позы и жестов собеседника","Немедленное контраргументирование каждой услышанной точки зрения"], correct:[3]},
+  {n:245, q:"Манипулятивная тактика в переговорах, при которой оппоненту изначально выдвигается заведомо невыполнимое требование, чтобы затем, «уступив», добиться реально желаемого, называется:", opts:["«Сальто мортале»","«Уход»","«Выдвижение чрезмерных требований»","«Игра в опеку»"], correct:[2]}
+];
+
+let session = [], cur = 0, score = 0, wrongs = [], answered = false, multiSelected = [];
+
+function startQuiz() {
+  session = [...ALL_Q];
+  cur = 0; score = 0; wrongs = []; answered = false; multiSelected = [];
+  document.getElementById('intro').style.display = 'none';
+  document.getElementById('results').style.display = 'none';
+  document.getElementById('quiz').style.display = 'block';
+  document.getElementById('qTot').textContent = session.length;
+  document.getElementById('resTotal').textContent = session.length;
+  render();
+}
+
+function render() {
+  const q = session[cur];
+  answered = false; multiSelected = [];
+  document.getElementById('qNum').textContent = cur + 1;
+  document.getElementById('scoreLive').textContent = score;
+  document.getElementById('qLabel').textContent = `Вопрос ${q.n}`;
+  document.getElementById('qText').textContent = q.q;
+  document.getElementById('pbar').style.width = `${(cur / session.length) * 100}%`;
+  document.getElementById('feedback').style.display = 'none';
+  document.getElementById('btnNext').style.display = 'none';
+  const isMulti = q.correct.length > 1;
+  document.getElementById('multiNote').style.display = isMulti ? 'inline-block' : 'none';
+  document.getElementById('btnCheck').style.display = isMulti ? 'block' : 'none';
+  const container = document.getElementById('opts');
+  container.innerHTML = '';
+  q.opts.forEach((text, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'opt';
+    btn.innerHTML = `<span class="opt-letter">${LETTERS[i]}</span><span>${text}</span>`;
+    btn.onclick = isMulti ? () => toggleMulti(i, btn) : () => selectSingle(i);
+    container.appendChild(btn);
+  });
+  document.getElementById('btnNext').textContent = cur < session.length - 1 ? 'Следующий вопрос →' : 'Завершить тест →';
+}
+
+function selectSingle(chosen) {
+  if (answered) return;
+  answered = true;
+  const q = session[cur];
+  const btns = document.querySelectorAll('.opt');
+  btns.forEach(b => b.disabled = true);
+  const isCorrect = q.correct.includes(chosen);
+  btns[chosen].classList.add(isCorrect ? 'correct' : 'wrong');
+  if (!isCorrect) {
+    q.correct.forEach(ci => btns[ci].classList.add('reveal'));
+    wrongs.push({ q: q.q, your: q.opts[chosen], correct: q.correct.map(ci => q.opts[ci]).join('; ') });
+  } else { score++; document.getElementById('scoreLive').textContent = score; }
+  const fb = document.getElementById('feedback');
+  fb.className = 'feedback ' + (isCorrect ? 'ok' : 'fail');
+  document.getElementById('fbTitle').textContent = isCorrect ? '✓ Верно!' : '✗ Неверно';
+  document.getElementById('fbBody').textContent = isCorrect ? '' : `Правильный ответ: ${q.correct.map(ci => q.opts[ci]).join('; ')}`;
+  fb.style.display = 'block';
+  document.getElementById('btnNext').style.display = 'block';
+}
+
+function toggleMulti(i, btn) {
+  if (answered) return;
+  const idx = multiSelected.indexOf(i);
+  if (idx === -1) { multiSelected.push(i); btn.classList.add('selected'); btn.querySelector('.opt-letter').style.cssText = 'background:var(--accent);color:#fff'; }
+  else { multiSelected.splice(idx,1); btn.classList.remove('selected'); btn.querySelector('.opt-letter').style.cssText = ''; }
+}
+
+function submitMulti() {
+  if (answered || !multiSelected.length) return;
+  answered = true;
+  const q = session[cur];
+  const btns = document.querySelectorAll('.opt');
+  btns.forEach(b => b.disabled = true);
+  document.getElementById('btnCheck').style.display = 'none';
+  const correctSet = new Set(q.correct), selectedSet = new Set(multiSelected);
+  const isCorrect = q.correct.every(c => selectedSet.has(c)) && multiSelected.every(s => correctSet.has(s));
+  btns.forEach((btn, i) => {
+    btn.classList.remove('selected'); btn.querySelector('.opt-letter').style.cssText = '';
+    if (correctSet.has(i) && selectedSet.has(i)) btn.classList.add('correct');
+    else if (!correctSet.has(i) && selectedSet.has(i)) btn.classList.add('wrong');
+    else if (correctSet.has(i) && !selectedSet.has(i)) btn.classList.add('reveal');
+  });
+  if (isCorrect) { score++; document.getElementById('scoreLive').textContent = score; }
+  else wrongs.push({ q: q.q, your: multiSelected.map(i => q.opts[i]).join('; '), correct: q.correct.map(ci => q.opts[ci]).join('; ') });
+  const fb = document.getElementById('feedback');
+  fb.className = 'feedback ' + (isCorrect ? 'ok' : 'fail');
+  document.getElementById('fbTitle').textContent = isCorrect ? '✓ Верно!' : '✗ Неверно';
+  document.getElementById('fbBody').textContent = isCorrect ? '' : `Правильные ответы: ${q.correct.map(ci => q.opts[ci]).join('; ')}`;
+  fb.style.display = 'block';
+  document.getElementById('btnNext').style.display = 'block';
+}
+
+function nextQ() {
+  cur++;
+  if (cur >= session.length) showResults();
+  else { render(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+}
+
+function showResults() {
+  document.getElementById('quiz').style.display = 'none';
+  const res = document.getElementById('results');
+  res.style.display = 'flex';
+  const pct = Math.round(score / session.length * 100);
+  document.getElementById('resPct').textContent = pct + '%';
+  document.getElementById('resOk').textContent = score;
+  document.getElementById('resFail').textContent = session.length - score;
+  const v = [[90,'🏆 Отлично! Все блоки пройдены!'],[75,'👍 Хорошо! Ты готов к допуску.'],[60,'📚 Неплохо, повтори слабые места.'],[0,'💪 Нужно повторить материал.']];
+  document.getElementById('resVerdict').textContent = v.find(([t]) => pct >= t)[1];
+  if (wrongs.length) {
+    document.getElementById('btnRetry').style.display = '';
+    document.getElementById('wrongBlock').style.display = 'block';
+    document.getElementById('wrongItems').innerHTML = wrongs.map(w => `<div class="wi"><div class="wq">${w.q}</div><div class="wy">✗ Ваш ответ: ${w.your}</div><div class="wc">✓ Правильно: ${w.correct}</div></div>`).join('');
+  }
+}
+
+function retryWrong() {
+  const wrongQs = wrongs.map(w => ALL_Q.find(q => q.q === w.q)).filter(Boolean);
+  if (!wrongQs.length) return;
+  session = wrongQs;
+  cur = 0; score = 0; wrongs = []; answered = false; multiSelected = [];
+  document.getElementById('results').style.display = 'none';
+  document.getElementById('wrongBlock').style.display = 'none';
+  document.getElementById('btnRetry').style.display = 'none';
+  document.getElementById('quiz').style.display = 'block';
+  document.getElementById('qTot').textContent = session.length;
+  render();
+}
+</script>
+</body>
+</html>
