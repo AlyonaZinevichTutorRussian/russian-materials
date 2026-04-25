@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ГИА — Блок 2 (вопросы 41–80)</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@700;900&family=Mulish:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f0ede6;
+  --card: #ffffff;
+  --ink: #111018;
+  --muted: #888;
+  --border: #e2ddd4;
+  --accent: #0d9488;
+  --ok: #16a34a;
+  --ok-bg: #f0fdf4;
+  --ok-border: #86efac;
+  --fail: #dc2626;
+  --fail-bg: #fff1f2;
+  --fail-border: #fca5a5;
+  --r: 14px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); font-family: 'Mulish', sans-serif; color: var(--ink); min-height: 100vh; }
+
+#intro { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 20px; gap: 28px; }
+.intro-badge { background: var(--accent); color: #fff; font-family: 'Unbounded', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: .1em; padding: 6px 16px; border-radius: 100px; text-transform: uppercase; }
+.intro-title { font-family: 'Unbounded', sans-serif; font-size: clamp(32px, 7vw, 64px); font-weight: 900; text-align: center; line-height: 1.05; }
+.intro-title span { color: var(--accent); }
+.intro-sub { font-size: 16px; color: var(--muted); text-align: center; max-width: 420px; line-height: 1.6; }
+.btn-start { background: var(--ink); color: #fff; border: none; border-radius: var(--r); padding: 18px 44px; font-family: 'Unbounded', sans-serif; font-size: 15px; font-weight: 700; cursor: pointer; transition: background .15s, transform .15s; }
+.btn-start:hover { background: var(--accent); transform: translateY(-2px); }
+
+#quiz { display: none; padding: 24px 20px 48px; max-width: 760px; margin: 0 auto; }
+.top-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+.q-counter { font-family: 'Unbounded', sans-serif; font-size: 13px; font-weight: 700; color: var(--muted); }
+.q-counter b { color: var(--ink); font-size: 16px; }
+.score-live { font-size: 13px; color: var(--muted); }
+.score-live b { color: var(--ok); font-weight: 700; }
+.pbar-wrap { height: 5px; background: var(--border); border-radius: 3px; margin-bottom: 28px; overflow: hidden; }
+.pbar { height: 100%; background: linear-gradient(90deg, var(--accent), #0284c7); border-radius: 3px; transition: width .4s ease; }
+
+.q-card { background: var(--card); border-radius: 20px; padding: clamp(24px, 4vw, 40px); box-shadow: 0 2px 32px rgba(0,0,0,.07); margin-bottom: 14px; }
+.q-label { font-size: 11px; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); font-weight: 700; margin-bottom: 12px; }
+.q-text { font-size: clamp(15px, 2.2vw, 18px); font-weight: 700; line-height: 1.55; margin-bottom: 26px; }
+.multi-note { display: inline-block; background: #f0fdfa; color: var(--accent); font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 6px; margin-bottom: 16px; }
+
+.opts { display: flex; flex-direction: column; gap: 10px; }
+.opt { display: flex; align-items: flex-start; gap: 14px; border: 2px solid var(--border); border-radius: 12px; padding: 14px 18px; background: #fafaf8; cursor: pointer; font-size: 14px; line-height: 1.55; font-weight: 400; text-align: left; font-family: 'Mulish', sans-serif; color: var(--ink); transition: border-color .12s, background .12s, transform .1s; width: 100%; }
+.opt:hover:not(:disabled) { border-color: var(--accent); background: #f0fdfa; transform: translateX(3px); }
+.opt:disabled { cursor: default; }
+.opt-letter { min-width: 28px; height: 28px; border-radius: 8px; background: var(--border); display: flex; align-items: center; justify-content: center; font-family: 'Unbounded', sans-serif; font-size: 11px; font-weight: 700; color: var(--muted); flex-shrink: 0; transition: background .12s, color .12s; }
+
+.opt.correct { border-color: var(--ok); background: var(--ok-bg); }
+.opt.correct .opt-letter { background: var(--ok); color: #fff; }
+.opt.wrong { border-color: var(--fail); background: var(--fail-bg); }
+.opt.wrong .opt-letter { background: var(--fail); color: #fff; }
+.opt.reveal { border-color: var(--ok); background: var(--ok-bg); opacity: .7; }
+.opt.reveal .opt-letter { background: var(--ok); color: #fff; }
+.opt.selected { border-color: var(--accent); background: #f0fdfa; }
+.opt.selected .opt-letter { background: var(--accent); color: #fff; }
+
+.feedback { border-radius: 12px; padding: 14px 18px; font-size: 14px; line-height: 1.55; margin-top: 12px; animation: fadeUp .22s ease; display: none; }
+.feedback.ok { background: var(--ok-bg); border: 1.5px solid var(--ok-border); color: #15803d; }
+.feedback.fail { background: var(--fail-bg); border: 1.5px solid var(--fail-border); color: #b91c1c; }
+.feedback .fb-title { font-family: 'Unbounded', sans-serif; font-size: 12px; font-weight: 700; margin-bottom: 4px; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+.btn-check { margin-top: 14px; background: var(--accent); color: #fff; border: none; border-radius: 10px; padding: 12px 26px; font-family: 'Unbounded', sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; display: none; }
+.btn-check:hover { opacity: .85; }
+
+.btn-next { width: 100%; max-width: 760px; margin: 0 auto; display: none; background: var(--ink); color: #fff; border: none; border-radius: var(--r); padding: 16px; font-family: 'Unbounded', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; transition: background .15s, transform .12s; }
+.btn-next:hover { background: var(--accent); transform: translateY(-1px); }
+
+#results { display: none; flex-direction: column; align-items: center; min-height: 100vh; padding: 48px 20px; gap: 24px; }
+.res-pct { font-family: 'Unbounded', sans-serif; font-size: clamp(64px, 15vw, 108px); font-weight: 900; line-height: 1; background: linear-gradient(135deg, var(--accent), #0284c7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.res-verdict { font-size: 20px; font-weight: 700; }
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; width: 100%; max-width: 480px; }
+.stat { background: var(--card); border-radius: var(--r); padding: 20px; text-align: center; box-shadow: 0 2px 12px rgba(0,0,0,.05); }
+.stat .sv { font-family: 'Unbounded', sans-serif; font-size: 30px; font-weight: 900; }
+.stat .sl { font-size: 11px; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); margin-top: 4px; }
+.sv.g { color: var(--ok); } .sv.r { color: var(--fail); } .sv.b { color: var(--accent); }
+.res-btns { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+.btn-redo { background: var(--accent); color: #fff; border: none; border-radius: var(--r); padding: 14px 28px; font-family: 'Unbounded', sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; }
+.btn-retry { background: transparent; color: var(--ink); border: 2px solid var(--border); border-radius: var(--r); padding: 12px 26px; font-family: 'Unbounded', sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; }
+.btn-retry:hover { border-color: var(--accent); color: var(--accent); }
+.wrong-block { width: 100%; max-width: 680px; background: var(--card); border-radius: var(--r); padding: 24px; box-shadow: 0 2px 16px rgba(0,0,0,.05); }
+.wrong-block h3 { font-family: 'Unbounded', sans-serif; font-size: 14px; margin-bottom: 16px; }
+.wi { border-bottom: 1px solid var(--border); padding: 12px 0; font-size: 13px; line-height: 1.6; }
+.wi:last-child { border-bottom: none; }
+.wi .wq { font-weight: 700; margin-bottom: 5px; }
+.wi .wy { color: var(--fail); } .wi .wc { color: var(--ok); }
+</style>
+</head>
+<body>
+
+<div id="intro">
+  <div class="intro-badge">Допуск к ГИА · Магистратура</div>
+  <div class="intro-title">Блок <span>2</span><br>Вопросы 41–80</div>
+  <div class="intro-sub">Поведенческая терапия, гештальт, телесно-ориентированная терапия, межкультурная коммуникация.</div>
+  <button class="btn-start" onclick="startQuiz()">Начать тест →</button>
+</div>
+
+<div id="quiz">
+  <div class="top-bar">
+    <div class="q-counter">Вопрос <b id="qNum">1</b> из <span id="qTot">39</span></div>
+    <div class="score-live">Верно: <b id="scoreLive">0</b></div>
+  </div>
+  <div class="pbar-wrap"><div class="pbar" id="pbar" style="width:0%"></div></div>
+  <div class="q-card">
+    <div class="q-label" id="qLabel">Вопрос 41</div>
+    <div class="q-text" id="qText"></div>
+    <div id="multiNote" class="multi-note" style="display:none">⚡ Несколько правильных ответов — выбери все, затем нажми «Проверить»</div>
+    <div class="opts" id="opts"></div>
+    <div class="feedback" id="feedback">
+      <div class="fb-title" id="fbTitle"></div>
+      <div id="fbBody"></div>
+    </div>
+    <button class="btn-check" id="btnCheck" onclick="submitMulti()">Проверить</button>
+  </div>
+  <button class="btn-next" id="btnNext" onclick="nextQ()"></button>
+</div>
+
+<div id="results">
+  <div class="res-pct" id="resPct">0%</div>
+  <div class="res-verdict" id="resVerdict"></div>
+  <div class="stats">
+    <div class="stat"><div class="sv g" id="resOk">0</div><div class="sl">Верно</div></div>
+    <div class="stat"><div class="sv r" id="resFail">0</div><div class="sl">Ошибки</div></div>
+    <div class="stat"><div class="sv b" id="resTotal">0</div><div class="sl">Всего</div></div>
+  </div>
+  <div class="res-btns">
+    <button class="btn-redo" onclick="startQuiz()">Пройти заново</button>
+    <button class="btn-retry" id="btnRetry" onclick="retryWrong()" style="display:none">Повторить ошибки</button>
+  </div>
+  <div class="wrong-block" id="wrongBlock" style="display:none">
+    <h3>❌ Разбор ошибок</h3>
+    <div id="wrongItems"></div>
+  </div>
+</div>
+
+<script>
+const LETTERS = ['А','Б','В','Г','Д','Е'];
+
+const ALL_Q = [
+  {n:41, q:"Создателем метода классического обусловливания был:", opts:["Скиннер","Вольпе","Павлов","Бехтерев"], correct:[2]},
+  {n:42, q:"Поведенческая психотерапия в своей теории опирается прежде всего на понятие:", opts:["вытеснения","сопротивления","научения","фигуры и фона"], correct:[2]},
+  {n:43, q:"Поведенческая психотерапия, направленная на желательное изменение поведения пациента с помощью поощрения или наказания, называется методикой:", opts:["операантного обусловливания","парадоксальной интенции","имплозии","систематической десенсибилизации"], correct:[0]},
+  {n:44, q:"К какому направлению психотерапии относится клиент-центрированная психотерапия К. Роджерса?", opts:["психодинамическому","бихевиористскому","экзистенциально-гуманистическому","позитивному"], correct:[2]},
+  {n:45, q:"В концепции клиент-центрированной психотерапии К. Роджерса основным аспектом учения о личности является следующая гипотеза:", opts:["индивид обладает врождённой тенденцией к актуализации","индивид стремится найти и реализовать смысл жизни","развитие личности определяется наличием постоянного конфликта между чувством неполноценности и порождаемым им стремлением к самоутверждению","индивид обладает врождённой способностью достигать оптимального равновесия внутри себя и между собой и средой"], correct:[0]},
+  {n:46, q:"В клиент-центрированной психотерапии К. Роджерса психотерапевт в контакте с пациентом проявляет следующее качество:", opts:["манипулирует процессом взаимодействия","безусловно положительно принимает пациента","комментирует поведение больного","интерпретирует скрытый смысл в поведении больного"], correct:[1]},
+  {n:47, q:"К понятиям гештальт-терапии не относится:", opts:["вытеснение","фигура и фон","незавершённый гештальт","осознание"], correct:[0]},
+  {n:48, q:"Кто является основоположником ориентированной на тело психотерапии?", opts:["Ф. Перлс","А. Лоуэн","В. Райх","К. Роджерс"], correct:[2]},
+  {n:49, q:"К какому направлению терапии относится гештальт-терапия:", opts:["психодинамическому","экзистенциально-гуманистическому","когнитивно-поведенческому","телесноориентированному"], correct:[1]},
+  {n:50, q:"В чём состоит основная идея гештальт-терапии?", opts:["формирование правильного мышления","развитие креативности во взаимодействии с окружающим миром, восстановление способности к саморегуляции","обучение саморегуляции","осознание неосознаваемого материала"], correct:[1]},
+  {n:51, q:"Какие типы нарушений контактной границы, препятствующих психологическому развитию, описывал Ф. Перлз?", opts:["интроекция, проекция, ретрофлексия, конфлюэнция","рационализация, сублимация, вытеснение","гиперкомпенсация, идентификация","все ответы верные"], correct:[0]},
+  {n:52, q:"В чём состоит роль гештальт-терапевта в терапевтическом процессе?", opts:["он фрустрирует, оказывает клиенту помощь в расширении осознания и переживания контакта","он формирует новые поведенческие навыки","он помогает понять бессознательное психическое содержание","он помогает найти смысл существования"], correct:[0]},
+  {n:53, q:"Тело человека трактуется как равноправный с другими атрибутами человеческого бытия элемент:", opts:["в холистической парадигме","в дихотомической парадигме","оба ответа неверны"], correct:[0]},
+  {n:54, q:"Представления о разрыве между душой и телом, идеология аскетизма и «умерщвления плоти» были:", opts:["в античную эпоху","в эпоху средневековья","в эпоху просвещения"], correct:[1]},
+  {n:55, q:"Основоположником ориентированной на тело терапии является:", opts:["Ф. Александер","З. Фрейд","А. Лоуэн","В. Райх"], correct:[3]},
+  {n:56, q:"По закону перераспределения оргонной энергии в теле человека с точки зрения В. Райха:", opts:["она из мест, где её меньше, всё время норовит переместиться в места, где её и так много","перемещается из мест наибольшей концентрации в места с наименьшей концентрацией","не перемещается в теле человека, имея конкретную локализацию"], correct:[0]},
+  {n:57, q:"По идее Райха, в норме оргонная энергия беспрепятственно протекает:", opts:["синхронно с дыханием","перпендикулярно позвоночнику","вдоль нашего тела","все ответы неверны"], correct:[2]},
+  {n:58, q:"Постоянное, фоновое напряжение одной конкретной мышцы, не соответствующее никакой выполняемой в данный момент работе – это:", opts:["мышечный блок","мышечный зажим","мышечный панцирь","мышечный сегмент"], correct:[1]},
+  {n:59, q:"Термин «культурный шок» был введён в психологию:", opts:["К. Обергом","Т. Лири","Г. Триандисом","К. Хофстеде"], correct:[0]},
+  {n:60, q:"Экстралингвистическая система коммуникации представляет собой:", opts:["включение в речь иностранных слов","включение в речь выразительных рукопожатий, прикосновений, объятий и т.п.","включение в речь неязыковых пауз, покашливания, вздохов и т.п.","включение в речь всех вышеперечисленных компонентов"], correct:[2]},
+  {n:61, q:"Э. Холл предложил ввести в межкультурное общение понятие «уровень контекстуальной коммуникации», означающее:", opts:["степень зависимости речи от возрастного и гендерного параметров","степень закодированности в речи части сообщения","степень зависимости речи от уровня владения предварительной информацией о событии","степень зависимости речи от её опосредованности телефоном, интернетом и т.п."], correct:[1]},
+  {n:62, q:"Понятия «межгрупповой дифференциации» и «внутригруппового фаворитизма» были введены в психологию:", opts:["Э. Холлом","М. Шерифом","Г. Триандисом","Г. Тэшфелом"], correct:[3]},
+  {n:63, q:"Определённый набор ценностей, установок, верований, норм и моделей поведения, принятых в определённой культуре и определяющих поведение её членов, по мнению Г. Хофстеде, отражается в термине:", opts:["культурное измерение","культурный фактор","культурный вектор","культурный код"], correct:[0]},
+  {n:64, q:"Термин «стереотип» впервые выделил:", opts:["Г. Тэшфел","У. Липпман","Г. Хофстеде","К. Оберг"], correct:[1]},
+  {n:65, q:"Кто является основателем гештальт-терапии?", opts:["З. Фрейд","К. Роджерс","Ф. Перлз","Э. Фромм"], correct:[2]},
+  {n:66, q:"С какой реальностью преимущественно работают в гештальт-терапии?", opts:["с прошлым","с будущим","здесь и теперь","с фантастической"], correct:[2]},
+  {n:67, q:"В гештальт-терапии работают со следующими категориями клиентов:", opts:["с одним клиентом","с семьёй","с группой","все варианты верны"], correct:[3]},
+  {n:68, q:"В гештальт-терапии используется:", opts:["техника «Горячего стула»","метод «Свободных ассоциаций»","метод «Ребрефинг»","метод «Биологической обратной связи»"], correct:[0]},
+  {n:69, q:"На какие вопросы отвечает гештальт-терапия:", opts:["Почему и зачем?","Что и как?","Где?","Когда?"], correct:[1]},
+  {n:70, q:"В гештальт-терапии интроекцией называется:", opts:["полное и бесконтрольное принятие организмом приходящего извне","это приписывание другому объекту качеств субъекта или приписывание собственных качеств другому","отказ от контакта посредством сдерживания или обращения на себя действий, обычно сопутствующих контакту","несоответствующее действительности представление субъекта о своём единстве с другим человеком (объектом)"], correct:[0]},
+  {n:71, q:"В гештальт-терапии приписывание другому объекту качеств субъекта или приписывание собственных качеств другому называют:", opts:["интроекцией","проекцией","ретрофлексией","конфлюэнцией"], correct:[1]},
+  {n:72, q:"В гештальт-терапии отказ от контакта посредством сдерживания или обращения на себя действий, обычно сопутствующих контакту, называют:", opts:["интроекцией","проекцией","ретрофлексией","конфлюэнцией"], correct:[2]},
+  {n:73, q:"В гештальт-терапии несоответствующее действительности представление субъекта о своём единстве с другим человеком (объектом) называют:", opts:["интроекцией","проекцией","ретрофлексией","конфлюэнцией"], correct:[3]},
+  {n:74, q:"В гештальт-терапии зону, образованную ощущениями от собственного тела (напряжение мышц, ком в горле или тяжесть в желудке, поза, в которой человек сидит или стоит, головная боль, жажда, утомление) называют:", opts:["внутренней","внешней","средней","далёкой"], correct:[0]},
+  {n:75, q:"В гештальт-терапии зону воображения и фантазии, а также многочисленных мысленных игр, играя в которые с самим собой, человек неизбежно проигрывает, называют:", opts:["внутренней","внешней","средней","далёкой"], correct:[2]},
+  {n:76, q:"В гештальт-терапии зону, в которой отражаются ощущение и осознание свойств окружающей действительности (серые камни на зелёной траве, визг автомобильных тормозов, запах мокрой одежды в метро в дождливый день, ссутуленные плечи идущей навстречу девочки) называют:", opts:["внутренней","внешней","средней","далёкой"], correct:[1]},
+  {n:77, q:"Основная цель в работе гештальт-терапевта:", opts:["завершение гештальта","удовлетворение клиента","личностное развитие","выработка паттернов поведения"], correct:[0]},
+  {n:78, q:"Главная цель гештальт-терапии состоит в:", opts:["немедленном изменении поведения клиента","быстром устранении симптомов у клиента","достижении наиболее полного осознания клиентом себя","выработке новых условных реакций"], correct:[2]},
+  {n:79, q:"Как называется наиболее значимая и важная информация, которую выбирает здоровый клиент из обилия его окружающей информации?", opts:["фон","фигура","значимость","удовлетворённая потребность"], correct:[1]},
+  {n:80, q:"Смысл гештальт-терапии:", opts:["исследовать прошлое и возможные травмы детства","исследовать будущее","фокусировка на осознание настоящего","построение перспективы жизни"], correct:[2]}
+];
+
+let session = [], cur = 0, score = 0, wrongs = [], answered = false, multiSelected = [];
+
+function startQuiz() {
+  session = [...ALL_Q];
+  cur = 0; score = 0; wrongs = []; answered = false; multiSelected = [];
+  document.getElementById('intro').style.display = 'none';
+  document.getElementById('results').style.display = 'none';
+  document.getElementById('quiz').style.display = 'block';
+  document.getElementById('qTot').textContent = session.length;
+  document.getElementById('resTotal').textContent = session.length;
+  render();
+}
+
+function render() {
+  const q = session[cur];
+  answered = false; multiSelected = [];
+  document.getElementById('qNum').textContent = cur + 1;
+  document.getElementById('scoreLive').textContent = score;
+  document.getElementById('qLabel').textContent = `Вопрос ${q.n}`;
+  document.getElementById('qText').textContent = q.q;
+  document.getElementById('pbar').style.width = `${(cur / session.length) * 100}%`;
+  document.getElementById('feedback').style.display = 'none';
+  document.getElementById('btnNext').style.display = 'none';
+  const isMulti = q.correct.length > 1;
+  document.getElementById('multiNote').style.display = isMulti ? 'inline-block' : 'none';
+  document.getElementById('btnCheck').style.display = isMulti ? 'block' : 'none';
+  const container = document.getElementById('opts');
+  container.innerHTML = '';
+  q.opts.forEach((text, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'opt';
+    btn.innerHTML = `<span class="opt-letter">${LETTERS[i]}</span><span>${text}</span>`;
+    btn.onclick = isMulti ? () => toggleMulti(i, btn) : () => selectSingle(i);
+    container.appendChild(btn);
+  });
+  document.getElementById('btnNext').textContent = cur < session.length - 1 ? 'Следующий вопрос →' : 'Завершить тест →';
+}
+
+function selectSingle(chosen) {
+  if (answered) return;
+  answered = true;
+  const q = session[cur];
+  const btns = document.querySelectorAll('.opt');
+  btns.forEach(b => b.disabled = true);
+  const isCorrect = q.correct.includes(chosen);
+  btns[chosen].classList.add(isCorrect ? 'correct' : 'wrong');
+  if (!isCorrect) {
+    q.correct.forEach(ci => btns[ci].classList.add('reveal'));
+    wrongs.push({ q: q.q, your: q.opts[chosen], correct: q.correct.map(ci => q.opts[ci]).join('; ') });
+  } else { score++; document.getElementById('scoreLive').textContent = score; }
+  const fb = document.getElementById('feedback');
+  fb.className = 'feedback ' + (isCorrect ? 'ok' : 'fail');
+  document.getElementById('fbTitle').textContent = isCorrect ? '✓ Верно!' : '✗ Неверно';
+  document.getElementById('fbBody').textContent = isCorrect ? '' : `Правильный ответ: ${q.correct.map(ci => q.opts[ci]).join('; ')}`;
+  fb.style.display = 'block';
+  document.getElementById('btnNext').style.display = 'block';
+}
+
+function toggleMulti(i, btn) {
+  if (answered) return;
+  const idx = multiSelected.indexOf(i);
+  if (idx === -1) { multiSelected.push(i); btn.classList.add('selected'); btn.querySelector('.opt-letter').style.cssText = 'background:var(--accent);color:#fff'; }
+  else { multiSelected.splice(idx,1); btn.classList.remove('selected'); btn.querySelector('.opt-letter').style.cssText = ''; }
+}
+
+function submitMulti() {
+  if (answered || !multiSelected.length) return;
+  answered = true;
+  const q = session[cur];
+  const btns = document.querySelectorAll('.opt');
+  btns.forEach(b => b.disabled = true);
+  document.getElementById('btnCheck').style.display = 'none';
+  const correctSet = new Set(q.correct), selectedSet = new Set(multiSelected);
+  const isCorrect = q.correct.every(c => selectedSet.has(c)) && multiSelected.every(s => correctSet.has(s));
+  btns.forEach((btn, i) => {
+    btn.classList.remove('selected'); btn.querySelector('.opt-letter').style.cssText = '';
+    if (correctSet.has(i) && selectedSet.has(i)) btn.classList.add('correct');
+    else if (!correctSet.has(i) && selectedSet.has(i)) btn.classList.add('wrong');
+    else if (correctSet.has(i) && !selectedSet.has(i)) btn.classList.add('reveal');
+  });
+  if (isCorrect) { score++; document.getElementById('scoreLive').textContent = score; }
+  else wrongs.push({ q: q.q, your: multiSelected.map(i => q.opts[i]).join('; '), correct: q.correct.map(ci => q.opts[ci]).join('; ') });
+  const fb = document.getElementById('feedback');
+  fb.className = 'feedback ' + (isCorrect ? 'ok' : 'fail');
+  document.getElementById('fbTitle').textContent = isCorrect ? '✓ Верно!' : '✗ Неверно';
+  document.getElementById('fbBody').textContent = isCorrect ? '' : `Правильные ответы: ${q.correct.map(ci => q.opts[ci]).join('; ')}`;
+  fb.style.display = 'block';
+  document.getElementById('btnNext').style.display = 'block';
+}
+
+function nextQ() {
+  cur++;
+  if (cur >= session.length) showResults();
+  else { render(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+}
+
+function showResults() {
+  document.getElementById('quiz').style.display = 'none';
+  const res = document.getElementById('results');
+  res.style.display = 'flex';
+  const pct = Math.round(score / session.length * 100);
+  document.getElementById('resPct').textContent = pct + '%';
+  document.getElementById('resOk').textContent = score;
+  document.getElementById('resFail').textContent = session.length - score;
+  const v = [[90,'🏆 Отлично! Блок освоен.'],[75,'👍 Хорошо! Почти готов.'],[60,'📚 Неплохо, есть над чем работать.'],[0,'💪 Нужно повторить материал.']];
+  document.getElementById('resVerdict').textContent = v.find(([t]) => pct >= t)[1];
+  if (wrongs.length) {
+    document.getElementById('btnRetry').style.display = '';
+    document.getElementById('wrongBlock').style.display = 'block';
+    document.getElementById('wrongItems').innerHTML = wrongs.map(w => `<div class="wi"><div class="wq">${w.q}</div><div class="wy">✗ Ваш ответ: ${w.your}</div><div class="wc">✓ Правильно: ${w.correct}</div></div>`).join('');
+  }
+}
+
+function retryWrong() {
+  const wrongQs = wrongs.map(w => ALL_Q.find(q => q.q === w.q)).filter(Boolean);
+  if (!wrongQs.length) return;
+  session = wrongQs;
+  cur = 0; score = 0; wrongs = []; answered = false; multiSelected = [];
+  document.getElementById('results').style.display = 'none';
+  document.getElementById('wrongBlock').style.display = 'none';
+  document.getElementById('btnRetry').style.display = 'none';
+  document.getElementById('quiz').style.display = 'block';
+  document.getElementById('qTot').textContent = session.length;
+  render();
+}
+</script>
+</body>
+</html>
