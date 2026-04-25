@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ГИА — Блок 1 (вопросы 1–40)</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@700;900&family=Mulish:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f0ede6;
+  --card: #ffffff;
+  --ink: #111018;
+  --muted: #888;
+  --border: #e2ddd4;
+  --accent: #2563eb;
+  --ok: #16a34a;
+  --ok-bg: #f0fdf4;
+  --ok-border: #86efac;
+  --fail: #dc2626;
+  --fail-bg: #fff1f2;
+  --fail-border: #fca5a5;
+  --r: 14px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg);
+  font-family: 'Mulish', sans-serif;
+  color: var(--ink);
+  min-height: 100vh;
+}
+
+/* INTRO */
+#intro {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  gap: 28px;
+}
+.intro-badge {
+  background: var(--accent);
+  color: #fff;
+  font-family: 'Unbounded', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  padding: 6px 16px;
+  border-radius: 100px;
+  text-transform: uppercase;
+}
+.intro-title {
+  font-family: 'Unbounded', sans-serif;
+  font-size: clamp(32px, 7vw, 64px);
+  font-weight: 900;
+  text-align: center;
+  line-height: 1.05;
+}
+.intro-title span { color: var(--accent); }
+.intro-sub {
+  font-size: 16px;
+  color: var(--muted);
+  text-align: center;
+  max-width: 400px;
+  line-height: 1.6;
+}
+.btn-start {
+  background: var(--ink);
+  color: #fff;
+  border: none;
+  border-radius: var(--r);
+  padding: 18px 44px;
+  font-family: 'Unbounded', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background .15s, transform .15s;
+  letter-spacing: -.01em;
+}
+.btn-start:hover { background: var(--accent); transform: translateY(-2px); }
+
+/* QUIZ */
+#quiz { display: none; padding: 24px 20px 48px; max-width: 760px; margin: 0 auto; }
+
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+.q-counter {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--muted);
+}
+.q-counter b { color: var(--ink); font-size: 16px; }
+.score-live {
+  font-size: 13px;
+  color: var(--muted);
+}
+.score-live b { color: var(--ok); font-weight: 700; }
+
+.pbar-wrap {
+  height: 5px;
+  background: var(--border);
+  border-radius: 3px;
+  margin-bottom: 28px;
+  overflow: hidden;
+}
+.pbar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), #7c3aed);
+  border-radius: 3px;
+  transition: width .4s ease;
+}
+
+.q-card {
+  background: var(--card);
+  border-radius: 20px;
+  padding: clamp(24px, 4vw, 40px);
+  box-shadow: 0 2px 32px rgba(0,0,0,.07);
+  margin-bottom: 14px;
+}
+.q-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: var(--muted);
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+.q-text {
+  font-size: clamp(15px, 2.2vw, 18px);
+  font-weight: 700;
+  line-height: 1.55;
+  margin-bottom: 26px;
+}
+.multi-note {
+  display: inline-block;
+  background: #eff6ff;
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 6px;
+  margin-bottom: 16px;
+  letter-spacing: .02em;
+}
+
+.opts { display: flex; flex-direction: column; gap: 10px; }
+
+.opt {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 18px;
+  background: #fafaf8;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1.55;
+  font-weight: 400;
+  text-align: left;
+  font-family: 'Mulish', sans-serif;
+  color: var(--ink);
+  transition: border-color .12s, background .12s, transform .1s;
+  width: 100%;
+}
+.opt:hover:not(:disabled) { border-color: var(--accent); background: #eff6ff; transform: translateX(3px); }
+.opt:disabled { cursor: default; }
+
+.opt-letter {
+  min-width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Unbounded', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--muted);
+  transition: background .12s, color .12s;
+  flex-shrink: 0;
+}
+
+/* States */
+.opt.correct { border-color: var(--ok); background: var(--ok-bg); }
+.opt.correct .opt-letter { background: var(--ok); color: #fff; }
+.opt.wrong { border-color: var(--fail); background: var(--fail-bg); }
+.opt.wrong .opt-letter { background: var(--fail); color: #fff; }
+.opt.reveal { border-color: var(--ok); background: var(--ok-bg); opacity: .7; }
+.opt.reveal .opt-letter { background: var(--ok); color: #fff; }
+/* Multi-select selected but not yet submitted */
+.opt.selected { border-color: var(--accent); background: #eff6ff; }
+.opt.selected .opt-letter { background: var(--accent); color: #fff; }
+
+.feedback {
+  border-radius: 12px;
+  padding: 14px 18px;
+  font-size: 14px;
+  line-height: 1.55;
+  margin-top: 12px;
+  animation: fadeUp .22s ease;
+  display: none;
+}
+.feedback.ok { background: var(--ok-bg); border: 1.5px solid var(--ok-border); color: #15803d; }
+.feedback.fail { background: var(--fail-bg); border: 1.5px solid var(--fail-border); color: #b91c1c; }
+.feedback .fb-title { font-family: 'Unbounded', sans-serif; font-size: 12px; font-weight: 700; margin-bottom: 4px; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(5px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Multi submit button */
+.btn-check {
+  margin-top: 14px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 26px;
+  font-family: 'Unbounded', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  display: none;
+  transition: opacity .15s;
+}
+.btn-check:hover { opacity: .85; }
+
+.btn-next {
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+  display: none;
+  background: var(--ink);
+  color: #fff;
+  border: none;
+  border-radius: var(--r);
+  padding: 16px;
+  font-family: 'Unbounded', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background .15s, transform .12s;
+}
+.btn-next:hover { background: var(--accent); transform: translateY(-1px); }
+
+/* RESULTS */
+#results {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  padding: 48px 20px;
+  gap: 24px;
+}
+.res-pct {
+  font-family: 'Unbounded', sans-serif;
+  font-size: clamp(64px, 15vw, 108px);
+  font-weight: 900;
+  line-height: 1;
+  background: linear-gradient(135deg, #2563eb, #7c3aed);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.res-verdict { font-size: 20px; font-weight: 700; }
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  width: 100%;
+  max-width: 480px;
+}
+.stat {
+  background: var(--card);
+  border-radius: var(--r);
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 2px 12px rgba(0,0,0,.05);
+}
+.stat .sv { font-family: 'Unbounded', sans-serif; font-size: 30px; font-weight: 900; }
+.stat .sl { font-size: 11px; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); margin-top: 4px; }
+.sv.g { color: var(--ok); }
+.sv.r { color: var(--fail); }
+.sv.b { color: var(--accent); }
+
+.res-btns { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+.btn-redo { background: var(--accent); color: #fff; border: none; border-radius: var(--r); padding: 14px 28px; font-family: 'Unbounded', sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; }
+.btn-redo:hover { opacity: .85; }
+.btn-retry { background: transparent; color: var(--ink); border: 2px solid var(--border); border-radius: var(--r); padding: 12px 26px; font-family: 'Unbounded', sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; }
+.btn-retry:hover { border-color: var(--accent); color: var(--accent); }
+
+.wrong-block {
+  width: 100%;
+  max-width: 680px;
+  background: var(--card);
+  border-radius: var(--r);
+  padding: 24px;
+  box-shadow: 0 2px 16px rgba(0,0,0,.05);
+}
+.wrong-block h3 { font-family: 'Unbounded', sans-serif; font-size: 14px; margin-bottom: 16px; }
+.wi { border-bottom: 1px solid var(--border); padding: 12px 0; font-size: 13px; line-height: 1.6; }
+.wi:last-child { border-bottom: none; }
+.wi .wq { font-weight: 700; margin-bottom: 5px; }
+.wi .wy { color: var(--fail); }
+.wi .wc { color: var(--ok); }
+</style>
+</head>
+<body>
+
+<div id="intro">
+  <div class="intro-badge">Допуск к ГИА · Магистратура</div>
+  <div class="intro-title">Блок <span>1</span><br>Вопросы 1–40</div>
+  <div class="intro-sub">Психологическое консультирование и психотерапия. Нажми на вариант ответа — сразу узнаешь результат.</div>
+  <button class="btn-start" onclick="startQuiz()">Начать тест →</button>
+</div>
+
+<div id="quiz">
+  <div class="top-bar">
+    <div class="q-counter">Вопрос <b id="qNum">1</b> из 40</div>
+    <div class="score-live">Верно: <b id="scoreLive">0</b></div>
+  </div>
+  <div class="pbar-wrap"><div class="pbar" id="pbar" style="width:0%"></div></div>
+
+  <div class="q-card">
+    <div class="q-label" id="qLabel">Вопрос 1</div>
+    <div class="q-text" id="qText"></div>
+    <div id="multiNote" class="multi-note" style="display:none">⚡ Несколько правильных ответов — выбери все, затем нажми «Проверить»</div>
+    <div class="opts" id="opts"></div>
+    <div class="feedback" id="feedback">
+      <div class="fb-title" id="fbTitle"></div>
+      <div id="fbBody"></div>
+    </div>
+    <button class="btn-check" id="btnCheck" onclick="submitMulti()">Проверить</button>
+  </div>
+  <button class="btn-next" id="btnNext" onclick="nextQ()"></button>
+</div>
+
+<div id="results">
+  <div class="res-pct" id="resPct">0%</div>
+  <div class="res-verdict" id="resVerdict"></div>
+  <div class="stats">
+    <div class="stat"><div class="sv g" id="resOk">0</div><div class="sl">Верно</div></div>
+    <div class="stat"><div class="sv r" id="resFail">0</div><div class="sl">Ошибки</div></div>
+    <div class="stat"><div class="sv b">40</div><div class="sl">Всего</div></div>
+  </div>
+  <div class="res-btns">
+    <button class="btn-redo" onclick="startQuiz()">Пройти заново</button>
+    <button class="btn-retry" id="btnRetry" onclick="retryWrong()" style="display:none">Повторить ошибки</button>
+  </div>
+  <div class="wrong-block" id="wrongBlock" style="display:none">
+    <h3>❌ Разбор ошибок</h3>
+    <div id="wrongItems"></div>
+  </div>
+</div>
+
+<script>
+const LETTERS = ['А','Б','В','Г','Д','Е'];
+
+const ALL_Q = [
+  {n:1,q:"Психиатрия отличается от психотерапии тем, что:",opts:["изучает течение и способы лечения только целостных психических болезней","исследует патологию и лечение только отдельных психических функций","рассматривает причины и сущность психических болезней с медицинской точки зрения"],correct:[2]},
+  {n:2,q:"В основе одной из классификаций методов психотерапии (И. З. Вельвовский) лежит состояние клиента, при котором происходит воздействие. Классификация включает в себя методы, применяемые в естественном состоянии бодрствования (1), методы в особых состояниях сознания (2), а также:",opts:["методы поведенческой терапии","методы реципрокного торможения","методы арт-терапии","методы влияния при различных видах стресса"],correct:[3]},
+  {n:3,q:"Структура бессознательного в теории З. Фрейда включает в себя либидо, агрессию, подсознательное, защитные механизмы, а также:",opts:["тень","архетипы","мысли и чувства, подвергнутые «цензуре»","самость"],correct:[2]},
+  {n:4,q:"Техника классического психоанализа включает в себя три основные процедуры – продуцирование материала, анализ материала, а также: подстройку к будущему;",opts:["рабочий альянс","интроекцию","катарсис"],correct:[0]},
+  {n:5,q:"Иммерсия (как поддержание в клиенте желания именно того, чего он боится) относится к методам:",opts:["рациональной терапии","поведенческой (условно-рефлекторной) терапии","психосинтеза","психодрамы"],correct:[1]},
+  {n:6,q:"Какой из компонентов относится к архетипам индивидуального бессознательного в теории К. Г. Юнга:",opts:["либидо","креативное «Я»","индивидуальный стиль","Анима и Анимус"],correct:[3]},
+  {n:7,q:"Основной функцией консультанта является:",opts:["решение проблемы клиента","диагностика психологических особенностей клиента и предоставление ему рекомендаций","предоставление необходимой информации клиенту, стимулирование его активности для работы над собой","решение проблем окружающих и близких людей клиента"],correct:[2]},
+  {n:8,q:"В консультировании существуют механизмы психологического воздействия:",opts:["заражение, внушение, убеждение, подражание","внушение, заражение, манипулирование, подражание","подражание, внушение, заражение, гипноз","все ответы верные"],correct:[0]},
+  {n:9,q:"Какой из предложенных вариантов не является причиной нарушения контакта между консультантом и клиентом в процессе психологического консультирования:",opts:["фиксация на решении проблемы","тревожность консультанта","оценочная позиция психолога","внимательность психолога к коммуникативным нормам"],correct:[3]},
+  {n:10,q:"Какой из ниже перечисленных способов относится к способу профилактики профессионального «выгорания»:",opts:["обращение за супервизией или поддержкой","подавление негативных эмоций","наличие близких отношений с клиентом","выполнение работы на дому"],correct:[0]},
+  {n:11,q:"Конфиденциальность в работе с клиентом может быть нарушена, если… его нравственные нормы противоречат представлениям консультанта; случай консультирования необычен, нетипичен и представляет научный и практический интерес;",opts:["консультируется лицо, чьи действия способны нанести вред или нарушают права третьих лиц","консультируется ребёнок"],correct:[0]},
+  {n:12,q:"Манипулятивный запрос не включает в себя управление…",opts:["поведением других","эмоциями других","психологом","саморазвитием"],correct:[3]},
+  {n:13,q:"Запрос «Как «влюбить» в себя девушку?» относится к…",opts:["манипулятивным запросам","запросам о помощи в саморазвитии","запросам об информации","запросам о трансформации"],correct:[0]},
+  {n:14,q:"Запрос «Помогите научиться общаться» относится к запросам…",opts:["об информации","о снятии симптома","о помощи в самопознании","о помощи в саморазвитии"],correct:[3]},
+  {n:15,q:"Система общих профессиональных положений, руководствуясь которыми психолог работает с клиентом, называется…",opts:["этическим кодексом психолога","принципами консультативной помощи","личностными установками консультанта","фундаментальными понятиями теории консультативной психологии"],correct:[0]},
+  {n:16,q:"Что не входит в начальный этап консультирования?",opts:["знакомство с клиентом","объяснение, что такое психологическое консультирование","рассказывание клиентом своей проблемы","предложение альтернатив решения проблемы"],correct:[3]},
+  {n:17,q:"На первой фазе расспросу клиента не способствует…",opts:["интерпретация проблем клиента","эмпатическое слушание","использование открытых вопросов и реплик","структурирование беседы"],correct:[0]},
+  {n:18,q:"Наименее эффективный способ получения информации от клиента – это…",opts:["задавать прямые вопросы","работать с конкретными ситуациями","использовать подробности и детали высказываний клиента","ориентироваться на эмоции и чувства, переживаемые клиентом"],correct:[0]},
+  {n:19,q:"В консультативной практике при выборе ситуаций принято отталкиваться от трёх положений. Какое из приведённых ниже лишнее?",opts:["выбираемые ситуации должны быть непосредственно и тесно связаны с содержанием основных жалоб клиента","обсуждаемые ситуации должны быть типичными, часто встречающимися в жизни клиента","обсуждаемые ситуации должны быть необычными, экстремальными, «выпадающими» из повседневной жизни клиента","ситуации должны быть развёрнутыми, описывающими целостные паттерны взаимодействия"],correct:[2]},
+  {n:20,q:"Какая из перечисленных реплик не должна использоваться в консультировании?",opts:["«Давайте вместе разберёмся, что случилось»","«Не бойтесь, рассказывайте всё как есть»","«Расскажите об этом подробнее»","«Что вас привело к этому выводу?»"],correct:[1]},
+  {n:21,q:"Чтобы консультативная гипотеза была подтверждена или опровергнута, правильнее всего…",opts:["задавать клиенту открытые вопросы","дать возможность клиенту спонтанно рассказать всё, что он сочтёт нужным","рассмотреть 2–3 конкретные ситуации из жизни клиента","рассмотреть один конкретный случай, иллюстрирующий позицию клиента"],correct:[2]},
+  {n:22,q:"Показать клиенту неконструктивность его позиции и навести на выработку индивидуально приемлемых стратегий разрешения проблемы – это задача фазы…",opts:["расспроса","выдвижения альтернатив","коррекции","проверки гипотез"],correct:[2]},
+  {n:23,q:"Главная задача расспроса для консультанта…",opts:["«разговорить» клиента","уяснить суть проблемы","успокоить клиента","создать для клиента комфортную эмоциональную атмосферу"],correct:[1]},
+  {n:24,q:"Стимулирование рассказывания консультант не осуществляет путём…",opts:["постановки открытых вопросов","расспрашивания о деталях и подробностях происшедшего","эмпатического слушания","собственной интерпретации происходящего"],correct:[3]},
+  {n:25,q:"При перефразировании рекомендуется соблюдать три основных правила. Какое из приведённых ниже лишнее?",opts:["нельзя искажать или подменять смысл утверждения клиента","перефразируется основная мысль","надо избегать дословного повторения высказывания клиента","надо в высказывание клиента добавлять что-то от себя"],correct:[3]},
+  {n:26,q:"Собственное объяснение клиентом природы того или иного нарушения в жизни, основанное на его представлениях о самом себе, о семье и человеческих взаимоотношениях, отношение клиента к расстройству или его предполагаемому носителю – это:",opts:["Проблема","Запрос","Самодиагноз","Мотивация прихода","Локус жалобы"],correct:[2]},
+  {n:27,q:"Указание на то, что клиент хотел бы, но не может изменить – это:",opts:["Проблема","Запрос","Самодиагноз","Мотивация прихода","Локус жалобы"],correct:[0]},
+  {n:28,q:"Конкретизация формы помощи, ожидаемой клиентом от консультации:",opts:["Проблема","Запрос","Самодиагноз","Мотивация прихода","Локус жалобы"],correct:[1]},
+  {n:29,q:"Психолог-консультант имеет право:",opts:["Собирать личную информацию о клиенте с его согласия","Прописывать препараты, улучшающие самочувствие клиента","Использовать гипнотические техники","Публиковать проведённые консультации в полном объёме","Публиковать результаты своей консультативной деятельности в обобщённом виде"],correct:[0,4]},
+  {n:30,q:"Возвращение, как правило, в более сжатой и ясной форме, к сути когнитивного содержания высказывания клиента для сверки правильности понимания консультантом сообщения клиента и более ясное понимание самим клиентом собственного внутреннего мира, особенностей взаимодействия с внешним миром – это:",opts:["Парадоксальная реакция","Повторение","Отражение чувств","Конфронтация","Прояснение"],correct:[4]},
+  {n:31,q:"Противостояние защитным манёврам, иррациональным представлениям клиента, которые он не осознаёт или не подвергает изменению, демонстрация противоречий или расхождений между различными элементами психического опыта клиента в форме – это:",opts:["Парадоксальная реакция","Повторение","Отражение чувств","Конфронтация","Прояснение"],correct:[3]},
+  {n:32,q:"Почти буквальное воспроизведение сказанного клиентом или избирательное акцентирование определённых элементов его сообщения – это:",opts:["Парадоксальная реакция","Повторение","Отражение чувств","Конфронтация","Прояснение"],correct:[1]},
+  {n:33,q:"Клиент-центрированная психотерапия предполагает:",opts:["использование свободных ассоциаций","директивное отношение психотерапевта к пациенту","работу с иррациональными установками личности","изменение системы отношений пациента"],correct:[3]},
+  {n:34,q:"Термин «научение» имеет наибольшее значение для:",opts:["психоанализа","гештальт-терапии","психодрамы","когнитивной психотерапии"],correct:[3]},
+  {n:35,q:"В теории личности З. Фрейда значимым аспектом является:",opts:["стремление к превосходству","чувство неполноценности","бессознательное","самоактуализация"],correct:[2]},
+  {n:36,q:"Какую позицию занимает психоаналитик по отношению к своему пациенту?",opts:["директивную и принимающую","недирективную и принимающую","принимающую и поддерживающую","директивную и дистанцированную"],correct:[3]},
+  {n:37,q:"На приёме у динамического психотерапевта пациентка намёками демонстрирует симпатию к психотерапевту; последнему следует выбрать конструктивную тактику:",opts:["не замечать такого поведения; во время занятия не обращать внимания, а после окончания вне основного времени обсудить с ней её поведение","напрямую поговорить о поведении пациентки в начале занятия, чтобы можно было без помех продолжать работу","сделать обнаружившийся факт симпатии пациентки к себе содержанием занятия"],correct:[2]},
+  {n:38,q:"Архетипы по Юнгу представляют собой «изначальные первообразы», имеющиеся в каждом человеке, и составляют содержание:",opts:["низшего бессознательного","индивидуального бессознательного","коллективного бессознательного","личного бессознательного"],correct:[2]},
+  {n:39,q:"Согласно Адлеру, существенной характеристикой личности является:",opts:["чувство общности","ориентация интересов на внешний или внутренний мир; сосредоточенность на настоящем","защитный панцирь"],correct:[0]},
+  {n:40,q:"Основной задачей личностно-ориентированной психотерапии на начальном этапе является:",opts:["выработка и закрепление желаемых форм поведения","установление контакта и определение дезадаптивных стереотипов в когнитивной, эмоциональной и поведенческой сферах личности","устранение симптома","бессознательные психические процессы должны быть как можно более глубоко раскрыты и представлены сознанию"],correct:[1]}
+];
+
+let session = [];
+let cur = 0;
+let score = 0;
+let wrongs = [];
+let answered = false;
+let multiSelected = [];
+
+function startQuiz() {
+  session = [...ALL_Q];
+  cur = 0; score = 0; wrongs = []; answered = false; multiSelected = [];
+  document.getElementById('intro').style.display = 'none';
+  document.getElementById('results').style.display = 'none';
+  document.getElementById('quiz').style.display = 'block';
+  render();
+}
+
+function render() {
+  const q = session[cur];
+  answered = false;
+  multiSelected = [];
+
+  document.getElementById('qNum').textContent = cur + 1;
+  document.getElementById('scoreLive').textContent = score;
+  document.getElementById('qLabel').textContent = `Вопрос ${q.n}`;
+  document.getElementById('qText').textContent = q.q;
+  document.getElementById('pbar').style.width = `${(cur / session.length) * 100}%`;
+  document.getElementById('feedback').style.display = 'none';
+  document.getElementById('btnNext').style.display = 'none';
+
+  const isMulti = q.correct.length > 1;
+  document.getElementById('multiNote').style.display = isMulti ? 'inline-block' : 'none';
+  document.getElementById('btnCheck').style.display = isMulti ? 'block' : 'none';
+
+  const container = document.getElementById('opts');
+  container.innerHTML = '';
+  q.opts.forEach((text, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'opt';
+    btn.innerHTML = `<span class="opt-letter">${LETTERS[i]}</span><span>${text}</span>`;
+    if (isMulti) {
+      btn.onclick = () => toggleMulti(i, btn);
+    } else {
+      btn.onclick = () => selectSingle(i);
+    }
+    container.appendChild(btn);
+  });
+
+  document.getElementById('btnNext').textContent =
+    cur < session.length - 1 ? 'Следующий вопрос →' : 'Завершить тест →';
+}
+
+function selectSingle(chosen) {
+  if (answered) return;
+  answered = true;
+  const q = session[cur];
+  const btns = document.querySelectorAll('.opt');
+  btns.forEach(b => b.disabled = true);
+
+  const isCorrect = q.correct.includes(chosen);
+  btns[chosen].classList.add(isCorrect ? 'correct' : 'wrong');
+  if (!isCorrect) {
+    q.correct.forEach(ci => btns[ci].classList.add('reveal'));
+    wrongs.push({ q: q.q, your: q.opts[chosen], correct: q.correct.map(ci => q.opts[ci]).join('; ') });
+  } else {
+    score++;
+    document.getElementById('scoreLive').textContent = score;
+  }
+
+  const fb = document.getElementById('feedback');
+  fb.className = 'feedback ' + (isCorrect ? 'ok' : 'fail');
+  document.getElementById('fbTitle').textContent = isCorrect ? '✓ Верно!' : '✗ Неверно';
+  document.getElementById('fbBody').textContent = isCorrect ? '' : `Правильный ответ: ${q.correct.map(ci => q.opts[ci]).join('; ')}`;
+  fb.style.display = 'block';
+  document.getElementById('btnNext').style.display = 'block';
+}
+
+function toggleMulti(i, btn) {
+  if (answered) return;
+  const idx = multiSelected.indexOf(i);
+  if (idx === -1) {
+    multiSelected.push(i);
+    btn.classList.add('selected');
+    btn.querySelector('.opt-letter').style.background = 'var(--accent)';
+    btn.querySelector('.opt-letter').style.color = '#fff';
+  } else {
+    multiSelected.splice(idx, 1);
+    btn.classList.remove('selected');
+    btn.querySelector('.opt-letter').style.background = '';
+    btn.querySelector('.opt-letter').style.color = '';
+  }
+}
+
+function submitMulti() {
+  if (answered || multiSelected.length === 0) return;
+  answered = true;
+  const q = session[cur];
+  const btns = document.querySelectorAll('.opt');
+  btns.forEach(b => b.disabled = true);
+  document.getElementById('btnCheck').style.display = 'none';
+
+  const correctSet = new Set(q.correct);
+  const selectedSet = new Set(multiSelected);
+  const isCorrect = q.correct.every(c => selectedSet.has(c)) && multiSelected.every(s => correctSet.has(s));
+
+  btns.forEach((btn, i) => {
+    btn.classList.remove('selected');
+    btn.querySelector('.opt-letter').style.background = '';
+    btn.querySelector('.opt-letter').style.color = '';
+    if (correctSet.has(i) && selectedSet.has(i)) btn.classList.add('correct');
+    else if (!correctSet.has(i) && selectedSet.has(i)) btn.classList.add('wrong');
+    else if (correctSet.has(i) && !selectedSet.has(i)) btn.classList.add('reveal');
+  });
+
+  if (isCorrect) {
+    score++;
+    document.getElementById('scoreLive').textContent = score;
+  } else {
+    wrongs.push({ q: q.q, your: multiSelected.map(i => q.opts[i]).join('; '), correct: q.correct.map(ci => q.opts[ci]).join('; ') });
+  }
+
+  const fb = document.getElementById('feedback');
+  fb.className = 'feedback ' + (isCorrect ? 'ok' : 'fail');
+  document.getElementById('fbTitle').textContent = isCorrect ? '✓ Верно!' : '✗ Неверно';
+  document.getElementById('fbBody').textContent = isCorrect ? '' : `Правильные ответы: ${q.correct.map(ci => q.opts[ci]).join('; ')}`;
+  fb.style.display = 'block';
+  document.getElementById('btnNext').style.display = 'block';
+}
+
+function nextQ() {
+  cur++;
+  if (cur >= session.length) showResults();
+  else { render(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+}
+
+function showResults() {
+  document.getElementById('quiz').style.display = 'none';
+  const res = document.getElementById('results');
+  res.style.display = 'flex';
+  const pct = Math.round(score / session.length * 100);
+  document.getElementById('resPct').textContent = pct + '%';
+  document.getElementById('resOk').textContent = score;
+  document.getElementById('resFail').textContent = session.length - score;
+
+  const verdicts = [
+    [90, '🏆 Отлично! Блок освоен.'],
+    [75, '👍 Хорошо! Почти готов.'],
+    [60, '📚 Неплохо, но есть над чем работать.'],
+    [0,  '💪 Нужно повторить материал.']
+  ];
+  document.getElementById('resVerdict').textContent = verdicts.find(([t]) => pct >= t)[1];
+
+  if (wrongs.length) {
+    document.getElementById('btnRetry').style.display = '';
+    document.getElementById('wrongBlock').style.display = 'block';
+    document.getElementById('wrongItems').innerHTML = wrongs.map(w => `
+      <div class="wi">
+        <div class="wq">${w.q}</div>
+        <div class="wy">✗ Ваш ответ: ${w.your}</div>
+        <div class="wc">✓ Правильно: ${w.correct}</div>
+      </div>`).join('');
+  }
+}
+
+function retryWrong() {
+  const wrongQs = wrongs.map(w => ALL_Q.find(q => q.q === w.q)).filter(Boolean);
+  if (!wrongQs.length) return;
+  session = wrongQs;
+  cur = 0; score = 0; wrongs = []; answered = false; multiSelected = [];
+  document.getElementById('results').style.display = 'none';
+  document.getElementById('wrongBlock').style.display = 'none';
+  document.getElementById('btnRetry').style.display = 'none';
+  document.getElementById('quiz').style.display = 'block';
+  render();
+}
+</script>
+</body>
+</html>
