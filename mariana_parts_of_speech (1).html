@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Части речи · Parts of Speech — для Марьяны</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,800;1,500&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FFF8EE;
+    --ink:#2A2438;
+    --paper:#FFFFFF;
+    --noun:#3DA35D;       /* зелёный — предмет */
+    --noun-soft:#E6F4EA;
+    --adj:#3A86FF;        /* синий — признак */
+    --adj-soft:#E4EDFF;
+    --verb:#F4762E;       /* оранжевый — действие */
+    --verb-soft:#FFEBDB;
+    --muted:#7A7287;
+    --line:#E8DFCE;
+    --shadow:0 4px 0 #2A2438;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{overflow-x:hidden;}
+  body{
+    font-family:'Nunito',sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    min-height:100vh;
+    padding:24px 16px 48px;
+    background-image:
+      radial-gradient(circle at 15% 10%, rgba(61,163,93,.08) 0, transparent 40%),
+      radial-gradient(circle at 85% 80%, rgba(244,118,46,.08) 0, transparent 40%),
+      radial-gradient(circle at 50% 50%, rgba(58,134,255,.05) 0, transparent 50%);
+  }
+  .wrap{max-width:720px;margin:0 auto;}
+
+  /* HEADER */
+  header{text-align:center;margin-bottom:24px;}
+  header h1{
+    font-family:'Fraunces',serif;
+    font-weight:800;
+    font-size:clamp(28px,5vw,40px);
+    line-height:1.1;
+    letter-spacing:-.02em;
+  }
+  header h1 .en{
+    display:block;
+    font-style:italic;
+    font-weight:500;
+    font-size:.55em;
+    color:var(--muted);
+    margin-top:4px;
+  }
+  header p.sub{
+    margin-top:8px;
+    color:var(--muted);
+    font-size:15px;
+  }
+
+  /* LEGEND */
+  .legend{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+    margin-bottom:20px;
+  }
+  .legend-card{
+    background:var(--paper);
+    border:2px solid var(--ink);
+    border-radius:14px;
+    padding:12px 8px;
+    text-align:center;
+    box-shadow:var(--shadow);
+    min-width:0;
+  }
+  .legend-card .dot{
+    width:36px;height:36px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    margin:0 auto 6px;
+    font-size:20px;
+  }
+  .legend-card.n .dot{background:var(--noun-soft);}
+  .legend-card.a .dot{background:var(--adj-soft);}
+  .legend-card.v .dot{background:var(--verb-soft);}
+  .legend-card h3{
+    font-size:11px;
+    font-weight:800;
+    text-transform:uppercase;
+    letter-spacing:.02em;
+    word-break:break-word;
+    hyphens:auto;
+  }
+  @media(min-width:480px){
+    .legend-card h3{font-size:13px;letter-spacing:.05em;}
+    .legend-card{padding:12px 10px;}
+  }
+  .legend-card.n h3{color:var(--noun);}
+  .legend-card.a h3{color:var(--adj);}
+  .legend-card.v h3{color:var(--verb);}
+  .legend-card .q{
+    font-family:'Fraunces',serif;
+    font-style:italic;
+    font-size:13px;
+    color:var(--ink);
+    margin-top:4px;
+  }
+  .legend-card .q-en{
+    font-size:11px;
+    color:var(--muted);
+    font-style:italic;
+  }
+
+  /* PROGRESS */
+  .progress-row{
+    display:flex;align-items:center;justify-content:space-between;
+    margin-bottom:14px;
+    font-size:14px;
+    font-weight:700;
+  }
+  .progress-row .score{color:var(--noun);}
+  .progress-row .qnum{color:var(--ink);}
+  .bar{
+    height:8px;background:var(--line);border-radius:99px;overflow:hidden;
+    margin-bottom:24px;
+  }
+  .bar > div{
+    height:100%;background:linear-gradient(90deg,var(--noun),var(--adj),var(--verb));
+    border-radius:99px;
+    transition:width .4s ease;
+  }
+
+  /* CARD */
+  .card{
+    background:var(--paper);
+    border:3px solid var(--ink);
+    border-radius:24px;
+    padding:32px 24px 28px;
+    box-shadow:var(--shadow);
+    text-align:center;
+    position:relative;
+  }
+  .card .prompt{
+    font-size:13px;
+    text-transform:uppercase;
+    letter-spacing:.1em;
+    color:var(--muted);
+    font-weight:700;
+  }
+  .card .prompt-en{
+    font-size:11px;
+    color:var(--muted);
+    font-style:italic;
+    margin-bottom:18px;
+  }
+  .word{
+    font-family:'Fraunces',serif;
+    font-weight:800;
+    font-size:clamp(40px,9vw,64px);
+    line-height:1;
+    margin:8px 0 8px;
+    letter-spacing:-.02em;
+  }
+  .word-en{
+    font-family:'Fraunces',serif;
+    font-style:italic;
+    color:var(--muted);
+    font-size:18px;
+    margin-bottom:24px;
+  }
+
+  /* CHOICES */
+  .choices{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:10px;
+    margin-top:8px;
+  }
+  @media(min-width:520px){
+    .choices{grid-template-columns:repeat(3,1fr);}
+  }
+  .choice{
+    border:2px solid var(--ink);
+    background:var(--paper);
+    border-radius:16px;
+    padding:14px 12px;
+    cursor:pointer;
+    font-family:'Nunito',sans-serif;
+    font-weight:800;
+    font-size:15px;
+    color:var(--ink);
+    transition:transform .12s ease, background .2s ease;
+    text-align:center;
+  }
+  .choice:hover:not(:disabled){transform:translateY(-2px);}
+  .choice:active:not(:disabled){transform:translateY(1px);}
+  .choice .ico{font-size:22px;display:block;margin-bottom:4px;}
+  .choice .en{
+    display:block;
+    font-weight:500;
+    font-style:italic;
+    font-size:12px;
+    color:var(--muted);
+    margin-top:2px;
+  }
+  .choice[data-type="n"]:hover:not(:disabled){background:var(--noun-soft);}
+  .choice[data-type="a"]:hover:not(:disabled){background:var(--adj-soft);}
+  .choice[data-type="v"]:hover:not(:disabled){background:var(--verb-soft);}
+  .choice.correct{
+    background:var(--noun-soft);
+    border-color:var(--noun);
+    color:var(--noun);
+  }
+  .choice.wrong{
+    background:#FCE4E4;
+    border-color:#D14848;
+    color:#D14848;
+  }
+  .choice.reveal{
+    background:var(--noun-soft);
+    border-color:var(--noun);
+    color:var(--noun);
+    animation:pulse .6s ease;
+  }
+  @keyframes pulse{
+    0%,100%{transform:scale(1);}
+    50%{transform:scale(1.04);}
+  }
+  .choice:disabled{cursor:default;opacity:.85;}
+
+  /* FEEDBACK */
+  .feedback{
+    margin-top:18px;
+    padding:14px 16px;
+    border-radius:14px;
+    background:var(--bg);
+    border:2px dashed var(--line);
+    text-align:left;
+    display:none;
+  }
+  .feedback.show{display:block;animation:slide .3s ease;}
+  @keyframes slide{
+    from{opacity:0;transform:translateY(-6px);}
+    to{opacity:1;transform:translateY(0);}
+  }
+  .feedback .verdict{
+    font-family:'Fraunces',serif;
+    font-weight:800;
+    font-size:20px;
+    margin-bottom:4px;
+  }
+  .feedback .verdict.ok{color:var(--noun);}
+  .feedback .verdict.no{color:#D14848;}
+  .feedback .explain{
+    font-size:14px;
+    line-height:1.5;
+    margin-top:4px;
+  }
+  .feedback .explain b{
+    color:var(--ink);
+    background:#FFF3B0;
+    padding:0 4px;
+    border-radius:4px;
+  }
+  .feedback .explain-en{
+    margin-top:6px;
+    font-size:13px;
+    font-style:italic;
+    color:var(--muted);
+    line-height:1.5;
+  }
+
+  /* NEXT BUTTON */
+  .next-btn{
+    display:none;
+    margin-top:16px;
+    width:100%;
+    background:var(--ink);
+    color:var(--bg);
+    border:none;
+    border-radius:14px;
+    padding:14px;
+    font-family:'Nunito',sans-serif;
+    font-weight:800;
+    font-size:16px;
+    cursor:pointer;
+    transition:transform .12s ease;
+  }
+  .next-btn:hover{transform:translateY(-2px);}
+  .next-btn:active{transform:translateY(1px);}
+  .next-btn.show{display:block;}
+  .next-btn .en{font-style:italic;font-weight:500;opacity:.7;font-size:13px;margin-left:6px;}
+
+  /* RESULTS */
+  .results{
+    display:none;
+    background:var(--paper);
+    border:3px solid var(--ink);
+    border-radius:24px;
+    padding:32px 24px;
+    box-shadow:var(--shadow);
+    text-align:center;
+  }
+  .results.show{display:block;}
+  .results .emoji{font-size:64px;margin-bottom:12px;}
+  .results h2{
+    font-family:'Fraunces',serif;
+    font-weight:800;
+    font-size:32px;
+    margin-bottom:6px;
+  }
+  .results h2 .en{
+    display:block;
+    font-style:italic;
+    font-weight:500;
+    font-size:18px;
+    color:var(--muted);
+    margin-top:2px;
+  }
+  .results .final-score{
+    font-family:'Fraunces',serif;
+    font-size:48px;
+    font-weight:800;
+    margin:16px 0;
+    color:var(--noun);
+  }
+  .results .restart{
+    background:var(--verb);
+    color:var(--paper);
+    border:2px solid var(--ink);
+    border-radius:14px;
+    padding:14px 24px;
+    font-family:'Nunito',sans-serif;
+    font-weight:800;
+    font-size:16px;
+    cursor:pointer;
+    margin-top:10px;
+    box-shadow:0 4px 0 var(--ink);
+    transition:transform .12s ease;
+  }
+  .results .restart:hover{transform:translateY(-2px);}
+  .results .restart:active{transform:translateY(2px);box-shadow:0 2px 0 var(--ink);}
+
+  /* Hint micro-trick */
+  .hint{
+    margin-top:18px;
+    font-size:12px;
+    color:var(--muted);
+    text-align:center;
+    font-style:italic;
+  }
+
+  /* TABS */
+  .tabs{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+    margin-bottom:20px;
+    background:var(--paper);
+    border:2px solid var(--ink);
+    border-radius:16px;
+    padding:6px;
+    box-shadow:var(--shadow);
+  }
+  .tab{
+    border:none;
+    background:transparent;
+    padding:12px 8px;
+    border-radius:11px;
+    font-family:'Nunito',sans-serif;
+    font-weight:800;
+    font-size:14px;
+    color:var(--muted);
+    cursor:pointer;
+    transition:all .2s ease;
+    text-align:center;
+  }
+  .tab .en{
+    display:block;
+    font-style:italic;
+    font-weight:500;
+    font-size:11px;
+    margin-top:2px;
+    opacity:.8;
+  }
+  .tab.active{
+    background:var(--ink);
+    color:var(--bg);
+  }
+
+  /* LEARN SECTION */
+  .learn{display:block;}
+  .learn.hidden{display:none;}
+  .practice{display:none;}
+  .practice.show{display:block;}
+
+  .lesson{
+    background:var(--paper);
+    border:3px solid var(--ink);
+    border-radius:24px;
+    padding:24px 22px;
+    box-shadow:var(--shadow);
+    margin-bottom:20px;
+    position:relative;
+    overflow:hidden;
+  }
+  .lesson::before{
+    content:'';
+    position:absolute;
+    top:0;left:0;right:0;
+    height:8px;
+  }
+  .lesson.l-n::before{background:var(--noun);}
+  .lesson.l-a::before{background:var(--adj);}
+  .lesson.l-v::before{background:var(--verb);}
+
+  .lesson-head{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    margin-bottom:14px;
+  }
+  .lesson-head .big-icon{
+    width:56px;height:56px;
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-size:28px;
+    flex-shrink:0;
+  }
+  .lesson.l-n .big-icon{background:var(--noun-soft);}
+  .lesson.l-a .big-icon{background:var(--adj-soft);}
+  .lesson.l-v .big-icon{background:var(--verb-soft);}
+
+  .lesson-head h2{
+    font-family:'Fraunces',serif;
+    font-weight:800;
+    font-size:26px;
+    line-height:1;
+    letter-spacing:-.01em;
+  }
+  .lesson.l-n .lesson-head h2{color:var(--noun);}
+  .lesson.l-a .lesson-head h2{color:var(--adj);}
+  .lesson.l-v .lesson-head h2{color:var(--verb);}
+  .lesson-head h2 .en{
+    display:block;
+    font-style:italic;
+    font-weight:500;
+    font-size:14px;
+    color:var(--muted);
+    margin-top:2px;
+  }
+
+  .lesson .question-badge{
+    display:inline-block;
+    background:#FFF3B0;
+    border:2px dashed var(--ink);
+    border-radius:12px;
+    padding:8px 14px;
+    font-family:'Fraunces',serif;
+    font-style:italic;
+    font-weight:600;
+    font-size:18px;
+    margin-bottom:14px;
+  }
+  .lesson .question-badge .en{
+    display:block;
+    font-size:12px;
+    color:var(--muted);
+    font-weight:500;
+    margin-top:2px;
+  }
+
+  .lesson p.simple{
+    font-size:15px;
+    line-height:1.55;
+    margin-bottom:8px;
+  }
+  .lesson p.simple-en{
+    font-size:13px;
+    line-height:1.55;
+    color:var(--muted);
+    font-style:italic;
+    margin-bottom:14px;
+  }
+
+  .examples{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-bottom:14px;
+  }
+  .ex-chip{
+    padding:8px 14px;
+    border-radius:99px;
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:15px;
+    border:2px solid var(--ink);
+  }
+  .lesson.l-n .ex-chip{background:var(--noun-soft);color:var(--noun);}
+  .lesson.l-a .ex-chip{background:var(--adj-soft);color:var(--adj);}
+  .lesson.l-v .ex-chip{background:var(--verb-soft);color:var(--verb);}
+  .ex-chip .en{
+    font-style:italic;
+    font-weight:400;
+    opacity:.65;
+    margin-left:4px;
+    font-size:12px;
+  }
+
+  .trick-box{
+    background:var(--bg);
+    border-left:4px solid var(--ink);
+    border-radius:8px;
+    padding:12px 14px;
+    margin-top:8px;
+  }
+  .trick-box .label{
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:.1em;
+    font-weight:800;
+    color:var(--ink);
+    margin-bottom:4px;
+  }
+  .trick-box .label::before{content:"💡 ";}
+  .trick-box .text{
+    font-size:14px;
+    line-height:1.5;
+  }
+  .trick-box .text-en{
+    font-size:12px;
+    color:var(--muted);
+    font-style:italic;
+    margin-top:4px;
+  }
+  .trick-box b{
+    background:#FFF3B0;
+    padding:0 4px;
+    border-radius:3px;
+  }
+
+  /* CONFUSION SECTION */
+  .confusion{
+    background:var(--paper);
+    border:3px solid var(--ink);
+    border-radius:24px;
+    padding:24px 22px;
+    box-shadow:var(--shadow);
+    margin-bottom:20px;
+  }
+  .confusion h2{
+    font-family:'Fraunces',serif;
+    font-weight:800;
+    font-size:24px;
+    margin-bottom:4px;
+  }
+  .confusion h2 .en{
+    display:block;
+    font-style:italic;
+    font-weight:500;
+    font-size:14px;
+    color:var(--muted);
+    margin-top:2px;
+  }
+  .confusion > p.intro{
+    color:var(--muted);
+    font-size:14px;
+    margin-bottom:18px;
+  }
+
+  .pair{
+    background:var(--bg);
+    border:2px solid var(--line);
+    border-radius:16px;
+    padding:14px 16px;
+    margin-bottom:12px;
+  }
+  .pair-title{
+    font-family:'Fraunces',serif;
+    font-weight:800;
+    font-size:17px;
+    margin-bottom:10px;
+  }
+  .pair-title .en{
+    display:block;
+    font-style:italic;
+    font-weight:500;
+    font-size:12px;
+    color:var(--muted);
+    margin-top:1px;
+  }
+  .pair-cols{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:10px;
+  }
+  @media(min-width:520px){
+    .pair-cols{grid-template-columns:1fr 1fr;}
+  }
+  .mini{
+    background:var(--paper);
+    border:2px solid var(--ink);
+    border-radius:12px;
+    padding:10px 12px;
+  }
+  .mini.n{border-color:var(--noun);}
+  .mini.a{border-color:var(--adj);}
+  .mini.v{border-color:var(--verb);}
+  .mini-tag{
+    font-size:10px;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    font-weight:800;
+    margin-bottom:4px;
+  }
+  .mini.n .mini-tag{color:var(--noun);}
+  .mini.a .mini-tag{color:var(--adj);}
+  .mini.v .mini-tag{color:var(--verb);}
+  .mini-word{
+    font-family:'Fraunces',serif;
+    font-weight:700;
+    font-size:18px;
+    margin-bottom:2px;
+  }
+  .mini-q{
+    font-size:12px;
+    color:var(--muted);
+    font-style:italic;
+  }
+
+  .start-practice-btn{
+    width:100%;
+    background:var(--verb);
+    color:var(--paper);
+    border:2px solid var(--ink);
+    border-radius:16px;
+    padding:16px;
+    font-family:'Nunito',sans-serif;
+    font-weight:800;
+    font-size:16px;
+    cursor:pointer;
+    box-shadow:0 4px 0 var(--ink);
+    transition:transform .12s ease;
+    margin-bottom:20px;
+  }
+  .start-practice-btn:hover{transform:translateY(-2px);}
+  .start-practice-btn:active{transform:translateY(2px);box-shadow:0 2px 0 var(--ink);}
+  .start-practice-btn .en{
+    display:block;
+    font-style:italic;
+    font-weight:500;
+    font-size:13px;
+    opacity:.85;
+    margin-top:2px;
+  }
+
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>
+      Части речи
+      <span class="en">Parts of Speech · for Марьяна</span>
+    </h1>
+    <p class="sub">Сначала почитай объяснения, потом потренируйся в игре.</p>
+  </header>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab active" id="tabLearn">📖 Учимся<span class="en">Learn</span></button>
+    <button class="tab" id="tabPractice">🎮 Тренируемся<span class="en">Practice</span></button>
+  </div>
+
+  <!-- ================= LEARN ================= -->
+  <div class="learn" id="learnSection">
+
+    <!-- NOUN -->
+    <div class="lesson l-n">
+      <div class="lesson-head">
+        <div class="big-icon">🍎</div>
+        <h2>Существительное<span class="en">Noun — a thing or a person</span></h2>
+      </div>
+      <div class="question-badge">Отвечает на вопрос: кто? что?<span class="en">Answers: who? what?</span></div>
+      <p class="simple">Это <b>название</b> предмета, человека, животного или места. Всё, что можно потрогать, увидеть или назвать.</p>
+      <p class="simple-en">It is the <i>name</i> of a thing, a person, an animal or a place — something you can point at and name.</p>
+      <div class="examples">
+        <span class="ex-chip">стол<span class="en">table</span></span>
+        <span class="ex-chip">собака<span class="en">dog</span></span>
+        <span class="ex-chip">сестра<span class="en">sister</span></span>
+        <span class="ex-chip">город<span class="en">city</span></span>
+      </div>
+      <div class="trick-box">
+        <div class="label">Подсказка / Trick</div>
+        <div class="text">Можно поставить впереди <b>«это»</b> или <b>«мой / моя»</b>: <i>это стол, моя собака</i>. Получилось? Значит, существительное.</div>
+        <div class="text-en">Try putting <i>“a / the / my”</i> in front: <i>my dog, a table</i>. If it fits → it's a noun.</div>
+      </div>
+    </div>
+
+    <!-- ADJECTIVE -->
+    <div class="lesson l-a">
+      <div class="lesson-head">
+        <div class="big-icon">🎨</div>
+        <h2>Прилагательное<span class="en">Adjective — it describes</span></h2>
+      </div>
+      <div class="question-badge">Отвечает на вопрос: какой? какая? какое?<span class="en">Answers: what kind?</span></div>
+      <p class="simple">Это <b>признак</b> предмета — оно описывает, <b>какой</b> предмет: цвет, размер, характер, вкус.</p>
+      <p class="simple-en">It tells us <i>what a thing is like</i> — its colour, size, taste or character.</p>
+      <div class="examples">
+        <span class="ex-chip">синий<span class="en">blue</span></span>
+        <span class="ex-chip">маленький<span class="en">small</span></span>
+        <span class="ex-chip">умный<span class="en">smart</span></span>
+        <span class="ex-chip">сладкий<span class="en">sweet</span></span>
+      </div>
+      <div class="trick-box">
+        <div class="label">Подсказка / Trick</div>
+        <div class="text">Прилагательное всегда «дружит» с существительным: <i>синий <b>кит</b>, умная <b>сова</b></i>. Спроси <b>«какой?»</b> — если слово отвечает, это признак.</div>
+        <div class="text-en">An adjective always comes with a noun: <i>a blue whale</i>. Ask <i>“what kind?”</i> — if it answers, it's an adjective.</div>
+      </div>
+    </div>
+
+    <!-- VERB -->
+    <div class="lesson l-v">
+      <div class="lesson-head">
+        <div class="big-icon">⚡</div>
+        <h2>Глагол<span class="en">Verb — an action</span></h2>
+      </div>
+      <div class="question-badge">Отвечает на вопрос: что делает? что делать?<span class="en">Answers: what does it do?</span></div>
+      <p class="simple">Это <b>действие</b> — что предмет <b>делает</b>: бежит, думает, играет, спит.</p>
+      <p class="simple-en">It is an <i>action</i> — what someone or something <i>does</i>: runs, thinks, plays, sleeps.</p>
+      <div class="examples">
+        <span class="ex-chip">прыгает<span class="en">jumps</span></span>
+        <span class="ex-chip">пишет<span class="en">writes</span></span>
+        <span class="ex-chip">смеётся<span class="en">laughs</span></span>
+        <span class="ex-chip">плывёт<span class="en">swims</span></span>
+      </div>
+      <div class="trick-box">
+        <div class="label">Подсказка / Trick</div>
+        <div class="text">Можно показать руками 🙌. Если слово можно <b>сделать</b> — это глагол. Спроси <b>«что делает?»</b>: <i>что делает кот? — спит</i>.</div>
+        <div class="text-en">If you can <i>act it out</i> with your body, it's a verb. Ask <i>“what does it do?”</i></div>
+      </div>
+    </div>
+
+    <!-- CONFUSION / HOW NOT TO MIX UP -->
+    <div class="confusion">
+      <h2>Как не перепутать?<span class="en">How not to mix them up</span></h2>
+      <p class="intro">Один и тот же корень может стать разной частью речи! Смотри на вопрос — он не обманет.</p>
+
+      <div class="pair">
+        <div class="pair-title">красота · красивый · красуется<span class="en">beauty · beautiful · shows off</span></div>
+        <div class="pair-cols" style="grid-template-columns:1fr;">
+          <div class="mini n">
+            <div class="mini-tag">🍎 предмет</div>
+            <div class="mini-word">красота</div>
+            <div class="mini-q">что? — это вещь, её можно назвать</div>
+          </div>
+          <div class="mini a">
+            <div class="mini-tag">🎨 признак</div>
+            <div class="mini-word">красивый</div>
+            <div class="mini-q">какой? — описывает (красивый цветок)</div>
+          </div>
+          <div class="mini v">
+            <div class="mini-tag">⚡ действие</div>
+            <div class="mini-word">красуется</div>
+            <div class="mini-q">что делает? — это действие</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pair">
+        <div class="pair-title">бег · быстрый · бежит<span class="en">a run · fast · runs</span></div>
+        <div class="pair-cols" style="grid-template-columns:1fr;">
+          <div class="mini n">
+            <div class="mini-tag">🍎 предмет</div>
+            <div class="mini-word">бег</div>
+            <div class="mini-q">что? — название (мой бег)</div>
+          </div>
+          <div class="mini a">
+            <div class="mini-tag">🎨 признак</div>
+            <div class="mini-word">быстрый</div>
+            <div class="mini-q">какой? — быстрый поезд</div>
+          </div>
+          <div class="mini v">
+            <div class="mini-tag">⚡ действие</div>
+            <div class="mini-word">бежит</div>
+            <div class="mini-q">что делает? — мальчик бежит</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="trick-box" style="margin-top:14px;border-left-color:var(--verb);">
+        <div class="label">Золотое правило / Golden rule</div>
+        <div class="text">Не угадывай по слову — <b>всегда задавай вопрос</b>. Вопрос покажет часть речи точно: <i>кто? что?</i> → 🍎, <i>какой?</i> → 🎨, <i>что делает?</i> → ⚡</div>
+        <div class="text-en">Don't guess — <i>always ask the question</i>. The question always tells you the answer.</div>
+      </div>
+    </div>
+
+    <button class="start-practice-btn" id="goPractice">Я готова — начать игру! 🎮<span class="en">I'm ready — let's play!</span></button>
+  </div>
+
+  <!-- ================= PRACTICE ================= -->
+  <div class="practice" id="practiceSection">
+
+  <!-- LEGEND -->
+  <div class="legend">
+    <div class="legend-card n">
+      <div class="dot">🍎</div>
+      <h3>Существительное</h3>
+      <div class="q">кто? что?</div>
+      <div class="q-en">noun — a thing</div>
+    </div>
+    <div class="legend-card a">
+      <div class="dot">🎨</div>
+      <h3>Прилагательное</h3>
+      <div class="q">какой?</div>
+      <div class="q-en">adjective — describes</div>
+    </div>
+    <div class="legend-card v">
+      <div class="dot">⚡</div>
+      <h3>Глагол</h3>
+      <div class="q">что делает?</div>
+      <div class="q-en">verb — an action</div>
+    </div>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="progress-row">
+    <span class="qnum">Слово <span id="qcurr">1</span> из <span id="qtotal">20</span></span>
+    <span class="score">★ <span id="score">0</span></span>
+  </div>
+  <div class="bar"><div id="barfill" style="width:5%"></div></div>
+
+  <!-- GAME CARD -->
+  <div class="card" id="gameCard">
+    <div class="prompt">Какая это часть речи?</div>
+    <div class="prompt-en">Which part of speech?</div>
+    <div class="word" id="word">—</div>
+    <div class="word-en" id="wordEn">—</div>
+
+    <div class="choices">
+      <button class="choice" data-type="n">
+        <span class="ico">🍎</span>
+        Существительное
+        <span class="en">noun</span>
+      </button>
+      <button class="choice" data-type="a">
+        <span class="ico">🎨</span>
+        Прилагательное
+        <span class="en">adjective</span>
+      </button>
+      <button class="choice" data-type="v">
+        <span class="ico">⚡</span>
+        Глагол
+        <span class="en">verb</span>
+      </button>
+    </div>
+
+    <div class="feedback" id="feedback">
+      <div class="verdict" id="verdict"></div>
+      <div class="explain" id="explain"></div>
+      <div class="explain-en" id="explainEn"></div>
+    </div>
+
+    <button class="next-btn" id="nextBtn">Дальше <span class="en">/ Next →</span></button>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="results" id="results">
+    <div class="emoji" id="resultEmoji">🌟</div>
+    <h2 id="resultTitle">
+      Молодец!
+      <span class="en">Well done!</span>
+    </h2>
+    <div class="final-score"><span id="finalScore">0</span> / 20</div>
+    <p id="resultMsg" style="color:var(--muted);font-size:15px;margin-bottom:10px;"></p>
+    <button class="restart" id="restartBtn">Начать заново · Play again</button>
+  </div>
+
+  <p class="hint">💡 Совет: задай слову вопрос. <i>Кто? что?</i> → предмет. <i>Какой?</i> → признак. <i>Что делает?</i> → действие.</p>
+
+  </div><!-- /practice -->
+
+</div>
+
+<script>
+/* ===========================================================
+   ДАННЫЕ: слова с переводом и подсказкой-вопросом
+   Намеренно простые слова уровня начальной школы,
+   с парами однокоренных слов для контраста.
+=========================================================== */
+const WORDS = [
+  // существительные / nouns
+  {w:"птица", en:"bird", type:"n", q:"кто?"},
+  {w:"школа", en:"school", type:"n", q:"что?"},
+  {w:"брат", en:"brother", type:"n", q:"кто?"},
+  {w:"море", en:"sea", type:"n", q:"что?"},
+  {w:"цветок", en:"flower", type:"n", q:"что?"},
+  {w:"учитель", en:"teacher", type:"n", q:"кто?"},
+  {w:"машина", en:"car", type:"n", q:"что?"},
+
+  // прилагательные / adjectives
+  {w:"зелёный", en:"green", type:"a", q:"какой?"},
+  {w:"высокий", en:"tall", type:"a", q:"какой?"},
+  {w:"тёплый", en:"warm", type:"a", q:"какой?"},
+  {w:"смелый", en:"brave", type:"a", q:"какой?"},
+  {w:"мягкий", en:"soft", type:"a", q:"какой?"},
+  {w:"яркий", en:"bright", type:"a", q:"какой?"},
+  {w:"громкий", en:"loud", type:"a", q:"какой?"},
+
+  // глаголы / verbs
+  {w:"прыгает", en:"jumps", type:"v", q:"что делает?"},
+  {w:"плывёт", en:"swims", type:"v", q:"что делает?"},
+  {w:"думает", en:"thinks", type:"v", q:"что делает?"},
+  {w:"строит", en:"builds", type:"v", q:"что делает?"},
+  {w:"играет", en:"plays", type:"v", q:"что делает?"},
+  {w:"смеётся", en:"laughs", type:"v", q:"что делает?"}
+];
+
+const LABEL = {
+  n:{ru:"существительное", en:"a noun", q:"кто? что?", qEn:"who? what?"},
+  a:{ru:"прилагательное", en:"an adjective", q:"какой?", qEn:"what kind?"},
+  v:{ru:"глагол", en:"a verb", q:"что делает?", qEn:"what does it do?"}
+};
+
+const ICON = {n:"🍎",a:"🎨",v:"⚡"};
+
+/* ===========================================================
+   ЛОГИКА ИГРЫ
+=========================================================== */
+let queue = [];
+let current = null;
+let score = 0;
+let answered = 0;
+let locked = false;
+
+const $ = id => document.getElementById(id);
+const card = $('gameCard');
+const results = $('results');
+const feedback = $('feedback');
+const nextBtn = $('nextBtn');
+const choices = document.querySelectorAll('.choice');
+
+function shuffle(arr){
+  const a = [...arr];
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+
+function start(){
+  queue = shuffle(WORDS);
+  score = 0;
+  answered = 0;
+  locked = false;
+  $('qtotal').textContent = queue.length;
+  $('score').textContent = score;
+  results.classList.remove('show');
+  card.style.display = 'block';
+  nextQuestion();
+}
+
+function nextQuestion(){
+  if(queue.length === 0){
+    return showResults();
+  }
+  current = queue.shift();
+  locked = false;
+
+  $('qcurr').textContent = answered + 1;
+  $('word').textContent = current.w;
+  $('wordEn').textContent = current.en;
+  // colour the word subtly by type? keep neutral so it's not a giveaway
+  $('word').style.color = 'var(--ink)';
+
+  feedback.classList.remove('show');
+  nextBtn.classList.remove('show');
+
+  choices.forEach(btn=>{
+    btn.disabled = false;
+    btn.classList.remove('correct','wrong','reveal');
+  });
+
+  const pct = (answered / WORDS.length) * 100;
+  $('barfill').style.width = Math.max(5, pct) + '%';
+}
+
+function handleChoice(btn){
+  if(locked) return;
+  locked = true;
+  const picked = btn.dataset.type;
+  const correct = current.type;
+  const isOk = picked === correct;
+
+  choices.forEach(b => b.disabled = true);
+
+  if(isOk){
+    btn.classList.add('correct');
+    score++;
+    $('score').textContent = score;
+    showFeedback(true, picked);
+  } else {
+    btn.classList.add('wrong');
+    // reveal the correct one
+    document.querySelector(`.choice[data-type="${correct}"]`).classList.add('reveal');
+    showFeedback(false, picked);
+  }
+
+  answered++;
+  const pct = (answered / WORDS.length) * 100;
+  $('barfill').style.width = pct + '%';
+
+  nextBtn.classList.add('show');
+}
+
+function showFeedback(isOk, picked){
+  const t = current.type;
+  const verdict = $('verdict');
+  const explain = $('explain');
+  const explainEn = $('explainEn');
+
+  if(isOk){
+    verdict.textContent = "Верно! 🎉";
+    verdict.className = "verdict ok";
+  } else {
+    verdict.textContent = "Почти! Попробуй запомнить:";
+    verdict.className = "verdict no";
+  }
+
+  // Russian explanation with the question-trick highlighted
+  explain.innerHTML =
+    `Слово <b>«${current.w}»</b> отвечает на вопрос <b>${LABEL[t].q}</b> — значит, это <b>${LABEL[t].ru}</b>. ${ICON[t]}`;
+
+  // English mirror
+  explainEn.innerHTML =
+    `The word <i>“${current.en}”</i> answers <i>${LABEL[t].qEn}</i> — so it is <i>${LABEL[t].en}</i>.`;
+
+  feedback.classList.add('show');
+}
+
+function showResults(){
+  card.style.display = 'none';
+  results.classList.add('show');
+  $('finalScore').textContent = score;
+  $('barfill').style.width = '100%';
+
+  let emoji, title, msg;
+  const ratio = score / WORDS.length;
+  if(ratio === 1){
+    emoji = "🏆"; title = "Идеально!"; msg = "Все 20 слов — без ошибок! / A perfect score!";
+  } else if(ratio >= .8){
+    emoji = "🌟"; title = "Отличный результат!"; msg = "Ты почти не ошибаешься. / Almost perfect!";
+  } else if(ratio >= .5){
+    emoji = "💪"; title = "Хорошо, продолжай!"; msg = "Уже получается — попробуй ещё разок. / Try again to beat your score!";
+  } else {
+    emoji = "🌱"; title = "Не сдавайся!"; msg = "Используй вопросы-подсказки и попробуй снова. / Use the question-trick and try again!";
+  }
+
+  $('resultEmoji').textContent = emoji;
+  $('resultTitle').innerHTML = `${title}<span class="en">${msg.split(' / ')[1]||''}</span>`;
+  $('resultMsg').textContent = msg.split(' / ')[0];
+}
+
+/* events */
+choices.forEach(btn => btn.addEventListener('click', () => handleChoice(btn)));
+nextBtn.addEventListener('click', nextQuestion);
+$('restartBtn').addEventListener('click', start);
+
+/* tab switching */
+const learnSection = $('learnSection');
+const practiceSection = $('practiceSection');
+const tabLearn = $('tabLearn');
+const tabPractice = $('tabPractice');
+
+function showLearn(){
+  learnSection.classList.remove('hidden');
+  practiceSection.classList.remove('show');
+  tabLearn.classList.add('active');
+  tabPractice.classList.remove('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function showPractice(){
+  learnSection.classList.add('hidden');
+  practiceSection.classList.add('show');
+  tabPractice.classList.add('active');
+  tabLearn.classList.remove('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+tabLearn.addEventListener('click', showLearn);
+tabPractice.addEventListener('click', showPractice);
+$('goPractice').addEventListener('click', showPractice);
+
+start();
+</script>
+</body>
+</html>
